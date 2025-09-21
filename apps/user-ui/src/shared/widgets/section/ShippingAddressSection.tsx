@@ -32,14 +32,14 @@ const ShippingAddressSection = () => {
   const { data: addresses, isLoading } = useQuery({
     queryKey: ['shipping-addresses'],
     queryFn: async () => {
-      const res = await axiosInstance.get('/shipping-addresses');
+      const res = await axiosInstance.get('/api/shipping-addresses');
       return res.data.addresses;
     },
   });
 
   const addressMutation = useMutation({
     mutationFn: async (payload) => {
-      const res = await axiosInstance.post('/add-address', payload);
+      const res = await axiosInstance.post('/api/add-address', payload);
       return res.data.address;
     },
     onSuccess: () => {
