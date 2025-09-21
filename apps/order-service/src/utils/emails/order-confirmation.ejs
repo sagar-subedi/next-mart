@@ -85,7 +85,7 @@
     </style>
   </head>
   <body>
-    <div class="contaner">
+    <div class="container">
       <div class="header">
         <h1>🎊 Order Confirmed!</h1>
       </div>
@@ -96,13 +96,12 @@
           we&apos;ll start processing it shortly!
         </p>
         <div class="order-summary">
-          <%= cart.forEach(item =>{
-          <p>
-            🛒 <strong><%= item.title %></strong> - <%= item.quantity %> x <%=
-            item.salePrice.toFixed(2) %>
-          </p>
-          })%>
-          <p class="total"><%= totalAmount.toFixed(2) %></p>
+          <% cart.forEach(item => { %>
+            <p>
+              🛒 <strong><%= item.title %></strong> - <%= item.quantity %> x <%= item.salePrice.toFixed(2) %>
+            </p>
+          <% }) %>
+          <p class="total">Total: $<%= totalAmount.toFixed(2) %></p>
         </div>
         <a href="<%= trackingUrl %>" class="button">📦 Track your Order</a>
         <p style="margin-top: 20px">
