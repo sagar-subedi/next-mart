@@ -36,7 +36,7 @@ const OrdersSection = ({ orders, isLoading }: Props) => {
         header: 'Username',
         cell: ({ row }) => (
           <span className="text-white">
-            {row.original.user.name ?? 'Guest'}
+            {row.original?.user?.name ?? 'Guest'}
           </span>
         ),
       },

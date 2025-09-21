@@ -34,7 +34,7 @@ const Page = () => {
 
       try {
         const verifyRes = await axiosInstance.get(
-          `/orders/verify-payment-session?sessionId=${sessionId}`
+          `/orders/api/verify-payment-session?sessionId=${sessionId}`
         );
 
         const { totalAmount, sellers, cart, coupon } = verifyRes.data.session;
@@ -53,7 +53,7 @@ const Page = () => {
         const sellerStripeId = sellers[0].stripeAccountId;
 
         const intentRes = await axiosInstance.post(
-          '/orders/create-payment-intent',
+          '/orders/api/create-payment-intent',
           {
             amount: coupon?.discountAmount
               ? totalAmount - coupon.discountAmount
@@ -66,7 +66,7 @@ const Page = () => {
         setClientSecret(intentRes.data.clientSecret);
       } catch (error: any) {
         console.error(error);
-        setError('Something went wrong while preparing your payment');
+        setError('Something went wrong while preparing your payment'+error.message);
       } finally {
         setIsLoading(false);
       }

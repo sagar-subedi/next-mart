@@ -13,7 +13,7 @@ const Page = () => {
     queryKey: ['products'],
     queryFn: async () => {
       const response = await axiosInstance.get(
-        '/recommendation/get-recommendation-products'
+        '/recommendation/api/get-recommendation-products'
       );
       return response?.data?.recommendations;
     },
@@ -28,7 +28,7 @@ const Page = () => {
     queryKey: ['latest-products'],
     queryFn: async () => {
       const response = await axiosInstance.get(
-        '/products/get-all-products?page=1&limit=10&type=latest'
+        '/products/api/get-all-products?page=1&limit=10&type=latest'
       );
       return response?.data;
     },
@@ -38,7 +38,7 @@ const Page = () => {
   const { data: shops, isLoading: isShopLoading } = useQuery({
     queryKey: ['events'],
     queryFn: async () => {
-      const response = await axiosInstance.get('/products/top-shops');
+      const response = await axiosInstance.get('/products/api/top-shops');
       return response.data.shops;
     },
     staleTime: 1000 * 60 * 2,
@@ -48,7 +48,7 @@ const Page = () => {
     queryKey: ['shops'],
     queryFn: async () => {
       const response = await axiosInstance.get(
-        '/products/get-all-events?page=1&limit=10'
+        '/products/api/get-all-events?page=1&limit=10'
       );
       return response.data.events;
     },
@@ -75,7 +75,7 @@ const Page = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-5">
-            {products.length === 0 ? (
+            {products?.length === 0 ? (
               <p className="text-center">No products available yet!</p>
             ) : (
               products?.map((product: any) => (
@@ -100,10 +100,10 @@ const Page = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-5">
-            {latestProducts.length === 0 ? (
+            {latestProducts?.products?.length === 0 ? (
               <p className="text-center">No latest products available yet!</p>
             ) : (
-              latestProducts?.map((product: any) => (
+              latestProducts?.products.map((product: any) => (
                 <ProductCard key={product.id} product={product} />
               ))
             )}
@@ -116,10 +116,10 @@ const Page = () => {
         </div>
         {!isShopLoading && !isError && (
           <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-5">
-            {shops.length === 0 ? (
+            {shops?.length === 0 ? (
               <p className="text-center">No shops available yet!</p>
             ) : (
-              shops.map((shop: any) => <ShopCard key={shop.id} shop={shop} />)
+              shops?.map((shop: any) => <ShopCard key={shop.id} shop={shop} />)
             )}
           </div>
         )}

@@ -52,7 +52,7 @@ const Header = () => {
       <div className="w-[80%] py-5 m-auto flex items-center justify-between">
         <div>
           <Link href="/">
-            {layout.logo ? (
+            {layout?.logo ? (
               <Image
                 src={layout.logo}
                 alt="logo"

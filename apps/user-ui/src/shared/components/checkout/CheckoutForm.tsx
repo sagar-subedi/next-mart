@@ -66,7 +66,8 @@ const CheckoutForm = ({
 
   return (
     <div className="flex justify-center items-center min-h-[80vh] px-4 my-10">
-      <form className="bg-white w-full max-w-lg p-8 rounded-md shadow space-y-6">
+      <form className="bg-white w-full max-w-lg p-8 rounded-md shadow space-y-6" onSubmit={handleSubmit}
+      >
         <h2 className="text-3xl font-bold text-center mb-2">
           Secure Payment Checkout
         </h2>

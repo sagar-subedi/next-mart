@@ -77,7 +77,7 @@ const ProductDetails = ({ product }: Props) => {
       query.set('limit', '5');
 
       const response = await axiosInstance.get(
-        `/products/get-filtered-products?query=${query.toString()}`
+        `/products/api/get-filtered-products?query=${query.toString()}`
       );
 
       setRecommendedProducts(response.data?.products);

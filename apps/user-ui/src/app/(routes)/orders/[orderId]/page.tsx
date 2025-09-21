@@ -26,7 +26,7 @@ const Page = () => {
       setIsLoading(true);
       try {
         const res = await axiosInstance.get(
-          `/orders/get-order-details/${orderId}`
+          `/orders/api/get-order-details/${orderId}`
         );
         setOrder(res.data.order);
       } catch (error) {
@@ -189,8 +189,9 @@ const Page = () => {
                 src={
                   item.product?.images[0]?.fileUrl || '/images/placeholder.png'
                 }
+                width={64}
+                height={64}
                 alt={item.product?.title || 'Product image'}
-                fill
                 className="size-16 object-cover rounded-md border border-gray-200"
               />
               <div className="flex-1">

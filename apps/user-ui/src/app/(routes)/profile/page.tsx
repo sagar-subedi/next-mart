@@ -69,7 +69,7 @@ const Page = () => {
   };
 
   const fetchOrders = async () => {
-    const res = await axiosInstance.get('/orders/get-user-orders');
+    const res = await axiosInstance.get('/orders/api/get-user-orders');
     return res.data.orders;
   };
 
@@ -79,19 +79,19 @@ const Page = () => {
     staleTime: 1000 * 60 * 5,
   });
 
-  const totalOrders = orders.length;
-  const processingOrders = orders.filter(
+  const totalOrders = orders?.length;
+  const processingOrders = orders?.filter(
     (o: any) =>
       o.deliveryStatus !== 'Delivered' && o.deliveryStatus !== 'Cancelled'
   ).length;
-  const completedOrders = orders.filter(
+  const completedOrders = orders?.filter(
     (o: any) => o.deliveryStatus === 'Delivered'
   ).length;
 
   const { data: notifications, isLoading: areNotificationsLoading } = useQuery({
     queryKey: ['notifications'],
     queryFn: async () => {
-      const res = await axiosInstance.get('/admin/get-user-notifications');
+      const res = await axiosInstance.get('/admin/api/get-user-notifications');
       return res.data.notifications;
     },
   });
@@ -226,11 +226,11 @@ const Page = () => {
 
                 {areNotificationsLoading ? (
                   <p>Loading...</p>
-                ) : notifications.length === 0 ? (
+                ) : notifications?.length === 0 ? (
                   <p>No notifications available yet</p>
                 ) : (
                   <div className="md:w-[80%] my-6 rounded-lg divide-y divide-gray-800 bg-black/40 shadow-sm backdrop-blur-sm">
-                    {notifications.map((notification: any) => (
+                    {notifications?.map((notification: any) => (
                       <Link
                         href={notification.redirectLink}
                         key={notification.id}

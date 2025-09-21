@@ -65,7 +65,7 @@ const Cart = () => {
     }
 
     try {
-      const res = await axiosInstance.put('/orders/verify-coupon', {
+      const res = await axiosInstance.put('/orders/api/verify-coupon', {
         couponCode: couponCode.trim(),
         cart,
       });
@@ -94,13 +94,13 @@ const Cart = () => {
   const { data: addresses, isLoading } = useQuery({
     queryKey: ['shipping-addresses'],
     queryFn: async () => {
-      const res = await axiosInstance.get('/shipping-addresses');
+      const res = await axiosInstance.get('/api/shipping-addresses');
       return res.data.addresses;
     },
   });
 
   useEffect(() => {
-    if (addresses.length > 0 && !selectedAddressId) {
+    if (addresses?.length > 0 && !selectedAddressId) {
       const defaultAddress = addresses.find((addr: any) => addr.isDefault);
       if (defaultAddress) {
         setSelectedAddressId(defaultAddress.id);
@@ -115,7 +115,7 @@ const Cart = () => {
     }
     setLoading(true);
     try {
-      const res = await axiosInstance.post('/orders/create-payment-session', {
+      const res = await axiosInstance.post('/orders/api/create-payment-session', {
         cart,
         selectedAddressId,
         coupon: {
@@ -298,13 +298,13 @@ const Cart = () => {
                   <h4 className="mb-[7px] font-[500] text-[15px]">
                     Select Shipping Address
                   </h4>
-                  {addresses.length > 0 ? (
+                  {addresses?.length > 0 ? (
                     <select
                       className="w-full p-2 border border-gray-200 rounded-md focus:outline-none focus:border-blue-500"
                       value={selectedAddressId}
                       onChange={(e) => setSelectedAddressId(e.target.value)}
                     >
-                      {addresses.map((address: any) => (
+                      {addresses?.map((address: any) => (
                         <option value={address.id} key={address.id}>
                           {address.label} - {address.city}, {address.country}
                         </option>

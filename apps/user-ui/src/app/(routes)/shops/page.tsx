@@ -35,7 +35,7 @@ const Page = () => {
       query.set('limit', '12');
 
       const response = await axiosInstance.get(
-        `/products/get-filtered-shops?query=${query.toString()}`
+        `/products/api/get-filtered-shops?query=${query.toString()}`
       );
 
       setShops(response.data.shops);

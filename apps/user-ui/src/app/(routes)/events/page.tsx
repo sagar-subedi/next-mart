@@ -39,7 +39,7 @@ const Page = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['categories'],
     queryFn: async () => {
-      const res = await axiosInstance.get('/products/get-categories');
+      const res = await axiosInstance.get('/products/api/get-categories');
       return res.data;
     },
     staleTime: 1000 * 60 * 30,
@@ -67,7 +67,7 @@ const Page = () => {
       query.set('limit', '12');
 
       const response = await axiosInstance.get(
-        `/products/get-filtered-events?query=${query.toString()}`
+        `/products/api/get-filtered-events?query=${query.toString()}`
       );
 
       setProducts(response.data.products);

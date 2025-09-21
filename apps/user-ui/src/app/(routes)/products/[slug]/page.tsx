@@ -3,7 +3,7 @@ import axiosInstance from 'apps/user-ui/src/utils/axiosInstance';
 import { type Metadata } from 'next';
 
 async function fetchProductDetails(slug: string) {
-  const response = await axiosInstance.get(`/products/get-product/${slug}`);
+  const response = await axiosInstance.get(`/products/api/get-product/${slug}`);
   return response.data.product;
 }
 

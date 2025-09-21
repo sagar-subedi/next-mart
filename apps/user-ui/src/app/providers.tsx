@@ -19,7 +19,8 @@ const Providers = ({ children }: Readonly<{ children: ReactNode }>) => {
   );
   return (
     <QueryClientProvider client={queryClient}>
-      <ProvidersWithWebSocket>{children}</ProvidersWithWebSocket>
+     
+      {children}
     </QueryClientProvider>
   );
 };

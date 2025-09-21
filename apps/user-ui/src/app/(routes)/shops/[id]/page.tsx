@@ -3,7 +3,7 @@ import axiosInstance from 'apps/user-ui/src/utils/axiosInstance';
 import { Metadata } from 'next';
 
 const fetchSellerDetails = async (id: string) => {
-  const response = await axiosInstance.get(`/get-seller/${id}`);
+  const response = await axiosInstance.get(`/api/get-seller/${id}`);
   return response.data;
 };
 
@@ -47,6 +47,7 @@ export const generateMetadata = async ({
 };
 
 const Page = async ({ params }: { params: { id: string } }) => {
+  console.log('Fetching data for shop ID:', params.id);
   const data = await fetchSellerDetails(params.id);
   return (
     <SellerProfile shop={data.shop} followersCount={data?.followersCount} />
