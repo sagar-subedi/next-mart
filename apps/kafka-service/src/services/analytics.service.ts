@@ -20,7 +20,7 @@ export const updateUserAnalytics = async (event: any) => {
         productId: event?.productId,
         shopId: event?.shopId,
         action: event.action,
-        timestamp: new Date(),
+        timestamp: new Date().toISOString(),
       });
     } else if (
       ['add_to_cart', 'add_to_wishlist'].includes(event.action) &&
@@ -30,7 +30,7 @@ export const updateUserAnalytics = async (event: any) => {
         productId: event?.productId,
         shopId: event?.shopId,
         action: event.action,
-        timestamp: new Date(),
+        timestamp: new Date().toISOString(),
       });
     }
     // Remove `add_to_cart` when `remove_from_cart` is triggered
