@@ -5,6 +5,7 @@ import {
   createShop,
   createStripeLink,
   deleteUserAddress,
+  getAdmin,
   getLayoutData,
   getSeller,
   getUser,
@@ -23,7 +24,7 @@ import {
   verifyUserForgotPassword,
 } from './auth.controller';
 import isAuthenticated from '@packages/error-handler/isAuthenticated';
-import { isSeller } from '@packages/error-handler/authorizeRoles';
+import { isAdmin, isSeller } from '@packages/error-handler/authorizeRoles';
 
 const router: Router = express.Router();
 
