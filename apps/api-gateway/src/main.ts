@@ -19,7 +19,7 @@ app.use(
   })
 );
 app.use(morgan('dev'));
-app.use(cookieParser());
+app.use(cookieParser());  
 app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 
@@ -27,7 +27,7 @@ app.set('trust proxy', 1); // trust first proxy
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: (req: any) => (req.user ? 1000 : 100), // limit each IP to 100 requests per windowMs
+  max: (req: any) => (req.user ? 100000 : 10000), // limit each IP to 100 requests per windowMs
   message: 'Too many requests, please try again later.',
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: true, // Disable the `X-RateLimit-*` headers
@@ -40,9 +40,9 @@ app.use('/orders', proxy('http://localhost:6003'));
 app.use('/admin', proxy('http://localhost:6004'));
 app.use("/chats",proxy("http://localhost:6005"))
 app.use("/logs",proxy("http://localhost:6006"))
-app.use("/recommendation",proxy("http://localhost:6007"))
+app.use("/recommendation",proxy("http://localhost:6007")) 
 app.use("/seller",proxy("http://localhost:6008"))
-app.use('/api', proxy('http://localhost:6001'));
+app.use('/', proxy('http://localhost:6001'));
 
 app.get('/gateway-health', (req, res) => {
   res.send({ message: 'Welcome to api-gateway!' });

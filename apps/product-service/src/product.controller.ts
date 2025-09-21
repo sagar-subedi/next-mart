@@ -195,7 +195,7 @@ export const createProduct = async (
       brand,
       videoUrl,
       category,
-      subcategory,
+      subCategory,
       regularPrice,
       salePrice,
       stock,
@@ -210,7 +210,7 @@ export const createProduct = async (
       !description ||
       !slug ||
       !category ||
-      !subcategory ||
+      !subCategory ||
       !regularPrice ||
       !salePrice ||
       !stock ||
@@ -251,7 +251,7 @@ export const createProduct = async (
         brand,
         videoUrl,
         category,
-        subcategory,
+        subCategory,
         regularPrice: parseFloat(regularPrice),
         salePrice: parseFloat(salePrice),
         stock: parseInt(stock),
@@ -261,7 +261,7 @@ export const createProduct = async (
             .filter((image: any) => image && image.fileId && image.fileUrl)
             .map((image: any) => ({
               fileId: image.fileId,
-              fileUrl: image.fileUrl,
+              fileUrl: image.fileUrl
             })),
         },
         colors: colors || [],
@@ -719,7 +719,7 @@ export const getFilteredShops = async (
         skip,
         take: parsedLimit,
         include: {
-          sellers: true,
+          seller: true,
           products: true,
         },
       }),

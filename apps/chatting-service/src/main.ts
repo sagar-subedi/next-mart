@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
   res.send({ message: 'Welcome to chatting service!' });
 });
 
-app.use('/chats', router);
+app.use('/api', router);
 
 app.use(errorMiddleware);
 

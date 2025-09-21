@@ -30,7 +30,7 @@ app.get('/docs-json', (req, res) => {
   res.json(swaggerDocument);
 });
 
-app.use('/', router);
+app.use('/api', router);
 
 app.use(errorMiddleware);
 

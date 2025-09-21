@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
   res.send({ message: 'Welcome to recommendation service!' });
 });
 
-app.use('/recommendation', router);
+app.use('/api', router);
 
 app.use(errorMiddleware);
 

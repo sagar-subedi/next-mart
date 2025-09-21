@@ -11,13 +11,15 @@ if (!username || !password) {
 
 const kafka = new Kafka({
   clientId: 'kafka-service',
-  brokers: [process.env.KAFKA_BROCKER!],
+  brokers: [process.env.KAFKA_BROKER_URL!],
   ssl: true,
   sasl: {
     mechanism: 'plain',
     username,
     password,
   },
+  connectionTimeout: 3000,
+  requestTimeout: 6000,
 });
 
 export default kafka;

@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
   res.send({ message: 'Welcome to seller service!' });
 });
 
-app.use('/seller', router);
+app.use('/api', router);
 
 app.use(errorMiddleware);
 
