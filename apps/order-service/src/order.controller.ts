@@ -1,12 +1,15 @@
-import { sendEmail } from 'apps/auth-service/src/utils/sendMail/index';
+import { sendEmail } from 'apps/order-service/src/utils/sendMail/index';
 import { NextFunction, Request, Response } from 'express';
-import stripe from '@packages/libs/stripe';
 import { NotFoundError, ValidationError } from '@packages/error-handler';
 import redis from '@packages/libs/redis';
 import prisma from '@packages/libs/prisma';
 import crypto from 'crypto';
 import Stripe from 'stripe';
 import { Prisma } from '@prisma/client';
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2025-05-28.basil',
+});
 
 // Create payment intent
 export const createPaymentIntent = async (
@@ -99,14 +102,14 @@ export const createPaymentSession = async (
       select: {
         id: true,
         sellerId: true,
-        sellers: { select: { stripeId: true } },
+        seller: { select: { stripeId: true } },
       },
     });
 
     const sellerData = shops.map((shop) => ({
       shopId: shop.id,
       sellerId: shop.sellerId,
-      stripeId: shop.sellers?.stripeId,
+      stripeAccountId: shop.seller?.stripeId,
     }));
 
     const totalAmount = cart.reduce((total: number, item: any) => {
@@ -232,7 +235,7 @@ export const createOrder = async (
         const orderItems = shopGrouped[shopId];
 
         let orderTotal = orderItems.reduce((sum: number, product: any) => {
-          sum + product.quantity * product.salePrice;
+          return sum + product.quantity * product.salePrice;
         }, 0);
 
         // Apply discount
@@ -290,7 +293,7 @@ export const createOrder = async (
           });
 
           await prisma.productAnalytics.upsert({
-            where: {id: productId },
+            where: { productId },
             create: {
               productId,
               shopId,
@@ -364,21 +367,21 @@ export const createOrder = async (
               message: `A customer just ordered ${productTitle} from your shop!`,
               creatorId: userId,
               receiverId: shop?.sellerId,
-              redirectLink: `/orders/${order.id}`,
+              redirectLink: `/orders/api/${order.id}`,
             },
           });
         }
 
         //   Create admin notification
-        await prisma.notifications.create({
-          data: {
-            title: '📦 Platform Order Alert',
-            message: `A new order was placed by ${name}`,
-            creatorId: userId,
-            receiverId: 'ADMIN',
-            redirectLink: `/orders/${order.id}`,
-          },
-        });
+        // await prisma.notifications.create({
+        //   data: {
+        //     title: '📦 Platform Order Alert',
+        //     message: `A new order was placed by ${name}`,
+        //     creatorId: userId,
+        //     receiverId: 'ADMIN',
+        //     redirectLink: `/orders/${order.id}`,
+        //   },
+        // });
 
         await redis.del(sessionKey);
       }

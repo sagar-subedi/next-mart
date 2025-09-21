@@ -4,6 +4,7 @@ import express from 'express';
 import cors from 'cors';
 import router from './order.route';
 import { createOrder } from './order.controller';
+import bodyParser from 'body-parser';
 
 const app = express();
 
@@ -16,14 +17,18 @@ app.use(
 );
 
 app.post(
-  '/orders/create-order',
-  express.raw({ type: 'application/json' }),
+  '/api/create-order',
+  bodyParser.raw({ type: 'application/json' }),
   (req, res, next) => {
     (req as any).rawBody = req.body;
     next();
   },
   createOrder
 );
+
+app.get('/api/create-order', (req, res) => {
+  res.send({ message: 'Welcome to order service!' });
+});
 
 app.use(cookieParser());
 app.use(express.json({ limit: '10mb' }));
@@ -33,7 +38,7 @@ app.get('/', (req, res) => {
   res.send({ message: 'Welcome to order service!' });
 });
 
-app.use('/orders', router);
+app.use('/api', router);
 
 app.use(errorMiddleware);
 
