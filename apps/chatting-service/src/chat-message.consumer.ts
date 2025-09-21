@@ -61,6 +61,7 @@ async function flushBufferToDB() {
       senderId: message.senderId,
       senderType: message.senderType,
       content: message.content,
+      attachments: [], // Provide a default value for attachments
       createdAt: new Date(message.createdAt),
     }));
 
