@@ -26,7 +26,7 @@ const Inbox = () => {
       if (!conversationId || !hasFetchedOnce) return [];
 
       const res = await axiosInstance.get(
-        `/chats/get-seller-messages/${conversationId}?page=1`
+        `/chats/api/get-seller-messages/${conversationId}?page=1`
       );
       setHasFetchedOnce(true);
       return res.data.messages.reverse();
@@ -48,12 +48,12 @@ const Inbox = () => {
     if (!conversationId || messages.length === 0) return;
     const timout = setTimeout(scrollToBottom, 100);
     return () => clearTimeout(timout);
-  }, [conversationId, messages.length]);
+  }, [conversationId, messages?.length]);
 
   const { data: conversations, isLoading } = useQuery({
     queryKey: ['conversations'],
     queryFn: async () => {
-      const res = await axiosInstance.get('/chats/get-seller-conversations');
+      const res = await axiosInstance.get('/chats/api/get-seller-conversations');
       return res.data.conversations;
     },
   });

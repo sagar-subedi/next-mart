@@ -50,7 +50,7 @@ export const WebSocketProvider = ({
   return (
     <WebSocketContext.Provider value={{ ws: wsRef.current, unreadCounts }}>
       {children}
-    </WebSocketContext.Provider>
+    </WebSocketContext.Provider> 
   );
 };
 

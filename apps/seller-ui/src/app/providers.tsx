@@ -15,7 +15,9 @@ const Providers = ({ children }: Props) => {
   return (
     <JotaiProvider>
       <QueryClientProvider client={queryClient}>
-        <ProvidersWithWebSocket>{children}</ProvidersWithWebSocket>
+        <ProvidersWithWebSocket>
+          {children}
+        </ProvidersWithWebSocket>
       </QueryClientProvider>
     </JotaiProvider>
   );
@@ -31,7 +33,9 @@ const ProvidersWithWebSocket = ({
   return (
     <>
       {seller ? (
-        <WebSocketProvider seller={seller}>{children}</WebSocketProvider>
+        <WebSocketProvider seller={seller}>
+          {children}
+        </WebSocketProvider>
       ) : (
         children
       )}

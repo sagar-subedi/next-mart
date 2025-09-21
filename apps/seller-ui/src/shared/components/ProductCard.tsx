@@ -69,7 +69,7 @@ const ProductCard = ({ product, isEvent = false }: Props) => {
           Limited Stock
         </div>
       )}
-      <Link href={`/products/${product?.slug}`}>
+      <Link href={`/dashboard/products/${product?.slug}`}>
         <Image
           src={product?.images[0]?.fileUrl}
           alt={product?.title}
@@ -79,12 +79,12 @@ const ProductCard = ({ product, isEvent = false }: Props) => {
         />
       </Link>
       <Link
-        href={`/shops/${product.shop.id}`}
+        href={`/shops/${product.shop?.id}`}
         className="block text-blue-500 text-sm font-medium my-2 px-2"
       >
         {product.shop?.name}
       </Link>
-      <Link href={`/products/${product?.slug}`}>
+      <Link href={`/dashboard/products/${product?.slug}`}>
         <h3 className="text-base font-semibold px-2 text-gray-800 line-clamp-1">
           {product?.title}
         </h3>

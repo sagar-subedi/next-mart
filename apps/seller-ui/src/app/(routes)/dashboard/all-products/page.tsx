@@ -35,7 +35,7 @@ const AllProducts = () => {
   const queryClient = useQueryClient();
 
   const fetchProducts = async () => {
-    const response = await axiosInstance.get('/products/get-shop-products');
+    const response = await axiosInstance.get('/products/api/get-shop-products');
     return response.data.products;
   };
 
@@ -47,7 +47,7 @@ const AllProducts = () => {
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) =>
-      axiosInstance.delete(`/products/delete-product/${id}`),
+      axiosInstance.delete(`/products/api/delete-product/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['shop-products'] });
       toast.success('Product deleted successfully');
@@ -63,7 +63,7 @@ const AllProducts = () => {
 
   const restoreMutation = useMutation({
     mutationFn: (id: string) =>
-      axiosInstance.put(`/products/restore-product/${id}`),
+      axiosInstance.put(`/products/api/restore-product/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['shop-products'] });
       toast.success('Product restored successfully');
@@ -113,7 +113,7 @@ const AllProducts = () => {
 
           return (
             <Link
-              href={`/products/${row.original.slug}`}
+              href={`/dashboard/products/${row.original.slug}`}
               className="text-blue-400 hover:underline"
               title={row.original.title}
             >
@@ -157,13 +157,13 @@ const AllProducts = () => {
         cell: ({ row }: any) => (
           <div className="flex gap-3">
             <Link
-              href={`/products/${row.original.id}`}
+              href={`/dashboard/products/${row.original.id}`}
               className="text-blue-400 hover:text-blue-300 transition"
             >
               <Eye size={18} />
             </Link>
             <Link
-              href={`/products/edit/${row.original.id}`}
+              href={`/dashboard/products/edit/${row.original.id}`}
               className="text-yellow-400 hover:text-yellow-300 transition"
             >
               <Pencil size={18} />

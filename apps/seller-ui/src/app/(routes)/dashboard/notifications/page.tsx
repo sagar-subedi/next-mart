@@ -12,7 +12,7 @@ const Page = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['notifications'],
     queryFn: async () => {
-      const res = await axiosInstance.get('/seller/seller-notifications');
+      const res = await axiosInstance.get('/seller/api/seller-notifications');
       return res.data.notifications;
     },
   });
@@ -31,11 +31,11 @@ const Page = () => {
         <p className="text-center pt-24 text-white text-sm font-poppins">
           Loading...
         </p>
-      ) : data.length > 0 ? (
+      ) : data?.length > 0 ? (
         <div className="md:w-[80%] my-6 rounded-lg divide-y divide-gray-800 bg-black/40 shadow-sm backdrop-blur-sm">
           {data.map((notification: any) => (
             <Link
-              href={notification.redirectLink}
+              href={notification.redirectLink ?? '#'}
               key={notification.id}
               className={`block px-5 py-4 transition ${
                 notification.status !== 'Unread'
@@ -53,7 +53,7 @@ const Page = () => {
                     {notification.message}
                   </span>
                   <span className="text-gray-500 text-xs mt-1">
-                    {new Date(notification.createdAt).toLocaleDateString(
+                    {new Date(notification.createdAt).toLocaleString(
                       'en-UK',
                       { dateStyle: 'medium', timeStyle: 'short' }
                     )}

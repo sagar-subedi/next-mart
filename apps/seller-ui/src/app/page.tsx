@@ -27,13 +27,13 @@ import { useRouter } from 'next/navigation';
 const TABS = ['Products', 'Offers', 'Reviews'];
 
 const fetchProducts = async () => {
-  const res = await axiosInstance.get('/products/get-shop-products');
+  const res = await axiosInstance.get('/products/api/get-shop-products');
   const products = res.data.products?.filter((i: any) => !i.startingDate);
   return products;
 };
 
 const fetchEvents = async () => {
-  const res = await axiosInstance.get('/products/get-shop-events');
+  const res = await axiosInstance.get('/products/api/get-shop-events');
   const events = res.data.products?.filter((i: any) => i.startingDate);
   return events;
 };
@@ -118,12 +118,12 @@ const Page = () => {
                     {seller.shop?.name}
                   </h1>
                   <p className="text-slate-800 text-sm mt-1">
-                    {seller.shop.bio || 'No bio available'}
+                    {seller.shop?.bio || 'No bio available'}
                   </p>
                   <div className="flex items-center gap-4 mt-2">
                     <div className="flex items-center text-blue-400 gap-1">
                       <Star size={18} fill="#60a5fa" />
-                      <span>{seller.shop.ratings || 'N/A'}</span>
+                      <span>{seller.shop?.ratings || 'N/A'}</span>
                     </div>
                     <div className="flex items-center gap-1 text-slate-700">
                       <Users size={18} />{' '}
@@ -132,11 +132,11 @@ const Page = () => {
                   </div>
                   <div className="flex items-center gap-3 mt-3 text-slate-700">
                     <Clock size={18} />
-                    <span>{seller.shop.openingHours}</span>
+                    <span>{seller.shop?.openingHours}</span>
                   </div>
                   <div className="flex items-center gap-2 mt-3 text-slate-700">
                     <MapPin size={18} />
-                    <span>{seller.shop.address || 'No address provided'}</span>
+                    <span>{seller.shop?.address || 'No address provided'}</span>
                   </div>
                 </div>
                 {seller.id ? (
@@ -169,10 +169,10 @@ const Page = () => {
                 <Calendar size={18} />
                 <span>
                   Joined at:{' '}
-                  {new Date(seller.shop.createdAt).toLocaleDateString()}
+                  {new Date(seller.shop?.createdAt).toLocaleDateString()}
                 </span>
               </div>
-              {seller.shop.website && (
+              {seller.shop?.website && (
                 <div className="flex items-center gap-3 mt-3 text-slate-700">
                   <Globe size={18} />
                   <Link
@@ -183,7 +183,7 @@ const Page = () => {
                   </Link>
                 </div>
               )}
-              {seller.shop.socialLinks &&
+              {seller.shop?.socialLinks &&
                 seller.shop.socialLinks.length > 0 && (
                   <div className="mt-3">
                     <h3 className="text-lg font-medium text-slate-700">
@@ -257,7 +257,7 @@ const Page = () => {
                         className="bg-gray-300 h-[250px] animate-pulse rounded-xl"
                       />
                     ))
-                  ) : events.length > 0 ? (
+                  ) : events?.length > 0 ? (
                     events.map((product: any) => (
                       <ProductCard key={product.id} product={product} isEvent />
                     ))

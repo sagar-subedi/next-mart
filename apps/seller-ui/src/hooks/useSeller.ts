@@ -3,7 +3,7 @@ import axiosInstance from '../utils/axiosInstance';
 
 // Fetch seller from API
 const fetchSeller = async () => {
-  const response = await axiosInstance.get(`/logged-in-seller`);
+  const response = await axiosInstance.get(`/api/logged-in-seller`);
   return response.data.seller;
 };
 

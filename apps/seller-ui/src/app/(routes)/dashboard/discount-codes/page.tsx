@@ -43,7 +43,7 @@ const DiscountCodes = () => {
   const { data: discountCodes, isLoading } = useQuery({
     queryKey: ['discount-codes'],
     queryFn: async () => {
-      const response = await axiosInstance.get('/products/get-discount-codes');
+      const response = await axiosInstance.get('/products/api/get-discount-codes');
       return response.data.discountCodes;
     },
     staleTime: 1000 * 60 * 5,
@@ -57,7 +57,7 @@ const DiscountCodes = () => {
   const createDiscountCodeMutation = useMutation({
     mutationFn: async (data: FormData) => {
       const response = await axiosInstance.post(
-        '/products/create-discount-code',
+        '/products/api/create-discount-code',
         data
       );
       return response.data;

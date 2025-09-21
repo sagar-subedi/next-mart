@@ -17,7 +17,7 @@ const Payments = () => {
   const [globalFilter, setGlobalFilter] = useState('');
 
   const fetchOrders = async () => {
-    const res = await axiosInstance.get('/orders/get-seller-orders');
+    const res = await axiosInstance.get('/orders/api/get-seller-orders');
     return res.data.orders;
   };
 
@@ -97,7 +97,7 @@ const Payments = () => {
         header: 'Actions',
         cell: ({ row }) => (
           <Link
-            href={`/orders/${row.original.id}`}
+            href={`/dashboard/orders/${row.original.id}`}
             className="text-blue-400 hover:text-blue-300 transition"
           >
             <Eye size={18} />

@@ -109,7 +109,7 @@ const CreateProduct = () => {
     try {
       const base64 = await convertFileToBase64(file);
       const response = await axiosInstance.post(
-        '/products/upload-product-image',
+        '/products/api/upload-product-image',
         { fileName: base64 }
       );
       const updatedImages = [...images];
@@ -171,7 +171,7 @@ const CreateProduct = () => {
     queryKey: ['categories'],
     queryFn: async () => {
       try {
-        const response = await axiosInstance.get('/products/get-categories');
+        const response = await axiosInstance.get('/products/api/get-categories');
         return response.data;
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -195,7 +195,7 @@ const CreateProduct = () => {
   const { data: discountCodes, isLoading: isDiscountLoading } = useQuery({
     queryKey: ['discount-codes'],
     queryFn: async () => {
-      const response = await axiosInstance.get('/products/get-discount-codes');
+      const response = await axiosInstance.get('/products/api/get-discount-codes');
       return response.data.discountCodes;
     },
     staleTime: 1000 * 60 * 5,
@@ -227,7 +227,7 @@ const CreateProduct = () => {
           (img) => img && img.fileId && img.fileUrl
         ),
       };
-      await axiosInstance.post('/products/create-product', payload);
+      await axiosInstance.post('/products/api/create-product', payload);
       router.push('/dashboard/all-products');
       toast.success('Product created successfully');
     } catch (error: any) {
