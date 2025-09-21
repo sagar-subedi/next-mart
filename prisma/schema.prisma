@@ -11,14 +11,14 @@ model images {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   fileId    String
   fileUrl   String
-  usersId   String    @unique @db.ObjectId
-  user      users     @relation(fields: [usersId], references: [id])
+  userId   String    @unique @db.ObjectId
+  user      users     @relation(fields: [userId], references: [id])
   shopId    String?   @unique @db.ObjectId
   productId String?   @unique @db.ObjectId
-  shops     shops?    @relation(fields: [shopId], references: [id])
-  products  products? @relation(fields: [productId], references: [id])
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  shop     shops?    @relation(fields: [shopId], references: [id])
+  product  products? @relation(fields: [productId], references: [id])
+  createdAt DateTime?  @default(now())
+  updatedAt DateTime?  @updatedAt
 }
 
 model users {
@@ -55,9 +55,9 @@ model shopReviews {
   userId    String   @db.ObjectId
   user      users    @relation(fields: [userId], references: [id])
   rating    Float
-  reviews   String?
+  review   String?
   shopId    String?  @db.ObjectId
-  shops     shops?   @relation(fields: [shopId], references: [id])
+  shop     shops?   @relation(fields: [shopId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -70,13 +70,13 @@ model shops {
   avatar        images?
   coverBanner   String?
   address       String
-  opening_hours String?
+  openingHours String?
   website       String?
-  socialLInks   Json[]
+  socialLinks   Json[]
   ratings       Float         @default(0)
   reviews       shopReviews[]
   sellerId      String        @unique @db.ObjectId
-  sellers       sellers       @relation(fields: [sellerId], references: [id])
+  seller       sellers       @relation(fields: [sellerId], references: [id])
   products      products[]
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
@@ -135,7 +135,7 @@ model products {
   slug                 String        @unique
   tags                 String[]
   category             String
-  subcategory          String
+  subCategory          String
   cashOnDelivery       Boolean
   brand                String
   videoUrl             String?
@@ -247,7 +247,7 @@ model userAnalytics {
   country         String?
   city            String?
   device          String?
-  actions         Json?
+  actions         Json[]
   recommendations Json?
   lastVisited     DateTime
   lastTrained     DateTime @default(now())
@@ -297,7 +297,7 @@ model messages {
   senderId       String   @db.ObjectId
   senderType     String
   content        String?
-  attachments    String
+  attachments    String[]
   status         String   @default("Sent")
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
