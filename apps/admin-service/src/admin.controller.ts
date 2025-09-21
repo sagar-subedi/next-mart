@@ -65,6 +65,20 @@ export const adminLogin = async (
   }
 };
 
+// Get logged in seller
+export const getAdmin = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const admin = req.admin;
+    return res.status(200).json({ success: true, admin });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 // Get admin orders
 export const getAdminOrders = async (
   req: any,

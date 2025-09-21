@@ -49,7 +49,7 @@ const Products = () => {
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) =>
-      axiosInstance.delete(`/products/delete-product/${id}`),
+      axiosInstance.delete(`/products/api/delete-product/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['shop-products'] });
       toast.success('Product deleted successfully');
@@ -65,7 +65,7 @@ const Products = () => {
 
   const restoreMutation = useMutation({
     mutationFn: (id: string) =>
-      axiosInstance.put(`/products/restore-product/${id}`),
+      axiosInstance.put(`/products/api/restore-product/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['shop-products'] });
       toast.success('Product restored successfully');

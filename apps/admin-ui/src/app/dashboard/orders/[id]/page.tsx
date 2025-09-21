@@ -28,7 +28,7 @@ const OrderDetails = () => {
     setIsLoading(true);
     try {
       const res = await axiosInstance.get(
-        `/orders/get-order-details/${orderId}`
+        `/orders/api/get-order-details/${orderId}`
       );
       setOrder(res.data.order);
     } catch (error) {
@@ -44,7 +44,7 @@ const OrderDetails = () => {
     setIsUpdating(true);
 
     try {
-      await axiosInstance.put(`/orders/update-status/${order.id}`, {
+      await axiosInstance.put(`/orders/api/update-status/${order.id}`, {
         deliveryStatus: newStatus,
       });
       setOrder((prev: any) => ({ ...prev, deliveryStatus: newStatus }));

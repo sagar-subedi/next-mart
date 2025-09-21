@@ -3,7 +3,7 @@ import axiosInstance from '../utils/axiosInstance';
 
 // Fetch admin from API
 const fetchAdmin = async () => {
-  const response = await axiosInstance.get(`/logged-in-admin`);
+  const response = await axiosInstance.get(`/admin//api/logged-in-admin`);
   return response.data.admin;
 };
 

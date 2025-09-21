@@ -31,7 +31,7 @@ const Page = () => {
 
   const loginMutation = useMutation({
     mutationFn: async (data: FormData) => {
-      const res = await axiosInstance.post('/admin/login', data, {
+      const res = await axiosInstance.post('/admin/api/login', data, {
         withCredentials: true,
       });
       return res.data;
