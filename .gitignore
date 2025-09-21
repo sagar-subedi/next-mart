@@ -50,3 +50,7 @@ Thumbs.db
 out
 .env
 .env.*
+
+# Include these in vcs as they are examples without sensitive data
+!.env.example
+!.env.example.*
