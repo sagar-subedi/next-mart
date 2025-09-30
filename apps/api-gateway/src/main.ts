@@ -35,18 +35,33 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-app.use('/products', proxy('http://localhost:6002'));
-app.use('/orders', proxy('http://localhost:6003'));
-app.use('/admin', proxy('http://localhost:6004'));
-app.use("/chats",proxy("http://localhost:6005"))
-app.use("/logs",proxy("http://localhost:6006"))
-app.use("/recommendation",proxy("http://localhost:6007")) 
-app.use("/seller",proxy("http://localhost:6008"))
-app.use('/', proxy('http://localhost:6001'));
+const serviceHosts = {
+  auth: process.env.NODE_ENV=='local'? 'localhost': 'auth-service',
+  product: process.env.NODE_ENV=='local'? 'localhost': 'product-service',
+  order: process.env.NODE_ENV=='local'? 'localhost': 'order-service',
+  admin: process.env.NODE_ENV=='local'? 'localhost': 'admin-service',
+  chat: process.env.NODE_ENV=='local'? 'localhost': 'chat-service',
+  logger: process.env.NODE_ENV=='local'? 'localhost': 'logger',
+  recommendation: process.env.NODE_ENV=='local'? 'localhost': 'recommendation',
+  seller: process.env.NODE_ENV=='local'? 'localhost': 'seller-service',
+  kafka: process.env.NODE_ENV=='local'? 'localhost': 'kafka-service',
+  apigateway: process.env.NODE_ENV=='local'? 'localhost': 'api-gateway'
+}
 
 app.get('/gateway-health', (req, res) => {
   res.send({ message: 'Welcome to api-gateway!' });
 });
+
+app.use('/products', proxy(`http://${serviceHosts.product}:6002`));
+app.use('/orders', proxy(`http://${serviceHosts.order}:6003`));
+app.use('/admin', proxy(`http://${serviceHosts.admin}:6004`));
+app.use("/chats",proxy(`http://${serviceHosts.chat}:6005`))
+app.use("/logs",proxy(`http://${serviceHosts.logger}:6006`))
+app.use("/recommendation",proxy(`http://${serviceHosts.recommendation}:6007`)) 
+app.use("/seller",proxy(`http://${serviceHosts.seller}:6008`))
+app.use('/', proxy(`http://${serviceHosts.auth}:6001`));
+
+
 
 const port = process.env.PORT || 8080;
 const server = app.listen(port, () => {
