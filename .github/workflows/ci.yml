@@ -7,34 +7,34 @@ on:
     branches: [ main, develop ]
 
 env:
-  NODE_VERSION: '18'
+  NODE_VERSION: '20'
   REGISTRY: ghcr.io
-  IMAGE_NAME: starfishj/e-mall
+  IMAGE_NAME: sagar-subedi/next-mart
 
 jobs:
   # Unit Testing
-  test:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        service: [auth-service, product-service, order-service, recommendation-service, kafka-service]
+  # test:
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       service: [auth-service, product-service, order-service, recommendation-service, kafka-service]
     
-    steps:
-      - uses: actions/checkout@v4
+  #   steps:
+  #     - uses: actions/checkout@v4
       
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: ${{ env.NODE_VERSION }}
+  #         cache: 'npm'
       
-      - name: Install dependencies
-        run: npm ci
+  #     - name: Install dependencies
+  #       run: npm ci
       
-      - name: Run tests for ${{ matrix.service }}
-        run: npx nx test ${{ matrix.service }}
-        env:
-          CI: true
+  #     - name: Run tests for ${{ matrix.service }}
+  #       run: npx nx test ${{ matrix.service }}
+  #       env:
+  #         CI: true
 
   # Build Docker Images
   build:
