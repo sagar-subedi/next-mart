@@ -73,7 +73,7 @@ jobs:
           context: .
           file: ./apps/auth-service/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/auth-service:${{ github.sha }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-auth-service:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       
@@ -83,7 +83,7 @@ jobs:
           context: .
           file: ./apps/product-service/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/product-service:${{ github.sha }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-product-service:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       
@@ -93,7 +93,7 @@ jobs:
           context: .
           file: ./apps/order-service/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/order-service:${{ github.sha }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-order-service:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       
@@ -103,7 +103,7 @@ jobs:
           context: .
           file: ./apps/recommendation-service/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/recommendation-service:${{ github.sha }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-recommendation-service:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       
@@ -113,7 +113,7 @@ jobs:
           context: .
           file: ./apps/kafka-service/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/kafka-service:${{ github.sha }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-kafka-service:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       
@@ -123,7 +123,7 @@ jobs:
           context: .
           file: ./apps/api-gateway/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api-gateway:${{ github.sha }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-api-gateway:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
