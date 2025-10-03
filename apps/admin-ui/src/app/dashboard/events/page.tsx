@@ -23,7 +23,7 @@ const Events = () => {
     const res = await axiosInstance.get(
       `/admin/get-all-events?page=${page}&limit=${limit}`
     );
-    return res.data.events;
+    return res?.data.events;
   };
 
   const { data, isLoading } = useQuery({
@@ -33,7 +33,7 @@ const Events = () => {
     staleTime: 1000 * 60 * 5,
   });
 
-  const allEvents = data.data || [];
+  const allEvents = data?.data || [];
   const totalPages = Math.ceil((data?.meta?.totalEvents ?? 0) / limit);
 
   const filteredEvents = useMemo(() => {

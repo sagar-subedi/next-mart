@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
 
-export const statuses = [
+const statuses = [
   'Ordered',
   'Packed',
   'Shipped',
