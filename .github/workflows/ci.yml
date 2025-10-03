@@ -70,7 +70,8 @@ jobs:
       - name: Build and push auth-service
         uses: docker/build-push-action@v5
         with:
-          context: ./apps/auth-service
+          context: .
+          file: ./apps/auth-service/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/auth-service:${{ github.sha }}
           cache-from: type=gha
@@ -79,7 +80,8 @@ jobs:
       - name: Build and push product-service
         uses: docker/build-push-action@v5
         with:
-          context: ./apps/product-service
+          context: .
+          file: ./apps/product-service/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/product-service:${{ github.sha }}
           cache-from: type=gha
@@ -88,7 +90,8 @@ jobs:
       - name: Build and push order-service
         uses: docker/build-push-action@v5
         with:
-          context: ./apps/order-service
+          context: .
+          file: ./apps/order-service/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/order-service:${{ github.sha }}
           cache-from: type=gha
@@ -97,7 +100,8 @@ jobs:
       - name: Build and push recommendation-service
         uses: docker/build-push-action@v5
         with:
-          context: ./apps/recommendation-service
+          context: .
+          file: ./apps/recommendation-service/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/recommendation-service:${{ github.sha }}
           cache-from: type=gha
@@ -106,7 +110,8 @@ jobs:
       - name: Build and push kafka-service
         uses: docker/build-push-action@v5
         with:
-          context: ./apps/kafka-service
+          context: .
+          file: ./apps/kafka-service/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/kafka-service:${{ github.sha }}
           cache-from: type=gha
@@ -115,7 +120,8 @@ jobs:
       - name: Build and push api-gateway
         uses: docker/build-push-action@v5
         with:
-          context: ./apps/api-gateway
+          context: .
+          file: ./apps/api-gateway/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api-gateway:${{ github.sha }}
           cache-from: type=gha
