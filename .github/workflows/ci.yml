@@ -69,6 +69,9 @@ jobs:
       
       - name: Build and push auth-service
         uses: docker/build-push-action@v5
+        permissions:
+          contents: read
+          packages: write
         with:
           context: .
           file: ./apps/auth-service/Dockerfile
