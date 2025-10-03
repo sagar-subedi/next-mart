@@ -55,7 +55,7 @@ jobs:
         run: npm install --legacy-peer-deps
       
       - name: Build applications
-        run: npx nx run-many --target=build --all
+        run: npx nx run-many --target=build --all --skip-nx-cache
       
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
