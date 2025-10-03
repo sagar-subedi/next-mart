@@ -7,7 +7,7 @@ import {
   getFilteredRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import Breadcrumb from 'apps/seller-ui/src/shared/components/Breadcrumb';
+import Breadcrumb from 'apps/user-ui/src/shared/components/Breadcrumb';
 import { Eye, Search } from 'lucide-react';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
