@@ -4,9 +4,9 @@ import { useStore } from 'apps/user-ui/src/store';
 import confetti from 'canvas-confetti';
 import { CheckCircle, Truck } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 
-const Page = () => {
+const PayentSuccessPage = () => {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('sessionId');
   const router = useRouter();
@@ -45,6 +45,14 @@ const Page = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const Page = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PayentSuccessPage />
+    </Suspense>
   );
 };
 

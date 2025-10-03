@@ -7,12 +7,15 @@ async function fetchProductDetails(slug: string) {
   return response.data.product;
 }
 
+type Params = Promise<{ slug: string }>
+
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Params;
 }): Promise<Metadata> {
-  const product = await fetchProductDetails(params.slug);
+  const {slug} = await params;
+  const product = await fetchProductDetails(slug);
 
   return {
     title: `${product.title} | Eshop Marketplace`,
@@ -34,8 +37,11 @@ export async function generateMetadata({
   };
 }
 
-const Page = async ({ params }: { params: { slug: string } }) => {
-  const productDetails = await fetchProductDetails(params?.slug);
+
+const Page = async ( {params} : { params: Params}) => {
+  const {slug} = await params;
+
+  const productDetails = await fetchProductDetails( slug);
 
   return <ProductDetails product={productDetails} />;
 };

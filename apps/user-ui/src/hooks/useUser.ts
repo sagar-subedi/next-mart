@@ -11,6 +11,19 @@ const fetchUser = async (isLoggedIn: boolean) => {
   return response.data.user;
 };
 
+type User = {
+  id: string;
+  name: string;
+  email: string;
+  role: "ADMIN" | "USER" | "SELLER";
+  password?: string;
+  following?: string[];
+  createdAt?: string;
+  updatedAt?: string;
+  avatar: string; 
+};
+
+
 const useUser = () => {
   const { isLoggedIn, setIsLoggedIn } = useAuthStore();
 
@@ -27,7 +40,7 @@ const useUser = () => {
     onSuccess: () => setIsLoggedIn(true),
     onError: () => setIsLoggedIn(false),
   });
-  return { user, isLoading, isError };
+  return { user: user as User, isLoading, isError };
 };
 
 export default useUser;

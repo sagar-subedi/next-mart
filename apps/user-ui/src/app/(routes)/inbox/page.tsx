@@ -8,7 +8,7 @@ import axiosInstance from 'apps/user-ui/src/utils/axiosInstance';
 import { isProtected } from 'apps/user-ui/src/utils/protected';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, useRef, useEffect, FormEvent } from 'react';
+import { useState, useRef, useEffect, FormEvent, Suspense } from 'react';
 
 const Inbox = () => {
   const router = useRouter();
@@ -22,7 +22,7 @@ const Inbox = () => {
   const conversationId = searchParams.get('conversationId');
   const [hasFetchedOnce, setHasFetchedOnce] = useState(true);
   const scrollAnchorRef = useRef<HTMLDivElement | null>(null);
-  const { user, isLoading: isUserLoading } = useRequireAuth();
+  const { user , isLoading: isUserLoading } = useRequireAuth();
   const messageContainerRef = useRef<HTMLDivElement | null>(null);
   const [selectedChat, setSelectedChat] = useState<any | null>(null);
 
@@ -332,4 +332,12 @@ const Inbox = () => {
   );
 };
 
-export default Inbox;
+const Page = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Inbox />
+    </Suspense>
+  );
+};
+
+export default Page;

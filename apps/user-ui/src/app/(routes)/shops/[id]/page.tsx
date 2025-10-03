@@ -2,6 +2,9 @@ import SellerProfile from 'apps/user-ui/src/shared/widgets/section/SellerProfile
 import axiosInstance from 'apps/user-ui/src/utils/axiosInstance';
 import { Metadata } from 'next';
 
+type Params = Promise<{ id: string }>
+
+
 const fetchSellerDetails = async (id: string) => {
   const response = await axiosInstance.get(`/api/get-seller/${id}`);
   return response.data;
@@ -11,9 +14,10 @@ const fetchSellerDetails = async (id: string) => {
 export const generateMetadata = async ({
   params,
 }: {
-  params: { id: string };
+  params: Params;
 }): Promise<Metadata> => {
-  const data = await fetchSellerDetails(params.id);
+  const { id } = await params;
+  const data = await fetchSellerDetails(id);
 
   return {
     title: `${data.shop?.name} | Eshop Marketplace`,
@@ -46,9 +50,10 @@ export const generateMetadata = async ({
   };
 };
 
-const Page = async ({ params }: { params: { id: string } }) => {
-  console.log('Fetching data for shop ID:', params.id);
-  const data = await fetchSellerDetails(params.id);
+const Page = async ({ params }: { params: Params }) => {
+  const { id } = await params;
+  console.log('Fetching data for shop ID:', id);
+  const data = await fetchSellerDetails(id);
   return (
     <SellerProfile shop={data.shop} followersCount={data?.followersCount} />
   );

@@ -31,7 +31,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
 export interface User {
   name: string;
@@ -41,7 +41,7 @@ export interface User {
   createdAt: string;
 }
 
-const Page = () => {
+const ProfilePage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const queryClient = useQueryClient();
@@ -297,6 +297,14 @@ const Page = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const Page = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProfilePage />
+    </Suspense>
   );
 };
 
