@@ -43,23 +43,23 @@ jobs:
   # Build Docker Images
   build:
     runs-on: ubuntu-latest
-    # needs: test
     if: github.ref == 'refs/heads/main'
+    strategy:
+      matrix:
+        service: 
+          - auth-service
+          - product-service
+          - order-service
+          - recommendation-service
+          - kafka-service
+          - chatting-service
+          - seller-service
+          - admin-service
+          - logger-service
+          - api-gateway
     
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps
-      
-      - name: Build applications
-        run: npx nx run-many --target=build --all --skip-nx-cache
       
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -71,66 +71,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Build and push auth-service
+      - name: Build and push ${{ matrix.service }}
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./apps/auth-service/Dockerfile
+          file: ./apps/${{ matrix.service }}/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-auth-service:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      
-      - name: Build and push product-service
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./apps/product-service/Dockerfile
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-product-service:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      
-      - name: Build and push order-service
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./apps/order-service/Dockerfile
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-order-service:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      
-      - name: Build and push recommendation-service
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./apps/recommendation-service/Dockerfile
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-recommendation-service:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      
-      - name: Build and push kafka-service
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./apps/kafka-service/Dockerfile
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-kafka-service:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      
-      - name: Build and push api-gateway
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./apps/api-gateway/Dockerfile
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-api-gateway:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.service }}:${{ github.sha }},${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.service }}:latest
+          cache-from: type=gha,scope=${{ matrix.service }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.service }}
   # Deploy to Development Environment
   deploy-dev:
     runs-on: ubuntu-latest
