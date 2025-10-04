@@ -97,7 +97,7 @@ jobs:
           # For example: kubectl apply -f k8s/dev/
           # Or: docker-compose -f docker-compose.dev.yml up -d
 
-  # Deploy to Production Environment
+  # Deploy to Production via SSH
   deploy-prod:
     runs-on: ubuntu-latest
     needs: build
@@ -107,9 +107,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Deploy to production environment
-        run: |
-          echo "Deploying to production environment..."
-          # Add production deployment scripts here
-          # For example: kubectl apply -f k8s/prod/
-          # Or: docker-compose -f docker-compose.prod.yml up -d
+      - name: Deploy to VPS via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          script: |
+            cd /root/deployements/next-mart
+            
+            # Login to GitHub Container Registry
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            
+            # Pull latest images
+            docker compose -f docker-compose.prod.yml pull
+            
+            # Restart services with new images
+            docker compose -f docker-compose.prod.yml up -d
+            
+            # Clean up old images
+            docker image prune -af --filter "until=24h"
+            
+            echo "Deployment completed successfully!"
