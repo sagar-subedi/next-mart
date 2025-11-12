@@ -30,7 +30,7 @@ const Inbox = () => {
     queryKey: ['conversations'],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        '/chats/get-user-conversations',
+        '/chats/api/get-user-conversations',
         isProtected
       );
       return res.data.conversations;
@@ -103,7 +103,7 @@ const Inbox = () => {
       if (!conversationId || !hasFetchedOnce) return [];
 
       const res = await axiosInstance.get(
-        `/chats/get-messages/${conversationId}?page=${page}`,
+        `/chats/api/get-messages/${conversationId}?page=${page}`,
         isProtected
       );
       setPage(1);
@@ -118,7 +118,7 @@ const Inbox = () => {
   const loadMoreMessages = async () => {
     const nextPage = page + 1;
     const res = await axiosInstance.get(
-      `/chats/get-messages/${conversationId}?page=${nextPage}`,
+      `/chats/api/get-messages/${conversationId}?page=${nextPage}`,
       isProtected
     );
 
@@ -181,7 +181,7 @@ const Inbox = () => {
   };
 
   useEffect(() => {
-    if (messages.length > 0) scrollToBottom();
+    if (messages?.length > 0) scrollToBottom();
   }, [messages]);
 
   return (
@@ -195,7 +195,7 @@ const Inbox = () => {
             <div className="divide-y divide-gray-200">
               {isLoading ? (
                 <p className="p-4 text-sm text-gray-500">Loading...</p>
-              ) : chats.length === 0 ? (
+              ) : !chats || chats.length === 0 ? (
                 <p className="p-4 text-sm text-gray-500">No conversation</p>
               ) : (
                 chats.map((chat) => {
@@ -279,7 +279,7 @@ const Inbox = () => {
                       Load previous messages
                     </button>
                   )}
-                  {messages.map((msg: any, index: number) => (
+                  {messages?.map((msg: any, index: number) => (
                     <div
                       key={index}
                       className={`flex flex-col max-w-[80%] ${

@@ -27,9 +27,10 @@ export async function createWebSocketServer(server: HttpServer) {
 
     let registeredUserId: string | null = null;
 
-    wss.on('message', async (rawMessage) => {
+    ws.on('message', async (rawMessage) => {
       try {
         const messageStr = rawMessage.toString();
+        console.log(`Received websocket message: ${messageStr}`);
 
         // Regiser the user on first plain message (non-JSON)
         if (!registeredUserId && !messageStr.startsWith('{')) {
