@@ -97,7 +97,7 @@ const ProductDetails = ({ product }: Props) => {
 
     try {
       const res = await axiosInstance.post(
-        '/chats/create-user-conversation-group',
+        '/chats/api/create-user-conversation-group',
         { sellerId: product.shop.sellerId },
         isProtected
       );

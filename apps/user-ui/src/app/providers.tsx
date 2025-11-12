@@ -19,8 +19,9 @@ const Providers = ({ children }: Readonly<{ children: ReactNode }>) => {
   );
   return (
     <QueryClientProvider client={queryClient}>
-     
-      {children}
+     <ProvidersWithWebSocket>
+        {children}
+     </ProvidersWithWebSocket> 
     </QueryClientProvider>
   );
 };
@@ -30,7 +31,6 @@ const ProvidersWithWebSocket = ({
 }: Readonly<{ children: ReactNode }>) => {
   const { user, isLoading } = useUser();
 
-  if (isLoading) return null;
 
   return (
     <>
