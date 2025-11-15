@@ -11,7 +11,7 @@ COPY nx.json ./
 COPY tsconfig.base.json ./
 
 # Copy the current service's configuration
-COPY apps/seller-service/ ./apps/seller-service/
+COPY apps/chatting-service/ ./apps/chatting-service/
 COPY packages/ ./packages/
 
 # Install dependencies
@@ -37,7 +37,7 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nodejs
 
 # Copy build artifacts
-COPY --from=builder /app/dist/apps/seller-service ./dist
+COPY --from=builder /app/dist/apps/chatting-service ./dist
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 
