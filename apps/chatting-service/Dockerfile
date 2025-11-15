@@ -25,7 +25,7 @@ ARG DATABASE_URL
 RUN npx prisma generate
 
 # Build the application
-RUN npx nx build seller-service
+RUN npx nx build chatting-service
 
 # Production stage
 FROM base AS runner
