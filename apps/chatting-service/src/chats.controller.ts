@@ -77,7 +77,8 @@ export const getUserConversations = async (
       orderBy: { updatedAt: 'desc' },
     });
 
-    await Promise.all(
+    // Collect all conversation data
+    const conversationList = await Promise.all(
       conversations.map(async (group) => {
         //   Get the seller participant inside tihs conversation
         const sellerParticipant = await prisma.participants.findFirst({
@@ -109,7 +110,7 @@ export const getUserConversations = async (
 
         const unreadCount = await getUnseenCount('user', group.id);
 
-        return res.status(200).json({
+        return {
           conversationId: group.id,
           seller: {
             id: seller.id || null,
@@ -118,12 +119,15 @@ export const getUserConversations = async (
             avatar: seller.shop?.avatar,
           },
           lastMessage:
-            lastMessage.content || 'Say something to start a conversation',
-          lastMessageAt: lastMessage.createdAt || lastMessage.updatedAt,
+            lastMessage?.content || 'Say something to start a conversation',
+          lastMessageAt: lastMessage?.createdAt || lastMessage?.updatedAt,
           unreadCount,
-        });
+        };
       })
     );
+    
+    // Return the list of conversations
+    return res.status(200).json({ conversations: conversationList });
   } catch (error) {
     return next(error);
   }

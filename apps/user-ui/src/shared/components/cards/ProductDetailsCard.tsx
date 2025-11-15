@@ -47,7 +47,7 @@ const ProductDetailsCard = ({ open, setOpen, data }: Props) => {
 
     try {
       const res = await axiosInstance.post(
-        '/chats/create-user-conversation-group',
+        '/chats/api/create-user-conversation-group',
         { sellerId: data.shop.sellerId },
         isProtected
       );

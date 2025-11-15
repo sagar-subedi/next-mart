@@ -13,7 +13,11 @@ const app = express();
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    origin: [
+      process.env.FRONTEND_URL || 'http://localhost:3000',
+      process.env.FRONTEND_SELLER_URL || 'http://localhost:3001',
+      process.env.FRONTEND_ADMIN_URL || 'http://localhost:3002'
+    ],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
