@@ -151,9 +151,11 @@ const DiscountCodes = () => {
                 </tr>
               ))}
               {!isLoading && discountCodes?.length === 0 && (
-                <p className="p-4 text-center text-gray-400">
+                <tr className="p-4 text-center text-gray-400">
+                  <td className="py-5">
                   No discount codes available!
-                </p>
+                  </td>
+                </tr>
               )}
             </tbody>
           </table>
