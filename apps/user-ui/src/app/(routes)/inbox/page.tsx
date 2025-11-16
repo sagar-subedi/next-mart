@@ -100,7 +100,7 @@ const Inbox = () => {
   const { data: messages } = useQuery({
     queryKey: ['messages', conversationId],
     queryFn: async () => {
-      if (!conversationId || !hasFetchedOnce) return [];
+      if (!conversationId || hasFetchedOnce) return [];
 
       const res = await axiosInstance.get(
         `/chats/api/get-messages/${conversationId}?page=${page}`,

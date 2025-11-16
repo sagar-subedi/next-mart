@@ -2,6 +2,7 @@
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useWebSocket } from 'apps/seller-ui/src/context/WebSocketContext';
+import useRequireAuth from 'apps/seller-ui/src/hooks/useRequireAuth';
 import ChatInput from 'apps/seller-ui/src/shared/components/ChatInput';
 import axiosInstance from 'apps/seller-ui/src/utils/axiosInstance';
 import Image from 'next/image';
@@ -19,11 +20,12 @@ const Inbox = () => {
   const [hasFetchedOnce, setHasFetchedOnce] = useState(false);
   const messageContainerRef = useRef<HTMLDivElement | null>(null);
   const [selectedChat, setSelectedChat] = useState<any | null>(null);
+  const { seller } = useRequireAuth();
 
   const { data: messages } = useQuery({
     queryKey: ['messages', conversationId],
     queryFn: async () => {
-      if (!conversationId || !hasFetchedOnce) return [];
+      if (!conversationId || hasFetchedOnce) return [];
 
       const res = await axiosInstance.get(
         `/chats/api/get-seller-messages/${conversationId}?page=1`
@@ -45,7 +47,7 @@ const Inbox = () => {
     });
 
   useEffect(() => {
-    if (!conversationId || messages.length === 0) return;
+    if (!conversationId || messages?.length === 0) return;
     const timout = setTimeout(scrollToBottom, 100);
     return () => clearTimeout(timout);
   }, [conversationId, messages?.length]);
@@ -64,7 +66,7 @@ const Inbox = () => {
 
   useEffect(() => {
     if (conversationId && chats.length > 0) {
-      const chat = chats.find((c) => c.conversatioId === conversationId);
+      const chat = chats.find((c) => c.conversationId === conversationId);
       setSelectedChat(chat || null);
     }
   }, [conversationId, chats]);
@@ -129,7 +131,7 @@ const Inbox = () => {
       ws.send(
         JSON.stringify({
           type: 'MARK_AS_SEEN',
-          conversationId: chat.conversatioId,
+          conversationId: chat.conversationId,
         })
       );
     }
@@ -145,15 +147,13 @@ const Inbox = () => {
     )
       return;
 
-    const payload = {
-      from: 'seller',
-      text: message,
-      time: new Date().toLocaleDateString([], {
-        hour: '2-digit',
-        minute: '2-digit',
-      }),
-      seen: false,
-    };
+      const payload = {
+        fromUserId: seller?.id,
+        toUserId: selectedChat.user?.id,
+        conversationId: selectedChat.conversationId,
+        messageBody: message,
+        senderType: 'seller',
+      };
 
     ws.send(JSON.stringify(payload));
 
@@ -162,7 +162,7 @@ const Inbox = () => {
   };
 
   const getLastMessage = (chat: any) =>
-    chat.messages.length > 0
+    chat.messages?.length > 0
       ? chat.messages[chat.messages.length - 1].text
       : '';
 
@@ -180,10 +180,10 @@ const Inbox = () => {
             ) : chats.length > 0 ? (
               chats.map((chat) => {
                 const isActive =
-                  selectedChat.conversationId === chat.conversationId;
+                  selectedChat?.conversationId === chat.conversationId;
                 return (
                   <button
-                    key={chat.conversatioId}
+                    key={chat.conversationId}
                     onClick={() => handleChatSelect(chat)}
                     className={`w-full text-left px-4 py-3 transition ${
                       isActive ? 'bg-blue-950' : 'hover:bg-gray-800'
@@ -250,7 +250,7 @@ const Inbox = () => {
                 ref={messageContainerRef}
                 className="flex-1 overflow-y-auto p-6 text-sm space-y-4"
               >
-                {messages.map((msg: any, index: number) => (
+                {messages?.map((msg: any, index: number) => (
                   <div
                     key={index}
                     className={`flex flex-col max-w-[80%] ${

@@ -58,7 +58,7 @@ const ChatInput = ({ message, setMessage, onSendMessage }: ChatInputProps) => {
       </div>
       <input
         type="text"
-        className="flex-1 px-4 py-2 text-sm border outline-none bg-gray-200 rounded-md"
+        className="flex-1 px-4 py-2 text-sm border outline-none bg-gray-200 rounded-md text-gray-800"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Type your message..."
