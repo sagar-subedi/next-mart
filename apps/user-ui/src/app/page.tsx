@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '../utils/axiosInstance';
 import ProductCard from '../shared/components/cards/ProductCard';
 import ShopCard from '../shared/components/cards/ShopCard';
+import TechnologyStack from '../shared/components/TechnologyStack';
 
 const Page = () => {
   const { data: products, isLoading: isProductsLoading } = useQuery({
@@ -58,6 +59,7 @@ const Page = () => {
   return (
     <div className="bg-[#f5f5f5]">
       <Hero />
+      <TechnologyStack />
       <div className="md:w-[80%] w-[90%] m-auto my-10">
         {/* Suggested products */}
         <div className="mb-8">
