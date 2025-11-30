@@ -149,8 +149,19 @@ const Hero = () => {
               </div>
 
               {/* Decorative Mountain Icon */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-20">
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-10">
                 <Mountain className="w-64 h-64 text-white" />
+              </div>
+
+              {/* Doko Basket Illustration - Subtle Background */}
+              <div className="absolute bottom-10 right-10 opacity-20 transform rotate-12 pointer-events-none">
+                <svg width="200" height="200" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20 20 L80 20 L70 80 H30 Z" stroke="white" strokeWidth="2" strokeLinejoin="round" />
+                  <path d="M22 35 H78 M25 50 H75 M28 65 H72" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+                  <path d="M50 20 V80" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+                  <path d="M35 20 V80 M65 20 V80" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+                  <path d="M20 20 C15 5 85 5 80 20" stroke="white" strokeWidth="2" strokeLinecap="round" strokeDasharray="4 4" />
+                </svg>
               </div>
             </div>
           </div>

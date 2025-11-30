@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a855f7" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#grad)" />
+  
+  <!-- Authentic Flared Doko Shape with Wider Base -->
+  <g transform="translate(12, 10) scale(0.75)">
+    <!-- Main Body - Wider Top Flare & Wider Bottom -->
+    <!-- Bottom width increased from 20 to 30 (approx) -->
+    <path d="M0 0 L52 0 L41 52 C41 54 39 56 30 56 C21 56 19 54 11 52 L0 0 Z" fill="none" stroke="white" stroke-width="3" stroke-linejoin="round" />
+    
+    <!-- Top Rim - Wider -->
+    <ellipse cx="26" cy="0" rx="26" ry="4" stroke="white" stroke-width="2" fill="none" />
+    
+    <!-- Vertical Ribs - Fanning -->
+    <path d="M14 0 L17 54" stroke="white" stroke-width="2" stroke-linecap="round" />
+    <path d="M38 0 L35 54" stroke="white" stroke-width="2" stroke-linecap="round" />
+    <path d="M26 0 L26 56" stroke="white" stroke-width="2" stroke-linecap="round" />
+    
+    <!-- Horizontal Weaves -->
+    <path d="M4 14 H48" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.8" />
+    <path d="M8 28 H44" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.8" />
+    <path d="M11 42 H41" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.8" />
+    
+    <!-- Namlo (Strap) -->
+    <path d="M-4 5 Q-10 25 8 45" stroke="white" stroke-width="3" stroke-linecap="round" fill="none" />
+  </g>
+</svg>

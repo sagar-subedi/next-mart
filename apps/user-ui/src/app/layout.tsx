@@ -5,8 +5,11 @@ import './global.css';
 import Footer from '../shared/widgets/Footer';
 
 export const metadata = {
-  title: 'Eshop',
-  description: 'Eshop',
+  title: 'Doko Mart',
+  description: 'Carry your shopping with ease',
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 const poppins = Poppins({
