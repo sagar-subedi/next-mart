@@ -8,6 +8,8 @@ import axiosInstance from '../utils/axiosInstance';
 import ProductCard from '../shared/components/cards/ProductCard';
 import ShopCard from '../shared/components/cards/ShopCard';
 import TechnologyStack from '../shared/components/TechnologyStack';
+import EmptyState from '../shared/components/EmptyState';
+import { ShoppingBag, Store, Tag } from 'lucide-react';
 
 const Page = () => {
   const { data: products, isLoading: isProductsLoading } = useQuery({
@@ -71,16 +73,19 @@ const Page = () => {
             {Array.from({ length: 10 }).map((_, index) => (
               <div
                 key={index}
-                className="h-[250px] bg-gray-400 animate-pulse rounded-xl"
+                className="h-[380px] bg-gray-200 animate-pulse rounded-xl"
               />
             ))}
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-5">
-            {products?.length === 0 ? (
-              <p className="text-center">No products available yet!</p>
+            {!products || products.length === 0 ? (
+              <EmptyState
+                title="No suggestions yet"
+                message="We're still learning your preferences. Check back soon!"
+              />
             ) : (
-              products?.map((product: any) => (
+              products.map((product: any) => (
                 <ProductCard key={product.id} product={product} />
               ))
             )}
@@ -96,16 +101,20 @@ const Page = () => {
             {Array.from({ length: 10 }).map((_, index) => (
               <div
                 key={index}
-                className="h-[250px] bg-gray-400 animate-pulse rounded-xl"
+                className="h-[380px] bg-gray-200 animate-pulse rounded-xl"
               />
             ))}
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-5">
-            {latestProducts?.products?.length === 0 ? (
-              <p className="text-center">No latest products available yet!</p>
+            {!latestProducts?.products || latestProducts.products.length === 0 ? (
+              <EmptyState
+                title="No new arrivals"
+                message="Check back later for the latest products."
+                icon={ShoppingBag}
+              />
             ) : (
-              latestProducts?.products.map((product: any) => (
+              latestProducts.products.map((product: any) => (
                 <ProductCard key={product.id} product={product} />
               ))
             )}
@@ -118,10 +127,14 @@ const Page = () => {
         </div>
         {!isShopLoading && !isError && (
           <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-5">
-            {shops?.length === 0 ? (
-              <p className="text-center">No shops available yet!</p>
+            {!shops || shops.length === 0 ? (
+              <EmptyState
+                title="No shops found"
+                message="We couldn't find any top shops at the moment."
+                icon={Store}
+              />
             ) : (
-              shops?.map((shop: any) => <ShopCard key={shop.id} shop={shop} />)
+              shops.map((shop: any) => <ShopCard key={shop.id} shop={shop} />)
             )}
           </div>
         )}
@@ -132,8 +145,12 @@ const Page = () => {
         </div>
         {!isEventLoading && !isError && (
           <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-5">
-            {events.length === 0 ? (
-              <p className="text-center">No events available yet!</p>
+            {!events || events.length === 0 ? (
+              <EmptyState
+                title="No active offers"
+                message="There are no special offers running right now."
+                icon={Tag}
+              />
             ) : (
               events.map((product: any) => (
                 <ProductCard

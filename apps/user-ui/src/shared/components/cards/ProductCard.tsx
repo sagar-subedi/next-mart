@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Ratings from '../Ratings';
 import { useEffect, useState } from 'react';
-import { Eye, Heart, ShoppingBag } from 'lucide-react';
+import { Eye, Heart, ShoppingBag, Clock } from 'lucide-react';
 import ProductDetailsCard from './ProductDetailsCard';
 import { useStore } from 'apps/user-ui/src/store';
 import useUser from 'apps/user-ui/src/hooks/useUser';
@@ -44,7 +44,7 @@ const ProductCard = ({ product, isEvent = false }: Props) => {
           (difference % (1000 * 60 * 60)) / (1000 * 60)
         );
 
-        setTimeLeft(`${days}d ${hours}h ${minutes}m left with this price`);
+        setTimeLeft(`${days}d ${hours}h ${minutes}m`);
       }, 60000);
       return () => clearInterval(interval);
     }
@@ -60,105 +60,121 @@ const ProductCard = ({ product, isEvent = false }: Props) => {
   const isInCart = cart.some((item) => item.id === product.id);
 
   return (
-    <div className="w-full min-h-[350px] h-max bg-white rounded-lg relative">
-      {isEvent && (
-        <div className="absolute top-2 left-2 bg-red-600 text-white text-[10px] font-semibold px-2 py-1 rounded-sm shadow-md">
-          OFFER
-        </div>
-      )}
-      {product?.stock <= 5 && (
-        <div className="absolute top-2 right-2 bg-yellow-400 text-slate-700 text-[10px] font-semibold px-2 py-1 rounded-sm shadow-md">
-          Limited Stock
-        </div>
-      )}
-      <Link href={`/products/${product?.slug}`}>
-        <Image
-          src={product?.images[0]?.fileUrl}
-          alt={product?.title}
-          width={300}
-          height={300}
-          className="w-full h-[300px] object-cover mx-auto rounded-t-md cursor-pointer p-4"
-        />
-      </Link>
-      <Link
-        href={`/shops/${product.shop.id}`}
-        className="block text-blue-500 text-sm font-medium my-2 px-2"
-      >
-        {product.shop?.name}
-      </Link>
-      <Link href={`/products/${product?.slug}`}>
-        <h3 className="text-base font-semibold px-2 text-gray-800 line-clamp-1">
-          {product?.title}
-        </h3>
-      </Link>
-      <div className="mt-2 px-2">
-        <Ratings rating={product?.ratings} />
+    <div className="w-full bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden relative flex flex-col h-full">
+      {/* Badges */}
+      <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
+        {isEvent && (
+          <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm">
+            OFFER
+          </span>
+        )}
+        {product?.stock <= 5 && (
+          <span className="bg-amber-400 text-amber-900 text-[10px] font-bold px-2 py-1 rounded-full shadow-sm">
+            LOW STOCK
+          </span>
+        )}
       </div>
-      <div className="mt-3 flex justify-between items-center px-2">
-        <div className="flex items-center gap-2">
-          <span className="text-lg font-bold text-gray-900">
-            ${product.salePrice}
-          </span>
-          <span className="text-sm line-through text-red-500">
-            ${product.regularPrice}
-          </span>
-        </div>
-        <span className="text-green-500 text-sm font-medium">
-          {product.totalSales} sold
-        </span>
-      </div>
-      {isEvent && timeLeft && (
-        <div className="mt-2">
-          <span className="inline-block text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded-md">
-            {timeLeft}
-          </span>
-        </div>
-      )}
 
-      <div className="absolute z-10 flex flex-col gap-3 right-3 top-10">
-        <div className="bg-white rounded-full p-[6px] shadow-md">
-          <Heart
-            className="cursor-pointer hover:scale-110 transition"
-            size={22}
-            fill={isWishlisted ? 'red' : 'transparent'}
-            stroke={isWishlisted ? 'red' : '#4b5563'}
+      {/* Image Container */}
+      <div className="relative w-full aspect-[4/3] overflow-hidden bg-gray-50">
+        <Link href={`/products/${product?.slug}`}>
+          <Image
+            src={product?.images[0]?.fileUrl || 'https://placehold.co/400x300/png?text=Product'}
+            alt={product?.title}
+            fill
+            className="object-contain p-4 group-hover:scale-110 transition-transform duration-500"
+          />
+        </Link>
+
+        {/* Quick Actions - Slide in on hover */}
+        <div className="absolute right-3 top-3 flex flex-col gap-2 translate-x-10 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
+          <button
             onClick={() => {
               if (isWishlisted) {
                 removeFromWishlist(product.id, user, location, deviceInfo);
               } else {
-                addToWishlist(
-                  { ...product, quantity: 1 },
-                  user,
-                  location,
-                  deviceInfo
-                );
+                addToWishlist({ ...product, quantity: 1 }, user, location, deviceInfo);
               }
             }}
-          />
-        </div>
-        <div className="bg-white rounded-full p-[6px] shadow-md">
-          <Eye
-            className="cursor-pointer hover:scale-110 transition text-[#4b5563]"
-            size={22}
+            className="bg-white p-2 rounded-full shadow-md hover:bg-pink-50 transition-colors"
+            title={isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
+          >
+            <Heart
+              size={18}
+              className={isWishlisted ? "fill-pink-500 text-pink-500" : "text-gray-600"}
+            />
+          </button>
+
+          <button
             onClick={() => setOpen(true)}
-          />
-        </div>
-        <div className="bg-white rounded-full p-[6px] shadow-md">
-          <ShoppingBag
-            className="cursor-pointer hover:scale-110 transition text-[#4b5563]"
-            size={22}
+            className="bg-white p-2 rounded-full shadow-md hover:bg-blue-50 transition-colors"
+            title="Quick View"
+          >
+            <Eye size={18} className="text-gray-600" />
+          </button>
+
+          <button
             onClick={() => {
-              !isInCart &&
-                addToCart(
-                  { ...product, quantity: 1 },
-                  user,
-                  location,
-                  deviceInfo
-                );
+              if (!isInCart) {
+                addToCart({ ...product, quantity: 1 }, user, location, deviceInfo);
+              }
             }}
-          />
+            className="bg-white p-2 rounded-full shadow-md hover:bg-green-50 transition-colors"
+            title="Add to Cart"
+          >
+            <ShoppingBag
+              size={18}
+              className={isInCart ? "fill-green-500 text-green-500" : "text-gray-600"}
+            />
+          </button>
         </div>
       </div>
+
+      {/* Content */}
+      <div className="p-4 flex flex-col flex-grow">
+        <Link
+          href={`/shops/${product.shop.id}`}
+          className="text-xs text-brand-primary-500 font-medium hover:underline mb-1"
+        >
+          {product.shop?.name}
+        </Link>
+
+        <Link href={`/products/${product?.slug}`}>
+          <h3 className="text-sm font-semibold text-gray-800 line-clamp-2 mb-2 hover:text-brand-primary-600 transition-colors h-10">
+            {product?.title}
+          </h3>
+        </Link>
+
+        <div className="mb-3">
+          <Ratings rating={product?.ratings} />
+        </div>
+
+        <div className="mt-auto flex items-end justify-between">
+          <div className="flex flex-col">
+            <div className="flex items-center gap-2">
+              <span className="text-lg font-bold text-gray-900">
+                ${product.salePrice}
+              </span>
+              {product.regularPrice > product.salePrice && (
+                <span className="text-xs line-through text-gray-400">
+                  ${product.regularPrice}
+                </span>
+              )}
+            </div>
+            {isEvent && timeLeft && (
+              <div className="flex items-center gap-1 text-[10px] text-orange-600 mt-1 font-medium">
+                <Clock size={10} />
+                <span>{timeLeft}</span>
+              </div>
+            )}
+          </div>
+
+          <span className="text-xs text-gray-500 font-medium bg-gray-100 px-2 py-1 rounded-md">
+            {product.totalSales} sold
+          </span>
+        </div>
+      </div>
+
       {open && (
         <ProductDetailsCard open={open} setOpen={setOpen} data={product} />
       )}

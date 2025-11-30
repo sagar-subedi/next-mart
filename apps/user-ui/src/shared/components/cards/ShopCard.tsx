@@ -1,6 +1,9 @@
+'use client';
+
 import { ArrowUpRight, MapPin, Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 
 interface Props {
   shop: {
@@ -10,67 +13,94 @@ interface Props {
     avatar: string;
     coverBanner?: string;
     address?: string;
-    followers?: [];
+    followers?: any[];
     rating?: number;
     category?: string;
   };
 }
+
 const ShopCard = ({ shop }: Props) => {
+  const [coverSrc, setCoverSrc] = useState(
+    shop?.coverBanner || '/images/shop-cover-placeholder.png'
+  );
+  const [avatarSrc, setAvatarSrc] = useState(
+    shop?.avatar || '/images/shop-avatar-placeholder.png'
+  );
+
+  // Update state if props change
+  useEffect(() => {
+    setCoverSrc(shop?.coverBanner || '/images/shop-cover-placeholder.png');
+    setAvatarSrc(shop?.avatar || '/images/shop-avatar-placeholder.png');
+  }, [shop]);
+
   return (
-    <div className="w-full rounded-md cursor-pointer bg-white border border-orange-200 shadow-sm overflow-hidden transition">
+    <div className="w-full rounded-xl cursor-pointer bg-white border border-gray-200 shadow-sm hover:shadow-lg overflow-hidden transition-all duration-300 group flex flex-col h-full">
       {/* Cover */}
-      <div className="h-[120px] w-full relative">
+      <div className="h-[120px] w-full relative bg-gray-100">
         <Image
-          src={shop?.coverBanner || '/images/placeholder.png'}
+          src={coverSrc}
           alt="cover"
           fill
-          className="object-cover w-full h-full"
+          className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+          onError={() => setCoverSrc('/images/shop-cover-placeholder.png')}
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </div>
+
       {/* Shop avatar */}
-      <div className="relative flex justify-center -mt-8">
-        <div className="w-16 h-16 rounded-full border-4 border-white overflow-hidden shadow bg-white">
+      <div className="relative flex justify-center -mt-10 z-10">
+        <div className="w-20 h-20 rounded-full border-4 border-white overflow-hidden shadow-md bg-white">
           <Image
-            src={shop?.avatar || '/images/placeholder.png'}
+            src={avatarSrc}
             alt={shop.name}
-            width={64}
-            height={64}
-            className="object-cover"
+            width={80}
+            height={80}
+            className="object-cover w-full h-full"
+            onError={() => setAvatarSrc('/images/shop-avatar-placeholder.png')}
           />
         </div>
       </div>
+
       {/* Shop information */}
-      <div className="px-4 pb-4 pt-2 text-center">
-        <h3 className="text-base font-semibold text-gray-800">{shop.name}</h3>
-        <p className="text-xs text-gray-800 mt-0.5">
+      <div className="px-4 pb-5 pt-2 text-center flex flex-col flex-grow">
+        <h3 className="text-lg font-bold text-gray-900 mb-1">{shop.name}</h3>
+        <p className="text-sm text-gray-500 mb-3">
           {shop.followers?.length ?? 0} Followers
         </p>
+
         {/* Address & rating */}
-        <div className="flex items-center justify-center text-xs text-gray-50 mt-2 gap-4 flex-wrap">
-          {shop.address && (
-            <span className="flex items-center gap-1 max-w-[120px]">
-              <MapPin className="size-4 shrink-0" />
+        <div className="flex items-center justify-center text-xs text-gray-600 mt-auto gap-3 flex-wrap mb-3">
+          {shop.address ? (
+            <span className="flex items-center gap-1 max-w-[140px] bg-gray-50 px-2 py-1 rounded-md">
+              <MapPin className="size-3 shrink-0 text-brand-primary-500" />
               <span className="truncate">{shop.address}</span>
             </span>
+          ) : (
+            <span className="flex items-center gap-1 bg-gray-50 px-2 py-1 rounded-md">
+              <MapPin className="size-3 shrink-0 text-gray-400" />
+              <span className="text-gray-400 italic">No address</span>
+            </span>
           )}
-          <span className="flex items-center gap-1">
-            <Star className="size-4 text-yellow-400 fill-yellow-400" />
-            {shop.rating ?? 'N/A'}
+          <span className="flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded-md text-yellow-700 font-medium">
+            <Star className="size-3 text-yellow-500 fill-yellow-500" />
+            {shop.rating ?? 'New'}
           </span>
         </div>
+
         {/* Shop category */}
         {shop.category && (
-          <div className="mt-3 flex flex-wrap justify-center gap-2 text-xs">
-            <span className="bg-blue-50 capitalize text-blue-600 px-2 py-0.5 rounded-full font-medium">
+          <div className="mb-4 flex flex-wrap justify-center gap-2 text-xs">
+            <span className="bg-brand-primary-50 capitalize text-brand-primary-600 px-3 py-1 rounded-full font-medium border border-brand-primary-100">
               {shop.category}
             </span>
           </div>
         )}
+
         {/* Visit button */}
-        <div className="mt-4">
+        <div className="mt-2">
           <Link
             href={`/shops/${shop.id}`}
-            className="inline-flex items-center text-sm text-blue-600 font-medium hover:underline hover:text-blue-700 transition"
+            className="inline-flex items-center justify-center w-full px-4 py-2 bg-white border border-brand-primary-500 text-brand-primary-600 text-sm font-semibold rounded-lg hover:bg-brand-primary-50 transition-colors group-hover:bg-brand-primary-500 group-hover:text-white"
           >
             Visit Shop
             <ArrowUpRight className="size-4 ml-1" />
