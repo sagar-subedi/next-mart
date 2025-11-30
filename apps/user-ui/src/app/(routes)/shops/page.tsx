@@ -90,16 +90,16 @@ const Page = () => {
           All Shops
         </h1>
 
-        <Link href="/" className="text-[#55585b] hover:underline">
-          Home
-        </Link>
-        <div>
-          <ChevronRight />
-          <span className="text-[#55585b]">All Shops</span>
+        <div className="flex items-center gap-1 text-sm mb-6">
+          <Link href="/" className="text-gray-600 hover:text-brand-primary-600 transition-colors">
+            Home
+          </Link>
+          <ChevronRight className="w-4 h-4 text-gray-400" />
+          <span className="text-gray-900 font-medium">All Shops</span>
         </div>
       </div>
-      <div className="w-full flex flex-col lg:flex-row gap-8">
-        <aside className="w-full lg:w-[270px] rounded bg-white p-4 space-y-6 shadow-md">
+      <div className="w-full flex flex-col lg:flex-row gap-8 mt-6">
+        <aside className="w-full lg:w-[270px] rounded bg-white p-6 space-y-6 shadow-md ml-0 lg:ml-[10%]">
           {/* Categories */}
           <div>
             <h3 className="text-xl font-Poppins font-medium pb-1 border-b border-b-slate-300">
@@ -185,11 +185,10 @@ const Page = () => {
                 <button
                   key={i + 1}
                   onClick={() => setPage(i + 1)}
-                  className={`px-3 py-1 rounded border border-gray-200 text-sm ${
-                    page === i + 1
+                  className={`px-3 py-1 rounded border border-gray-200 text-sm ${page === i + 1
                       ? 'bg-blue-600 text-white'
                       : 'bg-white text-black'
-                  }`}
+                    }`}
                 >
                   {i + 1}
                 </button>

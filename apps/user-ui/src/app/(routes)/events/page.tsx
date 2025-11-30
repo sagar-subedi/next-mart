@@ -128,20 +128,20 @@ const Page = () => {
           All Events
         </h1>
 
-        <Link href="/" className="text-[#55585b] hover:underline">
-          Home
-        </Link>
-        <div>
-          <ChevronRight />
-          <span className="text-[#55585b]">All Events</span>
+        <div className="flex items-center gap-1 text-sm mb-6">
+          <Link href="/" className="text-gray-600 hover:text-brand-primary-600 transition-colors">
+            Home
+          </Link>
+          <ChevronRight className="w-4 h-4 text-gray-400" />
+          <span className="text-gray-900 font-medium">All Events</span>
         </div>
       </div>
-      <div className="w-full flex flex-col lg:flex-row gap-8">
-        <aside className="w-full lg:w-[270px] rounded bg-white p-4 space-y-6 shadow-md">
+      <div className="w-full flex flex-col lg:flex-row gap-8 mt-6">
+        <aside className="w-full lg:w-[270px] rounded bg-white p-6 space-y-6 shadow-md ml-0 lg:ml-[10%]">
           {/* Price filter */}
           <div>
-            <h3 className="text-xl font-Poppins font-medium">Price Filter</h3>
-            <div className="ml-2">
+            <h3 className="text-xl font-Poppins font-medium pb-1 border-b border-gray-200">Price Filter</h3>
+            <div className="mt-6 px-2">
               <Range
                 step={1}
                 min={MIN}
@@ -156,11 +156,11 @@ const Page = () => {
                   return (
                     <div
                       {...props}
-                      className="h-[6px] bg-blue-200 rounded relative"
+                      className="h-[6px] bg-gray-200 rounded relative"
                       style={{ ...props.style }}
                     >
                       <div
-                        className="absolute h-full bg-blue-600 rounded"
+                        className="absolute h-full bg-brand-primary-500 rounded"
                         style={{
                           left: `${percentageLeft}%`,
                           width: `${percentageRight - percentageLeft}%`,
@@ -177,7 +177,8 @@ const Page = () => {
                     <div
                       key={key}
                       {...rest}
-                      className="w-4 h-4 bg-blue-600 rounded-full shadow"
+                      className="w-5 h-5 bg-white border-2 border-brand-primary-500 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-brand-primary-300"
+                      style={{ ...rest.style, top: '50%', transform: 'translateY(-50%)' }}
                     />
                   );
                 }}
@@ -321,11 +322,10 @@ const Page = () => {
                 <button
                   key={i + 1}
                   onClick={() => setPage(i + 1)}
-                  className={`px-3 py-1 rounded border border-gray-200 text-sm ${
-                    page === i + 1
+                  className={`px-3 py-1 rounded border border-gray-200 text-sm ${page === i + 1
                       ? 'bg-blue-600 text-white'
                       : 'bg-white text-black'
-                  }`}
+                    }`}
                 >
                   {i + 1}
                 </button>

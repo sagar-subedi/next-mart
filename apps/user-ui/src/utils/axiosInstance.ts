@@ -11,8 +11,10 @@ let refreshSubscribers: (() => void)[] = [];
 
 // Handle logout and prevent infinite loops
 const handleLogout = () => {
+  if (typeof window === 'undefined') return;
+
   const publicPaths = ['/login', '/signup', '/forgot-password'];
-  const currentPath = location.pathname;
+  const currentPath = window.location.pathname;
 
   if (!publicPaths.includes(currentPath)) {
     runRedirectToLogin();
