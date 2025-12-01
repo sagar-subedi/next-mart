@@ -14,7 +14,7 @@ const Footer = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {/* Company Info */}
         <div className="space-y-4">
-          <h3 className="text-xl font-bold text-white">E-mall</h3>
+          <h3 className="text-xl font-bold text-white">Doko-Mart</h3>
           <p className="text-gray-300 text-sm leading-relaxed">
             Your one-stop destination for all your shopping needs. Discover amazing products,
             connect with trusted sellers, and enjoy seamless shopping experience.
@@ -110,15 +110,15 @@ const Footer = () => {
           <div className="space-y-3 text-sm">
             <div className="flex items-center space-x-3">
               <MapPin className="h-4 w-4 text-gray-400" />
-              <span className="text-gray-300">SLU, Seattle, WA</span>
+              <span className="text-gray-300">Pokhara, Gandaki</span>
             </div>
             <div className="flex items-center space-x-3">
               <Phone className="h-4 w-4 text-gray-400" />
-              <span className="text-gray-300">+1 (206) ***-****</span>
+              <span className="text-gray-300">+977 (980) ***-****</span>
             </div>
             <div className="flex items-center space-x-3">
               <Mail className="h-4 w-4 text-gray-400" />
-              <span className="text-gray-300">support@e-mall.com</span>
+              <span className="text-gray-300">support@doko-mart.com</span>
             </div>
           </div>
         </div>
@@ -130,7 +130,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <div className="text-sm text-gray-400">
-            © 2025 E-mall. All rights reserved.
+            © 2025 Doko-Mart. All rights reserved.
           </div>
           <div className="flex items-center space-x-6 text-sm text-gray-400">
             <a href="/privacy" className="hover:text-white transition-colors">
