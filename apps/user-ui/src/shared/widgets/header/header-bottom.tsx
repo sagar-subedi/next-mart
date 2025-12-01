@@ -2,6 +2,8 @@ import { navItems } from 'apps/user-ui/src/configs/constants';
 import useUser from 'apps/user-ui/src/hooks/useUser';
 import { useStore } from 'apps/user-ui/src/store';
 import useLayout from 'apps/user-ui/src/hooks/useLayout';
+import Logo from 'apps/user-ui/src/assets/svgs/Logo';
+import Image from 'next/image';
 import {
   AlignLeft,
   ChevronDown,
@@ -59,69 +61,89 @@ const HeaderBottom = () => {
         className={`max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between transition-all duration-300 ${isSticky ? 'py-3' : 'py-2'
           }`}
       >
-        {/* All Departments Dropdown */}
-        <div className="relative" onMouseLeave={() => setShow(false)}>
-          <button
-            className={`flex items-center justify-between gap-3 px-6 py-3 bg-gradient-to-r from-brand-primary-500 to-brand-highlight-500 hover:from-brand-primary-600 hover:to-brand-highlight-600 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 ${isSticky ? 'rounded-b-none' : ''
-              }`}
-            onMouseEnter={() => setShow(true)}
-            onClick={() => setShow(!show)}
-          >
-            <div className="flex items-center gap-2">
-              <Menu className="w-5 h-5" />
-              <span className="hidden md:inline">All Departments</span>
-            </div>
-            <ChevronDown
-              className={`w-5 h-5 transition-transform duration-300 ${show ? 'rotate-180' : ''}`}
-            />
-          </button>
-
-          {/* Dropdown menu */}
-          {show && (
-            <div
-              className={`absolute left-0 ${isSticky ? 'top-[52px]' : 'top-[52px]'
-                } flex bg-white/95 backdrop-blur-md shadow-xl rounded-b-xl border border-gray-200/50 z-50 animate-slideDown min-w-[280px]`}
-              onMouseLeave={() => setActiveCategory(null)}
-            >
-              {/* Categories List */}
-              <div className="w-64 py-2 border-r border-gray-100">
-                {layout?.categories?.map((category: string) => (
-                  <div
-                    key={category}
-                    className={`px-4 py-2.5 flex items-center justify-between cursor-pointer transition-colors ${activeCategory === category
-                      ? 'bg-brand-primary-50 text-brand-primary-600 font-medium'
-                      : 'text-gray-700 hover:bg-gray-50 hover:text-brand-primary-600'
-                      }`}
-                    onMouseEnter={() => setActiveCategory(category)}
-                  >
-                    <span>{category}</span>
-                    <ChevronRight className={`w-4 h-4 ${activeCategory === category ? 'text-brand-primary-500' : 'text-gray-400'}`} />
-                  </div>
-                ))}
-                {!layout?.categories && (
-                  <div className="p-4 text-sm text-gray-500 text-center">Loading categories...</div>
-                )}
-              </div>
-
-              {/* Subcategories Panel */}
-              {activeCategory && subCategories[activeCategory] && (
-                <div className="w-64 py-2 bg-gray-50/50 animate-fadeIn">
-                  <div className="px-4 py-2 mb-2 border-b border-gray-100">
-                    <h3 className="font-semibold text-gray-900">{activeCategory}</h3>
-                  </div>
-                  {subCategories[activeCategory].map((sub: string) => (
-                    <Link
-                      key={sub}
-                      href={`/products?category=${encodeURIComponent(activeCategory)}&subCategory=${encodeURIComponent(sub)}`}
-                      className="block px-4 py-2 text-sm text-gray-600 hover:text-brand-primary-600 hover:bg-brand-primary-50 transition-colors"
-                    >
-                      {sub}
-                    </Link>
-                  ))}
+        <div className="flex items-center gap-6">
+          {/* Sticky Logo */}
+          {isSticky && (
+            <Link href="/" className="block transition-transform hover:scale-105 duration-300">
+              {layout?.logo ? (
+                <Image
+                  src={layout.logo}
+                  alt="logo"
+                  width={100}
+                  height={32}
+                  className="h-8 w-auto object-contain"
+                />
+              ) : (
+                <div className="flex items-center gap-2 scale-90">
+                  <Logo />
                 </div>
               )}
-            </div>
+            </Link>
           )}
+
+          {/* All Departments Dropdown */}
+          <div className="relative" onMouseLeave={() => setShow(false)}>
+            <button
+              className="flex items-center justify-between gap-3 px-6 py-3 bg-gradient-to-r from-brand-primary-500 to-brand-highlight-500 hover:from-brand-primary-600 hover:to-brand-highlight-600 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+              onMouseEnter={() => setShow(true)}
+              onClick={() => setShow(!show)}
+            >
+              <div className="flex items-center gap-2">
+                <Menu className="w-5 h-5" />
+                <span className="hidden md:inline">Explore</span>
+              </div>
+              <ChevronDown
+                className={`w-5 h-5 transition-transform duration-300 ${show ? 'rotate-180' : ''}`}
+              />
+            </button>
+
+            {/* Dropdown menu */}
+            {show && (
+              <div
+                className={`absolute left-0 ${isSticky ? 'top-[52px]' : 'top-[52px]'
+                  } flex bg-white/95 backdrop-blur-md shadow-xl rounded-b-xl border border-gray-200/50 z-50 animate-slideDown min-w-[280px]`}
+                onMouseLeave={() => setActiveCategory(null)}
+              >
+                {/* Categories List */}
+                <div className="w-64 py-2 border-r border-gray-100">
+                  {layout?.categories?.map((category: string) => (
+                    <div
+                      key={category}
+                      className={`px-4 py-2.5 flex items-center justify-between cursor-pointer transition-colors ${activeCategory === category
+                        ? 'bg-brand-primary-50 text-brand-primary-600 font-medium'
+                        : 'text-gray-700 hover:bg-gray-50 hover:text-brand-primary-600'
+                        }`}
+                      onMouseEnter={() => setActiveCategory(category)}
+                    >
+                      <span>{category}</span>
+                      <ChevronRight className={`w-4 h-4 ${activeCategory === category ? 'text-brand-primary-500' : 'text-gray-400'}`} />
+                    </div>
+                  ))}
+                  {!layout?.categories && (
+                    <div className="p-4 text-sm text-gray-500 text-center">Loading categories...</div>
+                  )}
+                </div>
+
+                {/* Subcategories Panel */}
+                {activeCategory && subCategories[activeCategory] && (
+                  <div className="w-64 py-2 bg-gray-50/50 animate-fadeIn">
+                    <div className="px-4 py-2 mb-2 border-b border-gray-100">
+                      <h3 className="font-semibold text-gray-900">{activeCategory}</h3>
+                    </div>
+                    {subCategories[activeCategory].map((sub: string) => (
+                      <Link
+                        key={sub}
+                        href={`/products?category=${encodeURIComponent(activeCategory)}&subCategory=${encodeURIComponent(sub)}`}
+                        className="block px-4 py-2 text-sm text-gray-600 hover:text-brand-primary-600 hover:bg-brand-primary-50 transition-colors"
+                      >
+                        {sub}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Navigation Links */}
