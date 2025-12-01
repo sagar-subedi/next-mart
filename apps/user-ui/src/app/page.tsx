@@ -18,7 +18,7 @@ const Page = () => {
       const response = await axiosInstance.get(
         '/recommendation/api/get-recommendation-products'
       );
-      return response?.data?.recommendations;
+      return response?.data?.recommendations || [];
     },
     staleTime: 1000 * 60 * 2,
   });
@@ -33,27 +33,27 @@ const Page = () => {
       const response = await axiosInstance.get(
         '/products/api/get-all-products?page=1&limit=10&type=latest'
       );
-      return response?.data;
+      return response?.data || { products: [] };
     },
     staleTime: 1000 * 60 * 2,
   });
 
   const { data: shops, isLoading: isShopLoading } = useQuery({
-    queryKey: ['events'],
+    queryKey: ['shops'],
     queryFn: async () => {
       const response = await axiosInstance.get('/products/api/top-shops');
-      return response.data.shops;
+      return response?.data?.shops || [];
     },
     staleTime: 1000 * 60 * 2,
   });
 
   const { data: events, isLoading: isEventLoading } = useQuery({
-    queryKey: ['shops'],
+    queryKey: ['events'],
     queryFn: async () => {
       const response = await axiosInstance.get(
         '/products/api/get-all-events?page=1&limit=10'
       );
-      return response.data.events;
+      return response?.data?.events || [];
     },
     staleTime: 1000 * 60 * 2,
   });
