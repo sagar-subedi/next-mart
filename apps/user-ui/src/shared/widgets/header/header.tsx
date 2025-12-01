@@ -10,6 +10,7 @@ import axiosInstance from 'apps/user-ui/src/utils/axiosInstance';
 import { useStore } from 'apps/user-ui/src/store';
 import useLayout from 'apps/user-ui/src/hooks/useLayout';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 interface User {
   name: string;
@@ -20,6 +21,7 @@ interface User {
 }
 
 const Header = () => {
+  const router = useRouter();
   const { user, isLoading } = useUser() as {
     user: User | null;
     isLoading: boolean;
@@ -127,8 +129,8 @@ const Header = () => {
             )}
 
             {/* Wishlist */}
-            <Link
-              href="/wishlist"
+            <button
+              onClick={() => user ? router.push('/wishlist') : router.push('/login?redirect=/wishlist')}
               className="relative p-3 rounded-xl hover:bg-white/60 transition-all duration-300 group"
             >
               <Heart className="w-6 h-6 text-gray-700 group-hover:text-pink-500 transition-colors duration-300" />
@@ -139,11 +141,11 @@ const Header = () => {
                   </span>
                 </div>
               )}
-            </Link>
+            </button>
 
             {/* Cart */}
-            <Link
-              href="/cart"
+            <button
+              onClick={() => user ? router.push('/cart') : router.push('/login?redirect=/cart')}
               className="relative p-3 rounded-xl hover:bg-white/60 transition-all duration-300 group"
             >
               <ShoppingCart className="w-6 h-6 text-gray-700 group-hover:text-brand-primary-500 transition-colors duration-300" />
@@ -154,7 +156,7 @@ const Header = () => {
                   </span>
                 </div>
               )}
-            </Link>
+            </button>
           </div>
         </div>
       </div>

@@ -192,7 +192,7 @@ const ProfilePage = () => {
               <div className="space-y-6">
                 <div className="flex items-center gap-4">
                   <Image
-                    src={user?.avatar || '/images/profile.png'}
+                    src={user?.avatar || '/images/default-avatar.png'}
                     alt="avatar"
                     width={80}
                     height={80}

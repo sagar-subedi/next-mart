@@ -2,7 +2,7 @@
 
 import { useMutation } from '@tanstack/react-query';
 import GoogleButton from 'apps/user-ui/src/shared/components/google-button';
-import { Eye, EyeOff, LoaderCircle } from 'lucide-react';
+import { Eye, EyeOff, LoaderCircle, ShoppingBag, Sparkles, Shield, Zap, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useRef, useState, KeyboardEvent } from 'react';
@@ -104,179 +104,246 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="w-full py-10 min-h-[85vh] bg-[#f1f1f1]">
-      <h1 className="text-4xl font-Poppins font-semibold text-black text-center">
-        Signup
-      </h1>
-      <p className="text-center text-lg font-medium py-3 text-[#00000099]">
-        Home . Signup
-      </p>
-      <div className="w-full flex justify-center">
-        <div className="md:w-[480px] p-8 bg-white shadow rounded-lg">
-          <h3 className="text-3xl font-semibold text-center mb-2">
-            Register to Eshop
-          </h3>
-
-          <GoogleButton />
-          <div className="flex items-center my-5 text-gray-400 text-sm">
-            <div className="flex-1 border-t border-gray-300" />
-            <span className="px-3">or Sign up with Email</span>
-            <div className="flex-1 border-t border-gray-300" />
+    <div className="min-h-[calc(100vh-120px)] bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30 flex items-center justify-center p-4">
+      <div className="w-full max-w-5xl grid lg:grid-cols-2 gap-6 items-center">
+        {/* Left Side - Branding */}
+        <div className="hidden lg:flex flex-col justify-center p-8 bg-gradient-to-br from-brand-highlight-500 via-brand-primary-600 to-brand-primary-500 rounded-3xl shadow-2xl text-white h-full">
+          <div className="mb-6">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                <ShoppingBag className="w-6 h-6" />
+              </div>
+              <h1 className="text-3xl font-bold">Doko Mart</h1>
+            </div>
+            <p className="text-lg text-white/90">Join thousands of happy shoppers</p>
           </div>
-          {!showOTP ? (
-            <div>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <label htmlFor="name" className="block text-gray-700 mb-1">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  placeholder="Enter your name"
-                  className="w-full p-2 border border-gray-300 outline-none rounded mb-1"
-                  {...register('name', {
-                    required: 'Name is required',
-                    minLength: {
-                      value: 2,
-                      message: 'Name must be at least 2 characters',
-                    },
-                  })}
-                />
-                {errors.name && (
-                  <p className="text-red-500 text-sm text-center">
-                    {String(errors.name.message)}
-                  </p>
-                )}
-                <label htmlFor="email" className="block text-gray-700 mb-1">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  placeholder="Enter your email"
-                  className="w-full p-2 border border-gray-300 outline-none rounded mb-1"
-                  {...register('email', {
-                    required: 'Email is required',
-                    pattern: {
-                      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                      message: 'Invalid email address',
-                    },
-                  })}
-                />
-                {errors.email && (
-                  <p className="text-red-500 text-sm text-center">
-                    {String(errors.email.message)}
-                  </p>
-                )}
-                <label htmlFor="password" className="block text-gray-700 mb-1">
-                  Password
-                </label>
-                <div className="relative">
-                  <input
-                    type={passwordVisible ? 'text' : 'password'}
-                    id="password"
-                    placeholder="Enter your password"
-                    className="w-full p-2 border border-gray-300 outline-none rounded mb-1"
-                    {...register('password', {
-                      required: 'Password is required',
-                      minLength: {
-                        value: 6,
-                        message: 'Password must be at least 6 characters',
-                      },
-                    })}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setPasswordVisible(!passwordVisible)}
-                    className="absolute inset-y-0 right-3 flex items-center text-gray-400"
-                  >
-                    {passwordVisible ? <Eye /> : <EyeOff />}
-                  </button>
+
+          <div className="space-y-5">
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center flex-shrink-0">
+                <Sparkles className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-base mb-0.5">Exclusive Deals</h3>
+                <p className="text-white/80 text-xs">Access member-only discounts and early sales</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center flex-shrink-0">
+                <Shield className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-base mb-0.5">Buyer Protection</h3>
+                <p className="text-white/80 text-xs">Shop with confidence with our money-back guarantee</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center flex-shrink-0">
+                <Zap className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-base mb-0.5">Quick Checkout</h3>
+                <p className="text-white/80 text-xs">Save your preferences for faster shopping</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side - Signup Form */}
+        <div className="w-full">
+          <div className="bg-white rounded-3xl shadow-2xl p-6 md:p-8">
+            {!showOTP ? (
+              <>
+                <div className="mb-6">
+                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">Create Account</h2>
+                  <p className="text-gray-600 text-sm">Start your shopping journey today</p>
                 </div>
-                {errors.password && (
-                  <p className="text-red-500 text-sm text-center">
-                    {String(errors.password.message)}
-                  </p>
+
+                <GoogleButton />
+
+                <div className="flex items-center my-6 text-gray-400 text-sm">
+                  <div className="flex-1 border-t border-gray-300" />
+                  <span className="px-4">or sign up with email</span>
+                  <div className="flex-1 border-t border-gray-300" />
+                </div>
+
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                      Full Name
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      placeholder="John Doe"
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl outline-none focus:border-brand-primary-500 transition-colors"
+                      {...register('name', {
+                        required: 'Name is required',
+                        minLength: {
+                          value: 2,
+                          message: 'Name must be at least 2 characters',
+                        },
+                      })}
+                    />
+                    {errors.name && (
+                      <p className="text-red-500 text-sm mt-1">{String(errors.name.message)}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      placeholder="you@example.com"
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl outline-none focus:border-brand-primary-500 transition-colors"
+                      {...register('email', {
+                        required: 'Email is required',
+                        pattern: {
+                          value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                          message: 'Invalid email address',
+                        },
+                      })}
+                    />
+                    {errors.email && (
+                      <p className="text-red-500 text-sm mt-1">{String(errors.email.message)}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                      Password
+                    </label>
+                    <div className="relative">
+                      <input
+                        type={passwordVisible ? 'text' : 'password'}
+                        id="password"
+                        placeholder="Create a strong password"
+                        className="w-full px-4 py-3 pr-12 border-2 border-gray-200 rounded-xl outline-none focus:border-brand-primary-500 transition-colors"
+                        {...register('password', {
+                          required: 'Password is required',
+                          minLength: {
+                            value: 6,
+                            message: 'Password must be at least 6 characters',
+                          },
+                        })}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setPasswordVisible(!passwordVisible)}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                      >
+                        {passwordVisible ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
+                      </button>
+                    </div>
+                    {errors.password && (
+                      <p className="text-red-500 text-sm mt-1">{String(errors.password.message)}</p>
+                    )}
+                  </div>
+
+                  {signupMutation.isError && signupMutation.error instanceof AxiosError && (
+                    <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                      <p className="text-red-600 text-sm">
+                        {signupMutation.error.response?.data?.message || signupMutation.error.message}
+                      </p>
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={signupMutation.isPending}
+                    className="w-full py-3.5 bg-gradient-to-r from-brand-primary-500 to-brand-highlight-500 hover:from-brand-primary-600 hover:to-brand-highlight-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+                  >
+                    {signupMutation.isPending ? (
+                      <>
+                        <LoaderCircle className="w-5 h-5 animate-spin" />
+                        <span>Creating account...</span>
+                      </>
+                    ) : (
+                      'Create Account'
+                    )}
+                  </button>
+                </form>
+
+                <p className="text-center text-gray-600 mt-6">
+                  Already have an account?{' '}
+                  <Link href="/login" className="text-brand-primary-600 hover:text-brand-primary-700 font-semibold transition-colors">
+                    Sign In
+                  </Link>
+                </p>
+              </>
+            ) : (
+              <>
+                <div className="mb-8 text-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-brand-primary-500 to-brand-highlight-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Mail className="w-8 h-8 text-white" />
+                  </div>
+                  <h2 className="text-3xl font-bold text-gray-900 mb-2">Verify Your Email</h2>
+                  <p className="text-gray-600">We've sent a 6-digit code to {userData?.email}</p>
+                </div>
+
+                <div className="flex justify-center gap-3 mb-6">
+                  {otp?.map((digit, index) => (
+                    <input
+                      key={index}
+                      type="text"
+                      ref={(el) => {
+                        if (el) inputRefs.current[index] = el;
+                      }}
+                      maxLength={1}
+                      value={digit}
+                      onChange={(e) => handleOTPChange(index, e.target.value)}
+                      onKeyDown={(e) => handleOTPKeyDown(index, e)}
+                      className="w-12 h-14 text-center text-xl font-bold border-2 border-gray-200 rounded-xl outline-none focus:border-brand-primary-500 transition-colors"
+                    />
+                  ))}
+                </div>
+
+                {verifyOTPMutation.isError && verifyOTPMutation.error instanceof AxiosError && (
+                  <div className="p-3 bg-red-50 border border-red-200 rounded-lg mb-4">
+                    <p className="text-red-600 text-sm text-center">
+                      {verifyOTPMutation.error.response?.data?.message || verifyOTPMutation.error.message}
+                    </p>
+                  </div>
                 )}
+
                 <button
-                  type="submit"
-                  disabled={signupMutation.isPending}
-                  className="w-full text-lg cursor-pointer bg-black text-white py-2 rounded-lg mt-4 flex items-center justify-center"
+                  className="w-full py-3.5 bg-gradient-to-r from-brand-primary-500 to-brand-highlight-500 hover:from-brand-primary-600 hover:to-brand-highlight-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+                  disabled={verifyOTPMutation.isPending}
+                  onClick={() => verifyOTPMutation.mutate()}
                 >
-                  {signupMutation.isPending ? (
-                    <LoaderCircle className="animate-spin" />
+                  {verifyOTPMutation.isPending ? (
+                    <>
+                      <LoaderCircle className="w-5 h-5 animate-spin" />
+                      <span>Verifying...</span>
+                    </>
                   ) : (
-                    'Sign Up'
+                    'Verify Code'
                   )}
                 </button>
-                {signupMutation.isError &&
-                  signupMutation.error instanceof AxiosError && (
-                    <p className="text-error">
-                      {signupMutation.error.response?.data?.message ||
-                        signupMutation.error.message}
-                    </p>
+
+                <p className="text-center text-sm text-gray-600 mt-4">
+                  {canResend ? (
+                    <>
+                      Didn't receive the code?{' '}
+                      <button
+                        onClick={resendOTP}
+                        className="text-brand-primary-600 hover:text-brand-primary-700 font-semibold transition-colors"
+                      >
+                        Resend
+                      </button>
+                    </>
+                  ) : (
+                    <span>Resend code in {timer}s</span>
                   )}
-              </form>
-              <p className="text-center text-gray-500 my-4">
-                Already have an account?{' '}
-                <Link href="/login" className="text-blue-500">
-                  Login
-                </Link>
-              </p>
-            </div>
-          ) : (
-            <div>
-              <h3 className="text-xl font-semibold text-center mb-4">
-                Enter OTP
-              </h3>
-              <div className="flex justify-center gap-6">
-                {otp?.map((digit, index) => (
-                  <input
-                    key={index}
-                    type="text"
-                    ref={(el) => {
-                      if (el) inputRefs.current[index] = el;
-                    }}
-                    maxLength={1}
-                    value={digit}
-                    onChange={(e) => handleOTPChange(index, e.target.value)}
-                    onKeyDown={(e) => handleOTPKeyDown(index, e)}
-                    className="w-12 h-12 text-center border border-gray-300 outline-none rounded"
-                  />
-                ))}
-              </div>
-              <button
-                className="w-full mt-4 text-lg cursor-pointer bg-blue-500 text-white py-2 rounded-lg flex items-center justify-center"
-                disabled={verifyOTPMutation.isPending}
-                onClick={() => verifyOTPMutation.mutate()}
-              >
-                {verifyOTPMutation.isPending ? (
-                  <LoaderCircle className="animate-spin" />
-                ) : (
-                  'Verify OTP'
-                )}
-              </button>
-              <p className="text-center text-sm mt-4">
-                {canResend ? (
-                  <button
-                    onClick={resendOTP}
-                    className="text-blue-500 cursor-pointer"
-                  >
-                    Resend OTP
-                  </button>
-                ) : (
-                  `Resend OTP in ${timer}s`
-                )}
-              </p>
-              {verifyOTPMutation.isError &&
-                verifyOTPMutation.error instanceof AxiosError && (
-                  <p className="text-error">
-                    {verifyOTPMutation.error.response?.data?.message ||
-                      verifyOTPMutation.error.message}
-                  </p>
-                )}
-            </div>
-          )}
+                </p>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>

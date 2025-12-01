@@ -16,8 +16,10 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 
 const HeaderBottom = () => {
+  const router = useRouter();
   const [show, setShow] = useState<boolean>(false);
   const [isSticky, setIsSticky] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
@@ -197,8 +199,8 @@ const HeaderBottom = () => {
             }
 
             {/* Wishlist */}
-            <Link
-              href="/wishlist"
+            <button
+              onClick={() => user ? router.push('/wishlist') : router.push('/login?redirect=/wishlist')}
               className="relative p-2 rounded-lg hover:bg-white/60 transition-all duration-300"
             >
               <Heart className="w-5 h-5 text-gray-700 hover:text-pink-500 transition-colors" />
@@ -209,11 +211,11 @@ const HeaderBottom = () => {
                   </span>
                 </div>
               )}
-            </Link>
+            </button>
 
             {/* Cart */}
-            <Link
-              href="/cart"
+            <button
+              onClick={() => user ? router.push('/cart') : router.push('/login?redirect=/cart')}
               className="relative p-2 rounded-lg hover:bg-white/60 transition-all duration-300"
             >
               <ShoppingCart className="w-5 h-5 text-gray-700 hover:text-brand-primary-500 transition-colors" />
@@ -224,7 +226,7 @@ const HeaderBottom = () => {
                   </span>
                 </div>
               )}
-            </Link>
+            </button>
           </div>
         )}
       </div>

@@ -3,6 +3,7 @@ import { Poppins } from 'next/font/google';
 import Providers from './providers';
 import './global.css';
 import Footer from '../shared/widgets/Footer';
+import ConditionalLayout from './ConditionalLayout';
 
 export const metadata = {
   title: 'Doko Mart',
@@ -27,9 +28,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${poppins.variable}`} suppressHydrationWarning={true}>
         <Providers>
-          <Header />
-          {children}
-          <Footer />
+          <ConditionalLayout>
+            <Header />
+            {children}
+            <Footer />
+          </ConditionalLayout>
         </Providers>
       </body>
     </html>

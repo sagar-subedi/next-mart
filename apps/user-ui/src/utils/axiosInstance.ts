@@ -13,10 +13,13 @@ let refreshSubscribers: (() => void)[] = [];
 const handleLogout = () => {
   if (typeof window === 'undefined') return;
 
-  const publicPaths = ['/login', '/signup', '/forgot-password'];
+  const publicPaths = ['/', '/login', '/signup', '/forgot-password', '/products', '/shops', '/events'];
   const currentPath = window.location.pathname;
 
-  if (!publicPaths.includes(currentPath)) {
+  // Allow access to homepage and product/shop/event detail pages
+  const isPublicPath = publicPaths.some(path => currentPath === path || currentPath.startsWith('/products/') || currentPath.startsWith('/shops/') || currentPath.startsWith('/events/'));
+
+  if (!isPublicPath) {
     runRedirectToLogin();
   }
 };

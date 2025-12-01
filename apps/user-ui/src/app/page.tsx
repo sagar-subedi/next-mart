@@ -10,8 +10,11 @@ import ShopCard from '../shared/components/cards/ShopCard';
 import TechnologyStack from '../shared/components/TechnologyStack';
 import EmptyState from '../shared/components/EmptyState';
 import { ShoppingBag, Store, Tag } from 'lucide-react';
+import useUser from '../hooks/useUser';
 
 const Page = () => {
+  const { user } = useUser();
+
   const { data: products, isLoading: isProductsLoading } = useQuery({
     queryKey: ['products'],
     queryFn: async () => {
@@ -21,6 +24,7 @@ const Page = () => {
       return response?.data?.recommendations || [];
     },
     staleTime: 1000 * 60 * 2,
+    enabled: !!user, // Only fetch if user is logged in
   });
 
   const {
@@ -63,34 +67,39 @@ const Page = () => {
       <Hero />
       <TechnologyStack />
       <div className="md:w-[80%] w-[90%] m-auto my-10">
-        {/* Suggested products */}
-        <div className="mb-8">
-          <SectionTitle title="Suggested Products" />
-        </div>
+        {/* Suggested products - Only show if user is logged in */}
+        {user && (
+          <>
+            <div className="mb-8">
+              <SectionTitle title="Suggested Products" />
+            </div>
 
-        {isProductsLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-5">
-            {Array.from({ length: 10 }).map((_, index) => (
-              <div
-                key={index}
-                className="h-[380px] bg-gray-200 animate-pulse rounded-xl"
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-5">
-            {!products || products.length === 0 ? (
-              <EmptyState
-                title="No suggestions yet"
-                message="We're still learning your preferences. Check back soon!"
-              />
+            {isProductsLoading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-5">
+                {Array.from({ length: 10 }).map((_, index) => (
+                  <div
+                    key={index}
+                    className="h-[380px] bg-gray-200 animate-pulse rounded-xl"
+                  />
+                ))}
+              </div>
             ) : (
-              products.map((product: any) => (
-                <ProductCard key={product.id} product={product} />
-              ))
+              <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-5">
+                {!products || products.length === 0 ? (
+                  <EmptyState
+                    title="No suggestions yet"
+                    message="We're still learning your preferences. Check back soon!"
+                  />
+                ) : (
+                  products.map((product: any) => (
+                    <ProductCard key={product.id} product={product} />
+                  ))
+                )}
+              </div>
             )}
-          </div>
+          </>
         )}
+
 
         {/* Latest products */}
         <div className="my-8 block">

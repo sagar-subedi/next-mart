@@ -3,7 +3,7 @@
 import { useMutation } from '@tanstack/react-query';
 import axiosInstance from 'apps/user-ui/src/utils/axiosInstance';
 import { AxiosError } from 'axios';
-import { Eye, EyeOff, LoaderCircle } from 'lucide-react';
+import { Eye, EyeOff, LoaderCircle, ShoppingBag, Mail, Lock, KeyRound } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useRef, useState, KeyboardEvent } from 'react';
@@ -75,7 +75,7 @@ const ForgotPasswordPage = () => {
     onError: (error: AxiosError) => {
       const errorMessage =
         (error.response?.data as { message?: string })?.message ||
-        'Invalid OTP. Try again';
+        'Invalid email. Try again';
       setServerError(errorMessage);
     },
   });
@@ -121,7 +121,7 @@ const ForgotPasswordPage = () => {
     onError: (error: AxiosError) => {
       const errorMessage =
         (error.response?.data as { message?: string })?.message ||
-        'Invalid OTP. Try again';
+        'Failed to reset password';
       setServerError(errorMessage);
     },
   });
@@ -155,161 +155,249 @@ const ForgotPasswordPage = () => {
   };
 
   return (
-    <div className="w-full py-10 min-h-[85vh] bg-[#f1f1f1]">
-      <h1 className="text-4xl font-Poppins font-semibold text-black text-center">
-        Forgot Password
-      </h1>
-      <p className="text-center text-lg font-medium py-3 text-[#00000099]">
-        Home . Forgot Password
-      </p>
-      <div className="w-full flex justify-center">
-        <div className="md:w-[480px] p-8 bg-white shadow rounded-lg">
-          {step === 'email' && (
-            <>
-              <h3 className="text-3xl font-semibold text-center mb-2">
-                Enter Email
-              </h3>
-              <form onSubmit={handleSubmitEmail(onSubmitEmail)}>
-                <label htmlFor="email" className="block text-gray-700 mb-1">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  placeholder="Enter your email"
-                  className="w-full p-2 border border-gray-300 outline-none rounded mb-1"
-                  {...registerEmail('email', {
-                    required: 'Email is required',
-                    pattern: {
-                      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                      message: 'Invalid email address',
-                    },
-                  })}
-                />
-                {emailErrors.email && (
-                  <p className="text-red-500 text-sm text-center">
-                    {String(emailErrors.email.message)}
-                  </p>
-                )}
-                <button
-                  type="submit"
-                  disabled={requestOTPMutation.isPending}
-                  className="w-full text-lg cursor-pointer bg-black text-white py-2 rounded-lg flex items-center justify-center mt-4"
-                >
-                  {requestOTPMutation.isPending ? (
-                    <LoaderCircle className="animate-spin" />
-                  ) : (
-                    'Submit'
-                  )}
-                </button>
-                {serverError && <p className="text-error">{serverError}</p>}
-              </form>
-              <p className="text-center text-gray-500 my-4">
-                Go back to{' '}
-                <Link href="/login" className="text-blue-500">
-                  Login
-                </Link>
-              </p>
-            </>
-          )}
-          {step === 'otp' && (
-            <>
-              <h3 className="text-xl font-semibold text-center mb-4">
-                Enter OTP
-              </h3>
-              <div className="flex justify-center gap-6">
-                {otp.map((digit, index) => (
-                  <input
-                    type="text"
-                    key={index}
-                    maxLength={1}
-                    value={digit}
-                    className="w-12 h-12 text-center border border-gray-300 outline-none"
-                    ref={(el) => {
-                      if (el) inputRefs.current[index] = el;
-                    }}
-                    onChange={(e) => handleOTPChange(index, e.target.value)}
-                    onKeyDown={(e) => handleOTPKeyDown(index, e)}
-                  />
-                ))}
+    <div className="min-h-[calc(100vh-120px)] bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30 flex items-center justify-center p-4">
+      <div className="w-full max-w-5xl grid lg:grid-cols-2 gap-6 items-center">
+        {/* Left Side - Branding */}
+        <div className="hidden lg:flex flex-col justify-center p-8 bg-gradient-to-br from-brand-primary-600 via-brand-highlight-500 to-brand-primary-500 rounded-3xl shadow-2xl text-white h-full">
+          <div className="mb-6">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                <ShoppingBag className="w-6 h-6" />
               </div>
-              <button
-                onClick={() => verifyOTPMutation.mutate()}
-                disabled={verifyOTPMutation.isPending}
-                className="w-full mt-4 text-lg cursor-pointer bg-black text-white py-2 rounded-md flex items-center justify-center"
-              >
-                {verifyOTPMutation.isPending ? (
-                  <LoaderCircle className="animate-spin" />
-                ) : (
-                  'Verify OTP'
-                )}
-              </button>
-              {canResend ? (
-                <button
-                  onClick={() =>
-                    requestOTPMutation.mutate({ email: userEmail! })
-                  }
-                  className="text-blue-500 text-center mt-4 cursor-pointer"
-                >
-                  Resend OTP
-                </button>
-              ) : (
-                <p className="text-center text-sm mt-4">
-                  Resend OTP in {timer}s
-                </p>
-              )}
-              {serverError && <p className="text-error">{serverError}</p>}
-            </>
-          )}
-          {step === 'reset' && (
-            <>
-              <h3 className="text-xl font-semibold text-center mb-4">
-                Reset Password
-              </h3>
-              <form onSubmit={handleSubmitPassword(onSubmitPassword)}>
-                <label htmlFor="password" className="block mb-1 text-gray-700">
-                  New Password
-                </label>
-                <div className="relative flex items-center justify-between">
-                  <input
-                    type={isPassword ? 'text' : 'password'}
-                    placeholder="Enter new password"
-                    className="w-full p-2 border border-gray-300 outline-0 rounded mb-1"
-                    {...registerPassword('password', {
-                      required: 'Password is required',
-                      minLength: {
-                        value: 6,
-                        message: 'Password must be at least 6 characters',
-                      },
-                    })}
-                  />
-                  <span
-                    className="absolute right-2 text-gray-400"
-                    onClick={() => setIsPassword(!isPassword)}
-                  >
-                    {isPassword ? <Eye /> : <EyeOff />}
-                  </span>
+              <h1 className="text-3xl font-bold">Doko Mart</h1>
+            </div>
+            <p className="text-lg text-white/90">Secure password recovery</p>
+          </div>
+
+          <div className="space-y-5">
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center flex-shrink-0">
+                <Lock className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-base mb-0.5">Secure Process</h3>
+                <p className="text-white/80 text-xs">Your account security is our top priority</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center flex-shrink-0">
+                <Mail className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-base mb-0.5">Email Verification</h3>
+                <p className="text-white/80 text-xs">We'll send a verification code to your email</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center flex-shrink-0">
+                <KeyRound className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-base mb-0.5">New Password</h3>
+                <p className="text-white/80 text-xs">Create a strong password to protect your account</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side - Form */}
+        <div className="w-full">
+          <div className="bg-white rounded-3xl shadow-2xl p-6 md:p-8">
+            {step === 'email' && (
+              <>
+                <div className="mb-6">
+                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">Forgot Password?</h2>
+                  <p className="text-gray-600 text-sm">Enter your email to receive a verification code</p>
                 </div>
-                {passwordErrors.password && (
-                  <p className="text-red-500 text-sm text-center">
-                    {String(passwordErrors.password.message)}
-                  </p>
+
+                <form onSubmit={handleSubmitEmail(onSubmitEmail)} className="space-y-5">
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      placeholder="you@example.com"
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl outline-none focus:border-brand-primary-500 transition-colors"
+                      {...registerEmail('email', {
+                        required: 'Email is required',
+                        pattern: {
+                          value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                          message: 'Invalid email address',
+                        },
+                      })}
+                    />
+                    {emailErrors.email && (
+                      <p className="text-red-500 text-sm mt-1">{String(emailErrors.email.message)}</p>
+                    )}
+                  </div>
+
+                  {serverError && (
+                    <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                      <p className="text-red-600 text-sm">{serverError}</p>
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={requestOTPMutation.isPending}
+                    className="w-full py-3.5 bg-gradient-to-r from-brand-primary-500 to-brand-highlight-500 hover:from-brand-primary-600 hover:to-brand-highlight-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+                  >
+                    {requestOTPMutation.isPending ? (
+                      <>
+                        <LoaderCircle className="w-5 h-5 animate-spin" />
+                        <span>Sending code...</span>
+                      </>
+                    ) : (
+                      'Send Verification Code'
+                    )}
+                  </button>
+                </form>
+
+                <p className="text-center text-gray-600 mt-6">
+                  Remember your password?{' '}
+                  <Link href="/login" className="text-brand-primary-600 hover:text-brand-primary-700 font-semibold transition-colors">
+                    Sign In
+                  </Link>
+                </p>
+              </>
+            )}
+
+            {step === 'otp' && (
+              <>
+                <div className="mb-8 text-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-brand-primary-500 to-brand-highlight-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Mail className="w-8 h-8 text-white" />
+                  </div>
+                  <h2 className="text-3xl font-bold text-gray-900 mb-2">Verify Your Email</h2>
+                  <p className="text-gray-600">We've sent a 6-digit code to {userEmail}</p>
+                </div>
+
+                <div className="flex justify-center gap-3 mb-6">
+                  {otp.map((digit, index) => (
+                    <input
+                      key={index}
+                      type="text"
+                      ref={(el) => {
+                        if (el) inputRefs.current[index] = el;
+                      }}
+                      maxLength={1}
+                      value={digit}
+                      onChange={(e) => handleOTPChange(index, e.target.value)}
+                      onKeyDown={(e) => handleOTPKeyDown(index, e)}
+                      className="w-12 h-14 text-center text-xl font-bold border-2 border-gray-200 rounded-xl outline-none focus:border-brand-primary-500 transition-colors"
+                    />
+                  ))}
+                </div>
+
+                {serverError && (
+                  <div className="p-3 bg-red-50 border border-red-200 rounded-lg mb-4">
+                    <p className="text-red-600 text-sm text-center">{serverError}</p>
+                  </div>
                 )}
+
                 <button
-                  type="submit"
-                  disabled={resetPasswordMutation.isPending}
-                  className="w-full mt-4 text-lg cursor-pointer bg-black text-white flex items-center justify-center py-2 rounded-md"
+                  onClick={() => verifyOTPMutation.mutate()}
+                  disabled={verifyOTPMutation.isPending}
+                  className="w-full py-3.5 bg-gradient-to-r from-brand-primary-500 to-brand-highlight-500 hover:from-brand-primary-600 hover:to-brand-highlight-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
                 >
-                  {resetPasswordMutation.isPending ? (
-                    <LoaderCircle className="animate-spin" />
+                  {verifyOTPMutation.isPending ? (
+                    <>
+                      <LoaderCircle className="w-5 h-5 animate-spin" />
+                      <span>Verifying...</span>
+                    </>
                   ) : (
-                    'Reset Password'
+                    'Verify Code'
                   )}
                 </button>
-                {serverError && <p className="text-error">{serverError}</p>}
-              </form>
-            </>
-          )}
+
+                <p className="text-center text-sm text-gray-600 mt-4">
+                  {canResend ? (
+                    <>
+                      Didn't receive the code?{' '}
+                      <button
+                        onClick={() => requestOTPMutation.mutate({ email: userEmail! })}
+                        className="text-brand-primary-600 hover:text-brand-primary-700 font-semibold transition-colors"
+                      >
+                        Resend
+                      </button>
+                    </>
+                  ) : (
+                    <span>Resend code in {timer}s</span>
+                  )}
+                </p>
+              </>
+            )}
+
+            {step === 'reset' && (
+              <>
+                <div className="mb-8 text-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-brand-primary-500 to-brand-highlight-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <KeyRound className="w-8 h-8 text-white" />
+                  </div>
+                  <h2 className="text-3xl font-bold text-gray-900 mb-2">Create New Password</h2>
+                  <p className="text-gray-600">Choose a strong password for your account</p>
+                </div>
+
+                <form onSubmit={handleSubmitPassword(onSubmitPassword)} className="space-y-5">
+                  <div>
+                    <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                      New Password
+                    </label>
+                    <div className="relative">
+                      <input
+                        type={isPassword ? 'text' : 'password'}
+                        id="password"
+                        placeholder="Create a strong password"
+                        className="w-full px-4 py-3 pr-12 border-2 border-gray-200 rounded-xl outline-none focus:border-brand-primary-500 transition-colors"
+                        {...registerPassword('password', {
+                          required: 'Password is required',
+                          minLength: {
+                            value: 6,
+                            message: 'Password must be at least 6 characters',
+                          },
+                        })}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setIsPassword(!isPassword)}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                      >
+                        {isPassword ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
+                      </button>
+                    </div>
+                    {passwordErrors.password && (
+                      <p className="text-red-500 text-sm mt-1">{String(passwordErrors.password.message)}</p>
+                    )}
+                  </div>
+
+                  {serverError && (
+                    <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                      <p className="text-red-600 text-sm">{serverError}</p>
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={resetPasswordMutation.isPending}
+                    className="w-full py-3.5 bg-gradient-to-r from-brand-primary-500 to-brand-highlight-500 hover:from-brand-primary-600 hover:to-brand-highlight-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+                  >
+                    {resetPasswordMutation.isPending ? (
+                      <>
+                        <LoaderCircle className="w-5 h-5 animate-spin" />
+                        <span>Resetting password...</span>
+                      </>
+                    ) : (
+                      'Reset Password'
+                    )}
+                  </button>
+                </form>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>
