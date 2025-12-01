@@ -184,77 +184,100 @@ const ProfilePage = () => {
             </nav>
           </div>
           {/* Main content */}
-          <div className="bg-white p-6 rounded-md shadow-sm border border-gray-100 w-full md:w-1/2">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+          <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 flex-1">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 pb-4 border-b">
               {activeTab}
             </h2>
             {activeTab === 'Profile' && !isLoading && user ? (
-              <div className="space-y-4 text-sm text-gray-700">
-                <div className="flex items-center gap-3">
+              <div className="space-y-6">
+                <div className="flex items-center gap-4">
                   <Image
                     src={user?.avatar || '/images/profile.png'}
                     alt="avatar"
-                    width={60}
-                    height={60}
-                    className="size-16 rounded-full border border-gray-200"
+                    width={80}
+                    height={80}
+                    className="size-20 rounded-full border-2 border-brand-primary-200"
                   />
-                  <button className="flex items-center gap-1 text-xs font-medium text-blue-500">
+                  <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-brand-primary-600 hover:text-brand-primary-700 bg-brand-primary-50 hover:bg-brand-primary-100 rounded-lg transition-colors">
                     <Pencil className="size-4" />
                     Change Photo
                   </button>
                 </div>
-                <p>
-                  <span className="font-semibold">Joined:</span>{' '}
-                  {new Date(user?.createdAt).toLocaleDateString()}
-                </p>
-                <p>
-                  <span className="font-semibold">Earned Points:</span>{' '}
-                  {user?.points || 0}
-                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <p className="text-sm text-gray-600 mb-1">Full Name</p>
+                    <p className="font-semibold text-gray-900">{user?.name}</p>
+                  </div>
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <p className="text-sm text-gray-600 mb-1">Email</p>
+                    <p className="font-semibold text-gray-900">{user?.email}</p>
+                  </div>
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <p className="text-sm text-gray-600 mb-1">Member Since</p>
+                    <p className="font-semibold text-gray-900">
+                      {new Date(user?.createdAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })}
+                    </p>
+                  </div>
+                  <div className="p-4 bg-gradient-to-br from-brand-primary-50 to-brand-primary-100 rounded-lg border border-brand-primary-200">
+                    <p className="text-sm text-brand-primary-700 mb-1">Earned Points</p>
+                    <p className="text-2xl font-bold text-brand-primary-600">
+                      {user?.points || 0}
+                    </p>
+                  </div>
+                </div>
               </div>
-            ) : (
-              <p className="text-center">User Information not available yet!</p>
-            )}
+            ) : activeTab === 'Profile' ? (
+              <div className="flex justify-center py-8">
+                <Loader2 className="w-8 h-8 animate-spin text-brand-primary-500" />
+              </div>
+            ) : null}
             {activeTab === 'Shipping Address' && <ShippingAddressSection />}
             {activeTab === 'My Orders' && (
               <OrdersSection isLoading={isOrdersLoading} orders={orders} />
             )}
             {activeTab === 'Change Password' && <ChangePasswordSection />}
             {activeTab === 'Notifications' && (
-              <div className="space-y-4 text-sm text-gray-700">
-                <p>Notifications</p>
-
+              <div className="space-y-4">
                 {areNotificationsLoading ? (
-                  <p>Loading...</p>
+                  <div className="flex justify-center py-8">
+                    <Loader2 className="w-8 h-8 animate-spin text-brand-primary-500" />
+                  </div>
                 ) : notifications?.length === 0 ? (
-                  <p>No notifications available yet</p>
+                  <div className="text-center py-12">
+                    <Bell className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                    <p className="text-gray-500">No notifications available yet</p>
+                  </div>
                 ) : (
-                  <div className="md:w-[80%] my-6 rounded-lg divide-y divide-gray-800 bg-black/40 shadow-sm backdrop-blur-sm">
+                  <div className="space-y-2">
                     {notifications?.map((notification: any) => (
                       <Link
                         href={notification.redirectLink}
                         key={notification.id}
-                        className={`block px-5 py-4 transition ${
-                          notification.status !== 'Unread'
-                            ? 'hover:bg-gray-800/40'
-                            : 'bg-gray-800/50 hover:bg-gray-800/70'
-                        }`}
+                        className={`block p-4 rounded-lg border transition-colors ${notification.status !== 'Unread'
+                          ? 'bg-white border-gray-200 hover:bg-gray-50'
+                          : 'bg-brand-primary-50 border-brand-primary-200 hover:bg-brand-primary-100'
+                          }`}
                         onClick={() => markAsRead(notification.id)}
                       >
                         <div className="flex items-start gap-3">
-                          <div className="flex flex-col">
-                            <span className="text-white font-medium">
+                          <div className="flex flex-col flex-1">
+                            <span className="font-semibold text-gray-900">
                               {notification.title}
                             </span>
-                            <span className="text-gray-300 text-sm">
+                            <span className="text-gray-600 text-sm mt-1">
                               {notification.message}
                             </span>
-                            <span className="text-gray-500 text-xs mt-1">
-                              {new Date(
-                                notification.createdAt
-                              ).toLocaleDateString('en-UK', {
-                                dateStyle: 'medium',
-                                timeStyle: 'short',
+                            <span className="text-gray-400 text-xs mt-2">
+                              {new Date(notification.createdAt).toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
                               })}
                             </span>
                           </div>
@@ -265,34 +288,6 @@ const ProfilePage = () => {
                 )}
               </div>
             )}
-          </div>
-          {/* Right quick panel */}
-          <div className="w-full md:w-1/4 space-y-4">
-            <QuickActionCard
-              Icon={Gift}
-              title="Referral Program"
-              description="Invite friends and earn rewards"
-            />
-            <QuickActionCard
-              Icon={BadgeCheck}
-              title="Your Badges"
-              description="View your earned achievements"
-            />
-            <QuickActionCard
-              Icon={Settings}
-              title="Account settings"
-              description="Manage preferences and security"
-            />
-            <QuickActionCard
-              Icon={Receipt}
-              title="Billing History"
-              description="Check your recent payments"
-            />
-            <QuickActionCard
-              Icon={PhoneCall}
-              title="Support Center"
-              description="Need Help? Contact Support."
-            />
           </div>
         </div>
       </div>
