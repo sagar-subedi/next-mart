@@ -1,8 +1,7 @@
-'use client';
-
 import { navItems } from 'apps/user-ui/src/configs/constants';
 import useUser from 'apps/user-ui/src/hooks/useUser';
 import { useStore } from 'apps/user-ui/src/store';
+import useLayout from 'apps/user-ui/src/hooks/useLayout';
 import {
   AlignLeft,
   ChevronDown,
@@ -11,16 +10,29 @@ import {
   User,
   Menu,
   X,
+  ChevronRight,
 } from 'lucide-react';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 const HeaderBottom = () => {
   const [show, setShow] = useState<boolean>(false);
   const [isSticky, setIsSticky] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const { user, isLoading } = useUser();
+  const { layout } = useLayout();
   const cart = useStore((state) => state.cart);
   const wishlist = useStore((state) => state.wishlist);
+
+  const subCategories = useMemo(() => {
+    if (!layout?.subCategories) return {};
+    try {
+      return JSON.parse(layout.subCategories);
+    } catch (e) {
+      console.error('Failed to parse subcategories', e);
+      return {};
+    }
+  }, [layout]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,8 +51,8 @@ const HeaderBottom = () => {
   return (
     <div
       className={`w-full transition-all duration-300 ${isSticky
-          ? 'fixed top-0 left-0 z-[100] bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200/50'
-          : 'relative bg-transparent'
+        ? 'fixed top-0 left-0 z-[100] bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200/50'
+        : 'relative bg-transparent z-40'
         }`}
     >
       <div
@@ -48,10 +60,11 @@ const HeaderBottom = () => {
           }`}
       >
         {/* All Departments Dropdown */}
-        <div className="relative">
+        <div className="relative" onMouseLeave={() => setShow(false)}>
           <button
             className={`flex items-center justify-between gap-3 px-6 py-3 bg-gradient-to-r from-brand-primary-500 to-brand-highlight-500 hover:from-brand-primary-600 hover:to-brand-highlight-600 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 ${isSticky ? 'rounded-b-none' : ''
               }`}
+            onMouseEnter={() => setShow(true)}
             onClick={() => setShow(!show)}
           >
             <div className="flex items-center gap-2">
@@ -67,11 +80,46 @@ const HeaderBottom = () => {
           {show && (
             <div
               className={`absolute left-0 ${isSticky ? 'top-[52px]' : 'top-[52px]'
-                } w-64 max-h-96 bg-white/95 backdrop-blur-md shadow-xl rounded-b-xl border border-gray-200/50 overflow-y-auto z-50 animate-slideDown`}
+                } flex bg-white/95 backdrop-blur-md shadow-xl rounded-b-xl border border-gray-200/50 z-50 animate-slideDown min-w-[280px]`}
+              onMouseLeave={() => setActiveCategory(null)}
             >
-              <div className="p-2">
-                <div className="text-sm text-gray-500 px-3 py-2">Coming soon...</div>
+              {/* Categories List */}
+              <div className="w-64 py-2 border-r border-gray-100">
+                {layout?.categories?.map((category: string) => (
+                  <div
+                    key={category}
+                    className={`px-4 py-2.5 flex items-center justify-between cursor-pointer transition-colors ${activeCategory === category
+                      ? 'bg-brand-primary-50 text-brand-primary-600 font-medium'
+                      : 'text-gray-700 hover:bg-gray-50 hover:text-brand-primary-600'
+                      }`}
+                    onMouseEnter={() => setActiveCategory(category)}
+                  >
+                    <span>{category}</span>
+                    <ChevronRight className={`w-4 h-4 ${activeCategory === category ? 'text-brand-primary-500' : 'text-gray-400'}`} />
+                  </div>
+                ))}
+                {!layout?.categories && (
+                  <div className="p-4 text-sm text-gray-500 text-center">Loading categories...</div>
+                )}
               </div>
+
+              {/* Subcategories Panel */}
+              {activeCategory && subCategories[activeCategory] && (
+                <div className="w-64 py-2 bg-gray-50/50 animate-fadeIn">
+                  <div className="px-4 py-2 mb-2 border-b border-gray-100">
+                    <h3 className="font-semibold text-gray-900">{activeCategory}</h3>
+                  </div>
+                  {subCategories[activeCategory].map((sub: string) => (
+                    <Link
+                      key={sub}
+                      href={`/products?category=${encodeURIComponent(activeCategory)}&subCategory=${encodeURIComponent(sub)}`}
+                      className="block px-4 py-2 text-sm text-gray-600 hover:text-brand-primary-600 hover:bg-brand-primary-50 transition-colors"
+                    >
+                      {sub}
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -123,7 +171,8 @@ const HeaderBottom = () => {
                   </span>
                 </div>
               </Link>
-            )}
+            )
+            }
 
             {/* Wishlist */}
             <Link
@@ -170,8 +219,19 @@ const HeaderBottom = () => {
             transform: translateY(0);
           }
         }
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
         .animate-slideDown {
           animation: slideDown 0.3s ease-out;
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.2s ease-out;
         }
       `}</style>
     </div>

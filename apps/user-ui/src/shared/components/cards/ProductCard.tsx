@@ -54,6 +54,7 @@ const ProductCard = ({ product, isEvent = false }: Props) => {
   const addToCart = useStore((state) => state.addToCart);
   const addToWishlist = useStore((state) => state.addToWishlist);
   const removeFromWishlist = useStore((state) => state.removeFromWishlist);
+  const removeFromCart = useStore((state) => state.removeFromCart);
   const wishlist = useStore((state) => state.wishlist);
   const cart = useStore((state) => state.cart);
   const isWishlisted = wishlist.some((item) => item.id === product.id);
@@ -119,12 +120,14 @@ const ProductCard = ({ product, isEvent = false }: Props) => {
 
             <button
               onClick={() => {
-                if (!isInCart) {
+                if (isInCart) {
+                  removeFromCart(product.id, user, location, deviceInfo);
+                } else {
                   addToCart({ ...product, quantity: 1 }, user, location, deviceInfo);
                 }
               }}
               className="bg-white/90 backdrop-blur-sm p-2.5 rounded-full shadow-lg hover:bg-green-50 transition-colors border border-gray-100"
-              title="Add to Cart"
+              title={isInCart ? "Remove from Cart" : "Add to Cart"}
             >
               <ShoppingBag
                 size={18}
