@@ -47,24 +47,24 @@ const Hero = () => {
           <div className="space-y-6">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white text-sm animate-bounce">
-              <Mountain className="w-4 h-4 text-cyan-300" />
-              <span>From the Heart of the Himalayas 🇳🇵</span>
+              <Sparkles className="w-4 h-4 text-cyan-300" />
+              <span>Modern E-commerce Experience</span>
             </div>
 
             {/* Main Heading */}
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight">
               Discover
               <span className="block bg-gradient-to-r from-cyan-300 via-blue-300 to-purple-300 bg-clip-text text-transparent">
-                Pokhara's
+                Premium
               </span>
               <span className="block">Marketplace</span>
             </h1>
 
             {/* Subheading */}
             <p className="text-xl md:text-2xl text-blue-100 max-w-xl">
-              Experience the beauty of shopping with a platform inspired by the serenity of
-              <span className="font-semibold text-cyan-300"> Phewa Lake</span> and the majesty of the
-              <span className="font-semibold text-purple-300"> Annapurna Range</span>
+              Experience a seamless shopping journey with our
+              <span className="font-semibold text-cyan-300"> high-performance</span> platform designed for
+              <span className="font-semibold text-purple-300"> modern commerce</span>.
             </p>
 
             {/* Stats */}
@@ -141,7 +141,7 @@ const Hero = () => {
               <div className="absolute bottom-0 left-0 w-64 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl shadow-2xl p-6 transform -rotate-3 hover:rotate-0 transition-transform duration-300 animate-float" style={{ animationDelay: '0.5s' }}>
                 <div className="text-white">
                   <div className="text-4xl font-bold mb-2">30% OFF</div>
-                  <p className="text-sm opacity-90 mb-4">Special Dashain Offer</p>
+                  <p className="text-sm opacity-90 mb-4">Special Seasonal Offer</p>
                   <div className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-lg text-center font-semibold">
                     Limited Time
                   </div>

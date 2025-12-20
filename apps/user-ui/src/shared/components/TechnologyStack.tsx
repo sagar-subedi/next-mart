@@ -5,24 +5,24 @@ import React from 'react';
 const TechnologyStack = () => {
     const stacks = [
         {
-            title: 'Backend',
+            title: 'Backend Architecture',
             color: 'blue',
-            items: ['Express.js', 'MongoDB', 'Prisma ORM', 'JWT Auth', 'REST APIs'],
+            items: ['Node.js & Express', 'MongoDB with Prisma', 'JWT & OAuth2', 'RESTful API Design', 'Event-Driven Logic'],
         },
         {
-            title: 'Frontend',
+            title: 'Frontend Engineering',
             color: 'green',
-            items: ['Next.js', 'TypeScript', 'Tailwind CSS', 'React Query', 'Responsive UI'],
+            items: ['Next.js 14 (App Router)', 'TypeScript & ES6+', 'Tailwind CSS & Framer', 'React Query & Context', 'Performance Optimization'],
         },
         {
-            title: 'Microservices',
+            title: 'System Design',
             color: 'purple',
-            items: ['API Gateway', 'Auth Service', 'Product Service', 'Service Mesh', 'Distributed Arch'],
+            items: ['Microservices Pattern', 'API Gateway Pattern', 'Service Discovery', 'Distributed Tracing', 'Scalable Infrastructure'],
         },
         {
-            title: 'DevOps',
+            title: 'DevOps & CI/CD',
             color: 'orange',
-            items: ['Docker', 'Nx Monorepo', 'GitHub Actions', 'Monitoring', 'Auto Deploy'],
+            items: ['Docker Containerization', 'Nx Monorepo Management', 'GitHub Actions CI/CD', 'Prometheus Monitoring', 'Automated Testing'],
         },
     ];
 
@@ -67,9 +67,9 @@ const TechnologyStack = () => {
 
             <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
                 <div className="text-center mb-16">
-                    <h3 className="text-4xl font-bold text-white mb-4">🚀 Technology Stack</h3>
+                    <h3 className="text-4xl font-bold text-white mb-4">🛠️ Technical Architecture</h3>
                     <p className="text-lg text-slate-300 max-w-2xl mx-auto">
-                        A demo ecommerce platform engineered with enterprise-grade, distributed microservices architecture.
+                        A robust e-commerce ecosystem built on a distributed microservices architecture, emphasizing scalability, maintainability, and high-performance engineering.
                     </p>
                 </div>
 
