@@ -24,13 +24,13 @@ const ShopCard = ({ shop }: Props) => {
     shop?.coverBanner || 'https://placehold.co/1200x400/1e293b/cbd5e1.png?text=Shop+Cover'
   );
   const [avatarSrc, setAvatarSrc] = useState(
-    shop?.avatar?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(shop?.name || 'Shop')}&background=random`
+    shop?.avatar?.[0]?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(shop?.name || 'Shop')}&background=random`
   );
 
   // Update state if props change
   useEffect(() => {
     setCoverSrc(shop?.coverBanner || 'https://placehold.co/1200x400/1e293b/cbd5e1.png?text=Shop+Cover');
-    setAvatarSrc(shop?.avatar?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(shop?.name || 'Shop')}&background=random`);
+    setAvatarSrc(shop?.avatar?.[0]?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(shop?.name || 'Shop')}&background=random`);
   }, [shop]);
 
   return (

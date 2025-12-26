@@ -20,7 +20,7 @@ type User = {
   following?: string[];
   createdAt?: string;
   updatedAt?: string;
-  avatar: string;
+  avatar: { fileUrl: string; fileId: string }[];
 };
 
 

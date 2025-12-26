@@ -129,7 +129,7 @@ const SellerProfile = ({ shop, followersCount }: SellerProfileProps) => {
           <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
             <div className="relative size-24 rounded-full border-4 border-slate-300 overflow-hidden">
               <Image
-                src={shop?.avatar?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(shop?.name || 'Shop')}&background=random`}
+                src={shop?.avatar?.[0]?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(shop?.name || 'Shop')}&background=random`}
                 alt="avatar"
                 layout="fill"
                 objectFit="cover"

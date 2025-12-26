@@ -212,7 +212,7 @@ const Inbox = () => {
                       <div className="flex items-center gap-3">
                         <Image
                           src={
-                            chat?.seller?.avatar?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(chat?.seller?.name || 'Shop')}&background=random`
+                            chat?.seller?.avatar?.[0]?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(chat?.seller?.name || 'Shop')}&background=random`
                           }
                           alt={chat?.seller?.name}
                           width={36}
@@ -250,7 +250,7 @@ const Inbox = () => {
                 <div className="p-4 border-b bg-white border-b-gray-200 flex items-center gap-3">
                   <Image
                     src={
-                      selectedChat.seller?.avatar?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedChat.seller?.name || 'Shop')}&background=random`
+                      selectedChat.seller?.avatar?.[0]?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedChat.seller?.name || 'Shop')}&background=random`
                     }
                     alt={selectedChat?.seller.name}
                     width={40}

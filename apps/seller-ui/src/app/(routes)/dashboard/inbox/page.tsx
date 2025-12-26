@@ -190,7 +190,7 @@ const Inbox = () => {
                   >
                     <div className="flex items-center gap-3">
                       <Image
-                        src={chat.user?.avatar?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(chat.user?.name || 'User')}&background=random`}
+                        src={chat.user?.avatar?.[0]?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(chat.user?.name || 'User')}&background=random`}
                         alt={chat.user.name}
                         width={36}
                         height={36}
@@ -230,7 +230,7 @@ const Inbox = () => {
             <>
               <div className="p-4 border-b bg-white border-b-slate-200 flex items-center gap-3 shadow-sm">
                 <Image
-                  src={selectedChat.user?.avatar?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedChat.user?.name || 'User')}&background=random`}
+                  src={selectedChat.user?.avatar?.[0]?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedChat.user?.name || 'User')}&background=random`}
                   alt={selectedChat?.user.name}
                   width={40}
                   height={40}

@@ -43,7 +43,7 @@ export interface User {
   avatar?: {
     fileUrl: string;
     fileId: string;
-  };
+  }[];
   createdAt: string;
 }
 

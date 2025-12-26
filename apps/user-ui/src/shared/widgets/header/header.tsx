@@ -18,7 +18,7 @@ interface User {
   avatar?: {
     fileUrl: string;
     fileId: string;
-  };
+  }[];
   createdAt: string;
   points?: number;
 }
@@ -106,9 +106,9 @@ const Header = () => {
                 href="/profile"
                 className="flex items-center gap-3 px-4 py-2 rounded-xl hover:bg-white/60 transition-all duration-300 group"
               >
-                {user?.avatar?.fileUrl ? (
+                {user?.avatar?.[0]?.fileUrl ? (
                   <Image
-                    src={user.avatar.fileUrl}
+                    src={user.avatar?.[0]?.fileUrl}
                     alt={user.name}
                     width={44}
                     height={44}

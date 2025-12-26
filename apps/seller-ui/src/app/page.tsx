@@ -119,7 +119,7 @@ const Page = () => {
                   <div className="relative group shrink-0">
                     <div className="size-32 rounded-3xl border-4 border-white overflow-hidden shadow-2xl relative bg-slate-100">
                       <Image
-                        src={seller.shop?.avatar?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(seller.shop?.name || 'Shop')}&background=random`}
+                        src={seller.shop?.avatar?.[0]?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(seller.shop?.name || 'Shop')}&background=random`}
                         alt="avatar"
                         fill
                         className="object-cover"
