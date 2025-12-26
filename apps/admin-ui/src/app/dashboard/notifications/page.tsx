@@ -12,7 +12,7 @@ const Notifications = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['notifications'],
     queryFn: async () => {
-      const res = await axiosInstance.get('/admin/get-all-notifications');
+      const res = await axiosInstance.get('/admin/api/get-all-notifications');
       return res.data.notifications;
     },
   });
@@ -37,11 +37,10 @@ const Notifications = () => {
             <Link
               href={notification.redirectLink}
               key={notification.id}
-              className={`block px-5 py-4 transition ${
-                notification.status !== 'Unread'
+              className={`block px-5 py-4 transition ${notification.status !== 'Unread'
                   ? 'hover:bg-gray-800/40'
                   : 'bg-gray-800/50 hover:bg-gray-800/70'
-              }`}
+                }`}
               onClick={() => markAsRead(notification.id)}
             >
               <div className="flex items-start gap-3">

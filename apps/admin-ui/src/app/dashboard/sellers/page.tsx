@@ -58,7 +58,7 @@ const Sellers = () => {
     queryKey: ['all-sellers', page],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/admin/all-sellers?page=${page}&limit=${limit}`
+        `/admin/api/all-sellers?page=${page}&limit=${limit}`
       );
       return res.data;
     },
@@ -68,7 +68,7 @@ const Sellers = () => {
 
   const banSellerMutation = useMutation({
     mutationFn: async (sellerId: string) => {
-      await axiosInstance.put(`/admin/ban-seller/${sellerId}`);
+      await axiosInstance.put(`/admin/api/ban-seller/${sellerId}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['all-sellers'] });
@@ -82,15 +82,15 @@ const Sellers = () => {
     return allSellers.filter((seller) =>
       deferredGlobalFilter
         ? Object.values(seller)
-            .map((v) => (typeof v === 'string' ? v : JSON.stringify(v)))
-            .join(' ')
-            .toLowerCase()
-            .includes(deferredGlobalFilter.toLowerCase())
+          .map((v) => (typeof v === 'string' ? v : JSON.stringify(v)))
+          .join(' ')
+          .toLowerCase()
+          .includes(deferredGlobalFilter.toLowerCase())
         : true
     );
   }, [allSellers, deferredGlobalFilter]);
 
-  const totalPages = Math.ceil((data?.meta.totalSellers ?? 0) / limit);
+  const totalPages = Math.ceil((data?.meta?.totalSellers ?? 0) / limit);
 
   const banSeller = async (id: string) => banSellerMutation.mutate(id);
 
@@ -244,11 +244,10 @@ const Sellers = () => {
               <button
                 key={i + 1}
                 onClick={() => setPage(i + 1)}
-                className={`px-3 py-1 rounded border border-gray-200 text-sm ${
-                  page === i + 1
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-white text-black'
-                }`}
+                className={`px-3 py-1 rounded border border-gray-200 text-sm ${page === i + 1
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-white text-black'
+                  }`}
               >
                 {i + 1}
               </button>

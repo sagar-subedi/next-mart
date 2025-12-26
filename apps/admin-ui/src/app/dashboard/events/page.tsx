@@ -21,7 +21,7 @@ const Events = () => {
 
   const fetchEvents = async () => {
     const res = await axiosInstance.get(
-      `/admin/get-all-events?page=${page}&limit=${limit}`
+      `/admin/api/get-all-events?page=${page}&limit=${limit}`
     );
     return res?.data.events;
   };
@@ -193,11 +193,10 @@ const Events = () => {
               <button
                 key={i + 1}
                 onClick={() => setPage(i + 1)}
-                className={`px-3 py-1 rounded border border-gray-200 text-sm ${
-                  page === i + 1
+                className={`px-3 py-1 rounded border border-gray-200 text-sm ${page === i + 1
                     ? 'bg-blue-600 text-white'
                     : 'bg-white text-black'
-                }`}
+                  }`}
               >
                 {i + 1}
               </button>

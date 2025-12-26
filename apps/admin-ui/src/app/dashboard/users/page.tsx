@@ -51,7 +51,7 @@ const Users = () => {
     queryKey: ['all-users', page],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/admin/all-users?page=${page}&limit=${limit}`
+        `/admin/api/all-users?page=${page}&limit=${limit}`
       );
       return res.data;
     },
@@ -61,7 +61,7 @@ const Users = () => {
 
   const banUserMutation = useMutation({
     mutationFn: async (userId: string) => {
-      await axiosInstance.put(`/admin/ban-user/${userId}`);
+      await axiosInstance.put(`/admin/api/ban-user/${userId}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['all-users'] });
@@ -78,9 +78,9 @@ const Users = () => {
         : true;
       const matchesGlobal = deferredGlobalFilter
         ? Object.values(user)
-            .join(' ')
-            .toLowerCase()
-            .includes(deferredGlobalFilter.toLowerCase())
+          .join(' ')
+          .toLowerCase()
+          .includes(deferredGlobalFilter.toLowerCase())
         : true;
 
       return matchesRole && matchesGlobal;
@@ -234,11 +234,10 @@ const Users = () => {
               <button
                 key={i + 1}
                 onClick={() => setPage(i + 1)}
-                className={`px-3 py-1 rounded border border-gray-200 text-sm ${
-                  page === i + 1
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-white text-black'
-                }`}
+                className={`px-3 py-1 rounded border border-gray-200 text-sm ${page === i + 1
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-white text-black'
+                  }`}
               >
                 {i + 1}
               </button>
