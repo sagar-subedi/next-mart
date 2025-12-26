@@ -47,3 +47,84 @@ export const markAsRead = async (
     return next(error);
   }
 };
+// Update shop info
+export const updateShopInfo = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { name, description, address, phoneNumber, zipCode, avatar, cover, socialLinks } =
+      req.body;
+    const sellerId = req.seller.id;
+
+    const shop = await prisma.shops.findUnique({
+      where: {
+        sellerId,
+      },
+    });
+
+    if (!shop) {
+      return next(new ValidationError('Shop not found'));
+    }
+
+    if (avatar) {
+      const isAvatarExist = await prisma.images.findFirst({
+        where: {
+          shopId: shop.id,
+        },
+      });
+
+      if (isAvatarExist) {
+        await prisma.images.update({
+          where: {
+            id: isAvatarExist.id,
+          },
+          data: {
+            fileUrl: avatar,
+          },
+        });
+      } else {
+        await prisma.images.create({
+          data: {
+            fileUrl: avatar,
+            fileId: '123', // Mock fileId as we are using external URLs
+            userId: sellerId,
+            shopId: shop.id,
+          },
+        });
+      }
+    }
+
+    // Update shop details
+    await prisma.shops.update({
+      where: {
+        sellerId,
+      },
+      data: {
+        name,
+        bio: description,
+        address,
+        coverBanner: cover,
+        socialLinks: socialLinks || [], // Ensure socialLinks is an array
+      },
+    });
+
+    // Update seller phone number
+    await prisma.sellers.update({
+      where: {
+        id: sellerId,
+      },
+      data: {
+        phone: phoneNumber,
+      },
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: 'Shop info updated successfully',
+    });
+  } catch (error) {
+    return next(error);
+  }
+};

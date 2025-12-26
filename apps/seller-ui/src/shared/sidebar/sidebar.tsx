@@ -7,22 +7,22 @@ import React, { useEffect } from 'react';
 import Box from '../box';
 import { Sidebar } from './sidebar.styles';
 import Link from 'next/link';
-import Image from 'next/image';
 import SidebarItem from './sidebar.item';
 import {
-  BellPlus,
-  BellRing,
-  CalendarPlus,
-  LayoutDashboard,
-  List,
-  LogOut,
-  Mail,
-  PackageSearch,
-  PlusSquare,
-  Settings,
-  TicketPercent,
-  Wallet,
-} from 'lucide-react';
+  RiDashboardLine,
+  RiFileList3Line,
+  RiWallet3Line,
+  RiAddBoxLine,
+  RiBox3Line,
+  RiCalendarEventLine,
+  RiCalendarTodoLine,
+  RiMailLine,
+  RiSettings4Line,
+  RiNotificationBadgeLine,
+  RiCoupon3Line,
+  RiLogoutBoxRLine,
+  RiShoppingBag3Fill,
+} from 'react-icons/ri';
 import SidebarMenu from './sidebar.menu';
 
 const SidebarWrapper = () => {
@@ -35,42 +35,52 @@ const SidebarWrapper = () => {
   }, [pathname, setActiveSidebar]);
 
   const getIconColor = (route: string) =>
-    activeSidebar === route ? '#0085ff' : '#969696';
+    activeSidebar === route ? '#3b82f6' : '#94a3b8';
 
   return (
     <Box
-      $css={{
-        height: '100vh',
-        zIndex: 202,
-        position: 'sticky',
-        padding: '8px',
-        top: 0,
-        overflowY: 'scroll',
-        scrollbarWidth: 'none',
-      }}
       className="sidebar-wrapper"
     >
+      <Sidebar.GradientBorder />
       <Sidebar.Header>
-        <Box>
-          <Link href="/" className="flex justify-center text-center gap-2">
-            <Image src="/icon.svg" alt="logo" width={200} height={40} />
-            <Box>
-              <h3 className="text-xl font-medium text-[#ecedee]">
-                {seller?.shop?.name}
-              </h3>
-              <h5 className="font-medium text-xs text-[#ecedeecf] whitespace-nowrap overflow-hidden text-ellipsis max-w-[170px] pl-2">
-                {seller?.shop?.address}
-              </h5>
-            </Box>
-          </Link>
-        </Box>
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="w-10 h-10 bg-gradient-to-br from-brand-primary-500 to-brand-highlight-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+            <RiShoppingBag3Fill className="text-white w-6 h-6" />
+          </div>
+          <div className="flex flex-col">
+            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-primary-600 to-brand-highlight-600">
+              Doko Mart
+            </span>
+            <span className="text-[10px] uppercase tracking-wider font-bold text-slate-500">
+              Seller Portal
+            </span>
+          </div>
+        </Link>
+
+        {seller?.shop && (
+          <div className="mt-4 p-3 bg-slate-50 rounded-2xl border border-slate-200">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-brand-primary-50 flex items-center justify-center text-brand-primary-600 font-bold text-xs border border-brand-primary-100">
+                {seller.shop.name.charAt(0)}
+              </div>
+              <div className="flex flex-col overflow-hidden">
+                <h3 className="text-sm font-semibold text-slate-900 truncate">
+                  {seller.shop.name}
+                </h3>
+                <p className="text-[10px] text-slate-500 truncate">
+                  {seller.shop.address}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </Sidebar.Header>
       <div className="block my-3 h-full">
         <Sidebar.Body className="body sidebar">
           <SidebarItem
             title="Dashboard"
             icon={
-              <LayoutDashboard fill={getIconColor('/dashboard')} size={22} />
+              <RiDashboardLine fill={getIconColor('/dashboard')} size={22} />
             }
             isActive={activeSidebar === 'dashboard'}
             href="/dashboard"
@@ -82,7 +92,7 @@ const SidebarWrapper = () => {
                 title="Orders"
                 href="/dashboard/orders"
                 icon={
-                  <List fill={getIconColor('/dashboard/orders')} size={22} />
+                  <RiFileList3Line fill={getIconColor('/dashboard/orders')} size={22} />
                 }
               />
               <SidebarItem
@@ -90,7 +100,7 @@ const SidebarWrapper = () => {
                 title="Payments"
                 href="/dashboard/payments"
                 icon={
-                  <Wallet
+                  <RiWallet3Line
                     fill={getIconColor('/dashboard/payments')}
                     size={22}
                   />
@@ -103,7 +113,7 @@ const SidebarWrapper = () => {
                 title="Create Product"
                 href="/dashboard/create-product"
                 icon={
-                  <PlusSquare
+                  <RiAddBoxLine
                     fill={getIconColor('/dashboard/create-product')}
                     size={22}
                   />
@@ -114,7 +124,7 @@ const SidebarWrapper = () => {
                 title="All Products"
                 href="/dashboard/all-products"
                 icon={
-                  <PackageSearch
+                  <RiBox3Line
                     fill={getIconColor('/dashboard/all-products')}
                     size={22}
                   />
@@ -127,7 +137,7 @@ const SidebarWrapper = () => {
                 title="Create Event"
                 href="/dashboard/create-event"
                 icon={
-                  <CalendarPlus
+                  <RiCalendarEventLine
                     fill={getIconColor('/dashboard/create-event')}
                     size={22}
                   />
@@ -138,7 +148,7 @@ const SidebarWrapper = () => {
                 title="All Events"
                 href="/dashboard/all-events"
                 icon={
-                  <BellPlus
+                  <RiCalendarTodoLine
                     fill={getIconColor('/dashboard/all-events')}
                     size={22}
                   />
@@ -151,7 +161,7 @@ const SidebarWrapper = () => {
                 title="Inbox"
                 href="/dashboard/inbox"
                 icon={
-                  <Mail fill={getIconColor('/dashboard/inbox')} size={22} />
+                  <RiMailLine fill={getIconColor('/dashboard/inbox')} size={22} />
                 }
               />
               <SidebarItem
@@ -159,7 +169,7 @@ const SidebarWrapper = () => {
                 title="Settings"
                 href="/dashboard/settings"
                 icon={
-                  <Settings
+                  <RiSettings4Line
                     fill={getIconColor('/dashboard/settings')}
                     size={22}
                   />
@@ -170,7 +180,7 @@ const SidebarWrapper = () => {
                 title="Notifications"
                 href="/dashboard/notifications"
                 icon={
-                  <BellRing
+                  <RiNotificationBadgeLine
                     fill={getIconColor('/dashboard/notifications')}
                     size={26}
                   />
@@ -183,7 +193,7 @@ const SidebarWrapper = () => {
                 title="Discount Codes"
                 href="/dashboard/discount-codes"
                 icon={
-                  <TicketPercent
+                  <RiCoupon3Line
                     fill={getIconColor('/dashboard/discount-codes')}
                     size={26}
                   />
@@ -194,7 +204,7 @@ const SidebarWrapper = () => {
                 title="Logout"
                 href="/"
                 icon={
-                  <LogOut fill={getIconColor('/dashboard/logout')} size={26} />
+                  <RiLogoutBoxRLine fill={getIconColor('/dashboard/logout')} size={26} />
                 }
               />
             </SidebarMenu>

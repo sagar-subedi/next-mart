@@ -29,7 +29,7 @@ export const adminLogin = async (
       return next(new AuthError(`Invalid password`));
     }
 
-    const isAdmin = (user as any).role === 'ADMIN';
+    const isAdmin = (user as any).role === 'admin';
 
     if (!isAdmin) {
       return next(new AuthError('Unauthorized!'));

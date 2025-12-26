@@ -33,7 +33,7 @@ const Payments = () => {
         accessorKey: 'id',
         header: 'Order ID',
         cell: ({ row }: any) => (
-          <span className="text-white text-sm">
+          <span className="text-slate-900 text-sm">
             #{row.original.id.slice(-6).toUpperCase()}
           </span>
         ),
@@ -42,7 +42,7 @@ const Payments = () => {
         accessorKey: 'username',
         header: 'Buyer',
         cell: ({ row }) => (
-          <span className="text-white">
+          <span className="text-slate-900">
             {row.original.user.name ?? 'Guest'}
           </span>
         ),
@@ -76,9 +76,8 @@ const Payments = () => {
         header: 'Status',
         cell: ({ row }) => (
           <span
-            className={`px-2 py-1 rounded-full text-xs font-medium text-white ${
-              row.original.status === 'Paid' ? 'bg-green-600' : 'bg-yellow-500'
-            }`}
+            className={`px-2 py-1 rounded-full text-xs font-medium text-white ${row.original.status === 'Paid' ? 'bg-green-600' : 'bg-yellow-500'
+              }`}
           >
             {row.original.status}
           </span>
@@ -89,7 +88,7 @@ const Payments = () => {
         header: 'Date',
         cell: ({ row }) => {
           const date = new Date(row.original.createdAt).toLocaleDateString();
-          return <span className="text-white text-sm">{date}</span>;
+          return <span className="text-slate-900 text-sm">{date}</span>;
         },
       },
       {
@@ -98,7 +97,7 @@ const Payments = () => {
         cell: ({ row }) => (
           <Link
             href={`/dashboard/orders/${row.original.id}`}
-            className="text-blue-400 hover:text-blue-300 transition"
+            className="text-brand-primary-600 hover:text-brand-primary-700 transition"
           >
             <Eye size={18} />
           </Link>
@@ -120,28 +119,28 @@ const Payments = () => {
 
   return (
     <div className="w-full min-h-screen p-8">
-      <h2 className="text-2xl text-white font-semibold mb-2">All Payments</h2>
+      <h2 className="text-2xl text-slate-900 font-semibold mb-2">All Payments</h2>
       <Breadcrumb title="All Payments" />
       {/* Search bar */}
-      <div className="my-4 flex items-center bg-gray-900 p-2 rounded-md flex-1">
-        <Search size={18} className="text-gray-400 mr-2" />
+      <div className="my-4 flex items-center bg-white border border-slate-200 p-2 rounded-md flex-1">
+        <Search size={18} className="text-slate-400 mr-2" />
         <input
           type="text"
-          className="w-full bg-transparent text-white outline-none"
+          className="w-full bg-transparent text-slate-900 outline-none placeholder:text-slate-400"
           placeholder="Search payments..."
           value={globalFilter}
           onChange={(e) => setGlobalFilter(e.target.value)}
         />
       </div>
       {/* Table */}
-      <div className="overflow-x-auto bg-gray-900 rounded-lg p-4">
+      <div className="overflow-x-auto bg-white border border-slate-200 rounded-lg p-4">
         {isLoading ? (
-          <p className="text-center text-white">Loading payments...</p>
+          <p className="text-center text-slate-900">Loading payments...</p>
         ) : (
-          <table className="w-full text-white">
+          <table className="w-full text-slate-900">
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
-                <tr className="border-b border-b-gray-800" key={headerGroup.id}>
+                <tr className="border-b border-b-slate-200" key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
                     <th className="p-3 text-left text-sm" key={header.id}>
                       {flexRender(
@@ -156,7 +155,7 @@ const Payments = () => {
             <tbody>
               {table.getRowModel().rows.map((row) => (
                 <tr
-                  className="border-b border-b-gray-800 hover:bg-gray-800 transition"
+                  className="border-b border-b-slate-100 hover:bg-slate-50 transition"
                   key={row.id}
                 >
                   {row.getVisibleCells().map((cell) => (
@@ -173,7 +172,7 @@ const Payments = () => {
           </table>
         )}
         {!isLoading && orders.length === 0 && (
-          <p className="text-center py-3 text-white">No payments found!</p>
+          <p className="text-center py-3 text-slate-500">No payments found!</p>
         )}
       </div>
     </div>

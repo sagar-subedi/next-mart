@@ -29,7 +29,7 @@ type FormData = {
   brand: string;
   cashOnDelivery: string;
   category: string;
-  subcategory: string;
+  subCategory: string;
   detailedDescription: string;
   videoUrl: string;
   regularPrice: number;
@@ -69,7 +69,7 @@ const CreateProduct = () => {
     brand: '',
     cashOnDelivery: 'yes',
     category: '',
-    subcategory: '',
+    subCategory: '',
     detailedDescription: '',
     videoUrl: '',
     regularPrice: 0,
@@ -161,7 +161,7 @@ const CreateProduct = () => {
     }
   };
 
-  const handleSaveDraft = () => {};
+  const handleSaveDraft = () => { };
 
   const {
     data,
@@ -244,10 +244,10 @@ const CreateProduct = () => {
 
   return (
     <form
-      className="w-full mx-auto p-8 shadow-md rounded-lg text-white"
+      className="w-full mx-auto p-8 shadow-md rounded-lg text-slate-900"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <h2 className="text-2xl py-2 font-semibold font-Poppins text-white">
+      <h2 className="text-2xl py-2 font-semibold font-Poppins text-slate-900">
         Create Product
       </h2>
       {/* Breadcrumb */}
@@ -400,7 +400,7 @@ const CreateProduct = () => {
                 <CustomProperties control={control} errors={errors} />
               </div>
               <div className="mt-2">
-                <label className="block font-semibold text-gray-300 mb-1">
+                <label className="block font-semibold text-slate-700 mb-1">
                   Cash on Delivery
                 </label>
                 <select
@@ -408,7 +408,7 @@ const CreateProduct = () => {
                   {...register('cashOnDelivery', {
                     required: `Cash on Delivery is required`,
                   })}
-                  className="w-full p-2 rounded-md border border-gray-700 bg-black outline-none"
+                  className="w-full p-2 rounded-md border border-slate-200 bg-white text-slate-900 outline-none"
                 >
                   <option value="">Select</option>
                   <option value="yes">Yes</option>
@@ -423,11 +423,11 @@ const CreateProduct = () => {
             </div>
             <div className="w-2/4">
               <div>
-                <label className="block font-semibold text-gray-300 mb-1">
+                <label className="block font-semibold text-slate-700 mb-1">
                   Category *
                 </label>
                 {isLoading ? (
-                  <div className="text-gray-400 flex items-center justify-center">
+                  <div className="text-slate-400 flex items-center justify-center">
                     <LoaderCircle size={20} className="animate-spin" />
                   </div>
                 ) : isCategoryError ? (
@@ -442,7 +442,7 @@ const CreateProduct = () => {
                     render={({ field }) => (
                       <select
                         {...field}
-                        className="w-full border border-gray-700 outline-none bg-black p-2 rounded-md"
+                        className="w-full border border-slate-200 outline-none bg-white text-slate-900 p-2 rounded-md"
                       >
                         <option value="">Select Category</option>
                         {categories.map((category: string) => (
@@ -461,37 +461,37 @@ const CreateProduct = () => {
                 )}
               </div>
               <div className="mt-2">
-                <label className="block font-semibold text-gray-300 mb-1">
+                <label className="block font-semibold text-slate-700 mb-1">
                   Sub Category *
                 </label>
                 <Controller
                   control={control}
-                  name="subcategory"
+                  name="subCategory"
                   rules={{
                     required: `Sub Category is required`,
                   }}
                   render={({ field }) => (
                     <select
                       {...field}
-                      className="w-full border border-gray-700 outline-none bg-black p-2 rounded-md"
+                      className="w-full border border-slate-200 outline-none bg-white text-slate-900 p-2 rounded-md"
                     >
                       <option value="">Select Sub Category</option>
-                      {subcategories.map((subcategory: string) => (
-                        <option key={subcategory} value={subcategory}>
-                          {subcategory}
+                      {subcategories.map((subCategory: string) => (
+                        <option key={subCategory} value={subCategory}>
+                          {subCategory}
                         </option>
                       ))}
                     </select>
                   )}
                 />
-                {errors.subcategory && (
+                {errors.subCategory && (
                   <p className="text-error">
-                    {String(errors.subcategory.message)}
+                    {String(errors.subCategory.message)}
                   </p>
                 )}
               </div>
               <div className="mt-2">
-                <label className="block font-semibold text-gray-300 mb-1">
+                <label className="block font-semibold text-slate-700 mb-1">
                   Detailed description *
                 </label>
                 <Controller
@@ -600,11 +600,11 @@ const CreateProduct = () => {
                 <SizeSelector control={control} errors={errors} />
               </div>
               <div className="mt-3">
-                <label className="block font-semibold text-gray-300 mb-1">
+                <label className="block font-semibold text-slate-700 mb-1">
                   Select Discount Codes (Optional)
                 </label>
                 {isDiscountLoading ? (
-                  <div className="text-gray-400 flex items-center justify-center">
+                  <div className="text-slate-400 flex items-center justify-center">
                     <LoaderCircle size={20} className="animate-spin" />
                   </div>
                 ) : (
@@ -612,19 +612,18 @@ const CreateProduct = () => {
                     {discountCodes.map((code: any) => (
                       <button
                         key={code.id}
-                        className={`px-3 py-1 rounded-md text-sm font-semibold border ${
-                          watch('discountCodes').includes(code.id)
-                            ? 'bg-blue-600 text-white border-blue-600'
-                            : 'bg-gray-700 text-gray-300 border-gray-600 hover:border-gray-700'
-                        }`}
+                        className={`px-3 py-1 rounded-md text-sm font-semibold border ${watch('discountCodes').includes(code.id)
+                          ? 'bg-brand-primary-600 text-white border-brand-primary-600'
+                          : 'bg-slate-100 text-slate-700 border-slate-200 hover:border-slate-300'
+                          }`}
                         onClick={() => {
                           const currentSelection = watch('discountCodes') || [];
                           const updatedSelection = currentSelection?.includes(
                             code.id
                           )
                             ? currentSelection.filter(
-                                (id: string) => id !== code.id
-                              )
+                              (id: string) => id !== code.id
+                            )
                             : [...currentSelection, code.id];
                           setValue('discountCodes', updatedSelection);
                         }}
@@ -641,35 +640,34 @@ const CreateProduct = () => {
         </div>
       </div>
       {openImageModal && (
-        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-gray-800 p-6 rounded-lg w-[450px] text-white">
-            <div className="flex justify-between items-center pb-3 mb-4">
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg w-[450px] text-slate-900">
+            <div className="flex justify-between items-center pb-3 mb-4 border-b border-slate-200">
               <h2 className="text-lg font-semibold">Enhance product image</h2>
               <X
                 size={20}
-                className="cursor-pointer"
+                className="cursor-pointer text-slate-400 hover:text-slate-900"
                 onClick={() => setOpenImageModal(false)}
               />
             </div>
-            <div className="relative w-full h-[250px] rounded-md overflow-hidden border border-gray-600">
+            <div className="relative w-full h-[250px] rounded-md overflow-hidden border border-slate-200">
               {selectedImage && (
                 <Image src={selectedImage} alt="selected image" layout="fill" />
               )}
             </div>
             {selectedImage && (
               <div className="mt-4 space-y-2">
-                <h3 className="text-white text-sm font-semibold">
+                <h3 className="text-slate-900 text-sm font-semibold">
                   AI Enhancements
                 </h3>
                 <div className="grid grid-cols-2 gap-3 max-h-[250px] overflow-y-auto">
                   {aiEnhancements.map(({ label, effect }) => (
                     <button
                       key={effect}
-                      className={`p-2 rounded-md flex items-center gap-2 whitespace-nowrap ${
-                        activeEffect === effect
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
-                      }`}
+                      className={`p-2 rounded-md flex items-center gap-2 whitespace-nowrap ${activeEffect === effect
+                        ? 'bg-brand-primary-600 text-white'
+                        : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+                        }`}
                       onClick={() => applyTransformation(effect)}
                       disabled={isProcessing}
                     >
@@ -687,7 +685,7 @@ const CreateProduct = () => {
         {isChanged && (
           <button
             type="button"
-            className="bg-gray-700 text-white px-4 py-2 rounded-md"
+            className="bg-slate-200 text-slate-700 px-4 py-2 rounded-md hover:bg-slate-300"
             onClick={handleSaveDraft}
           >
             Save Draft
@@ -696,7 +694,7 @@ const CreateProduct = () => {
         <button
           type="submit"
           disabled={isLoading}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+          className="bg-brand-primary-600 hover:bg-brand-primary-700 text-white px-4 py-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
         >
           {isLoading ? (
             <LoaderCircle size={20} className="animate-spin" />

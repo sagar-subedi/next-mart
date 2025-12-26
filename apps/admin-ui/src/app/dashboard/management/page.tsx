@@ -26,14 +26,14 @@ const Management = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ['admins'],
     queryFn: async () => {
-      const res = await axiosInstance.get('/admin/all-admins');
+      const res = await axiosInstance.get('/admin/api/all-admins');
       return res.data.admins;
     },
   });
 
   const { mutate: updateRole, isPending } = useMutation({
     mutationFn: async () => {
-      return await axiosInstance.put('/admin/add-new-admin', {
+      return await axiosInstance.put('/admin/api/add-new-admin', {
         email: search,
         role: selectedRole,
       });

@@ -33,7 +33,7 @@ const Orders = () => {
         accessorKey: 'id',
         header: 'Order ID',
         cell: ({ row }: any) => (
-          <span className="text-white text-sm truncate">
+          <span className="text-slate-900 text-sm truncate">
             #{row.original.id.slice(-6).toUpperCase()}
           </span>
         ),
@@ -42,7 +42,7 @@ const Orders = () => {
         accessorKey: 'user.name',
         header: 'Buyer',
         cell: ({ row }) => (
-          <span className="text-white">
+          <span className="text-slate-900">
             {row.original.user.name ?? 'Guest'}
           </span>
         ),
@@ -51,7 +51,7 @@ const Orders = () => {
         accessorKey: 'shop.name',
         header: 'Shop',
         cell: ({ row }) => (
-          <span className="text-white">
+          <span className="text-slate-900">
             {row.original.shop.name ?? 'Unknown shop'}
           </span>
         ),
@@ -66,9 +66,8 @@ const Orders = () => {
         header: 'Status',
         cell: ({ row }) => (
           <span
-            className={`px-2 py-1 rounded-full text-xs font-medium text-white ${
-              row.original.status === 'Paid' ? 'bg-green-600' : 'bg-yellow-500'
-            }`}
+            className={`px-2 py-1 rounded-full text-xs font-medium text-white ${row.original.status === 'Paid' ? 'bg-green-600' : 'bg-yellow-500'
+              }`}
           >
             {row.original.status}
           </span>
@@ -79,7 +78,7 @@ const Orders = () => {
         header: 'Date',
         cell: ({ row }) => {
           const date = new Date(row.original.createdAt).toLocaleDateString();
-          return <span className="text-white text-sm">{date}</span>;
+          return <span className="text-slate-900 text-sm">{date}</span>;
         },
       },
       {
@@ -88,7 +87,7 @@ const Orders = () => {
         cell: ({ row }) => (
           <Link
             href={`/dashboard/orders/${row.original.id}`}
-            className="text-blue-400 hover:text-blue-300 transition"
+            className="text-brand-primary-600 hover:text-brand-primary-700 transition"
           >
             <Eye size={18} />
           </Link>
@@ -110,30 +109,30 @@ const Orders = () => {
 
   return (
     <div className="w-full min-h-screen p-8">
-      <h2 className="text-2xl text-white font-semibold mb-2">All Orders</h2>
+      <h2 className="text-2xl text-slate-900 font-semibold mb-2">All Orders</h2>
       <Breadcrumb title="All Orders" />
       {/* Search bar */}
-      <div className="my-4 flex items-center bg-gray-900 p-2 rounded-md flex-1">
-        <Search size={18} className="text-gray-400 mr-2" />
+      <div className="my-4 flex items-center bg-white border border-slate-200 p-2 rounded-md flex-1">
+        <Search size={18} className="text-slate-400 mr-2" />
         <input
           type="text"
-          className="w-full bg-transparent text-white outline-none"
+          className="w-full bg-transparent text-slate-900 outline-none placeholder:text-slate-400"
           placeholder="Search orders..."
           value={globalFilter}
           onChange={(e) => setGlobalFilter(e.target.value)}
         />
       </div>
       {/* Table */}
-      <div className="overflow-x-auto bg-gray-900 rounded-lg p-4">
+      <div className="overflow-x-auto bg-white border border-slate-200 rounded-lg p-4">
         {isLoading ? (
-          <p className="text-center text-white">Loading orders...</p>
+          <p className="text-center text-slate-900">Loading orders...</p>
         ) : orders.length === 0 ? (
-          <p className="text-center py-3 text-white">No orders found!</p>
+          <p className="text-center py-3 text-slate-500">No orders found!</p>
         ) : (
-          <table className="w-full text-white">
+          <table className="w-full text-slate-900">
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
-                <tr className="border-b border-b-gray-800" key={headerGroup.id}>
+                <tr className="border-b border-b-slate-200" key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
                     <th className="p-3 text-left text-sm" key={header.id}>
                       {flexRender(
@@ -148,7 +147,7 @@ const Orders = () => {
             <tbody>
               {table.getRowModel().rows.map((row) => (
                 <tr
-                  className="border-b border-b-gray-800 hover:bg-gray-800 transition"
+                  className="border-b border-b-slate-100 hover:bg-slate-50 transition"
                   key={row.id}
                 >
                   {row.getVisibleCells().map((cell) => (

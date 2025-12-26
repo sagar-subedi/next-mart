@@ -15,12 +15,12 @@ type User = {
   id: string;
   name: string;
   email: string;
-  role: "ADMIN" | "USER" | "SELLER";
+  role: "admin" | "user" | "seller";
   password?: string;
   following?: string[];
   createdAt?: string;
   updatedAt?: string;
-  avatar: string; 
+  avatar: { fileUrl: string; fileId: string }[];
 };
 
 

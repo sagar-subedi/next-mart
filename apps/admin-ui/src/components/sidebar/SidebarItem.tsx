@@ -10,15 +10,22 @@ interface Props {
 
 const SidebarItem = ({ title, icon, href, isActive }: Props) => {
   return (
-    <Link href={href} className="my-2 block">
+    <Link href={href} className="block group">
       <div
-        className={`flex gap-2 w-full min-h-12 h-full items-center px-[13px] rounded-lg cursor-pointer transition hover:bg-[#2b2f31] ${
-          isActive &&
-          'bg-[#0f3158] scale-[0.98] fill-blue-200 hover:bg-[#0f3158d6]'
-        }`}
+        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 relative overflow-hidden ${isActive
+          ? 'bg-brand-primary-50 text-brand-primary-600 shadow-sm'
+          : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
+          }`}
       >
-        {icon}
-        <h5 className="text-lg font-medium text-slate-200">{title}</h5>
+        {isActive && (
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-brand-primary-500 rounded-r-full" />
+        )}
+        <div className={`transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`}>
+          {icon}
+        </div>
+        <span className={`text-sm font-semibold transition-colors duration-300 ${isActive ? 'text-brand-primary-600' : 'text-slate-500 group-hover:text-slate-900'}`}>
+          {title}
+        </span>
       </div>
     </Link>
   );

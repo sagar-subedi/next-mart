@@ -147,13 +147,13 @@ const Inbox = () => {
     )
       return;
 
-      const payload = {
-        fromUserId: seller?.id,
-        toUserId: selectedChat.user?.id,
-        conversationId: selectedChat.conversationId,
-        messageBody: message,
-        senderType: 'seller',
-      };
+    const payload = {
+      fromUserId: seller?.id,
+      toUserId: selectedChat.user?.id,
+      conversationId: selectedChat.conversationId,
+      messageBody: message,
+      senderType: 'seller',
+    };
 
     ws.send(JSON.stringify(payload));
 
@@ -168,15 +168,15 @@ const Inbox = () => {
 
   return (
     <div className="w-full">
-      <div className="flex h-screen shadow-inner overflow-hidden bg-gray-950 text-gray-200">
+      <div className="flex h-screen shadow-inner overflow-hidden bg-slate-50 text-slate-900">
         {/* Sidebar */}
-        <div className="border-b w-[320px] border-r-gray-800 bg-gray-950">
-          <h2 className="p-4 border-b border-gray-800 text-lg font-semibold">
+        <div className="border-b w-[320px] border-r-slate-200 bg-white">
+          <h2 className="p-4 border-b border-slate-200 text-lg font-semibold text-slate-900">
             Messages
           </h2>
-          <div className="divide-y divide-gray-900">
+          <div className="divide-y divide-slate-100">
             {isLoading ? (
-              <p className="text-center py-5 text-sm">Loading...</p>
+              <p className="text-center py-5 text-sm text-slate-500">Loading...</p>
             ) : chats.length > 0 ? (
               chats.map((chat) => {
                 const isActive =
@@ -185,21 +185,20 @@ const Inbox = () => {
                   <button
                     key={chat.conversationId}
                     onClick={() => handleChatSelect(chat)}
-                    className={`w-full text-left px-4 py-3 transition ${
-                      isActive ? 'bg-blue-950' : 'hover:bg-gray-800'
-                    }`}
+                    className={`w-full text-left px-4 py-3 transition ${isActive ? 'bg-brand-primary-50' : 'hover:bg-slate-50'
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <Image
-                        src={chat.user?.avatar || '/images/placeholder.png'}
+                        src={chat.user?.avatar?.[0]?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(chat.user?.name || 'User')}&background=random`}
                         alt={chat.user.name}
                         width={36}
                         height={36}
-                        className="rounded-full border size-10 object-cover"
+                        className="rounded-full border size-10 object-cover border-slate-200"
                       />
                       <div className="flex-1">
                         <div className="flex items-center justify-between">
-                          <span className="text-sm text-gray-800 font-semibold">
+                          <span className="text-sm text-slate-800 font-semibold">
                             {chat?.user?.name}
                           </span>
                           {chat.user?.isOnline && (
@@ -207,11 +206,11 @@ const Inbox = () => {
                           )}
                         </div>
                         <div className="flex justify-between items-center">
-                          <p className="text-xs text-gray-500 truncate max-w-[170px]">
+                          <p className="text-xs text-slate-500 truncate max-w-[170px]">
                             {getLastMessage(chat)}
                           </p>
                           {chat?.unreadCount > 0 && (
-                            <span className="ml-2 text-[10px] bg-blue-600 text-white">
+                            <span className="ml-2 text-[10px] bg-brand-primary-600 text-white px-1.5 py-0.5 rounded-full">
                               {chat.unreadCount > 9 ? '9+' : chat.unreadCount}
                             </span>
                           )}
@@ -222,26 +221,26 @@ const Inbox = () => {
                 );
               })
             ) : (
-              <p className="text-center pt-5">No conversations available yet</p>
+              <p className="text-center pt-5 text-slate-500">No conversations available yet</p>
             )}
           </div>
         </div>
-        <div className="flex flex-col flex-1 bg-gray-100">
+        <div className="flex flex-col flex-1 bg-slate-50">
           {selectedChat ? (
             <>
-              <div className="p-4 border-b bg-white border-b-gray-200 flex items-center gap-3">
+              <div className="p-4 border-b bg-white border-b-slate-200 flex items-center gap-3 shadow-sm">
                 <Image
-                  src={selectedChat.user?.avatar || '/images/placeholder.png'}
+                  src={selectedChat.user?.avatar?.[0]?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedChat.user?.name || 'User')}&background=random`}
                   alt={selectedChat?.user.name}
                   width={40}
                   height={40}
-                  className="rounded-full border size-10 object-cover border-gray-200"
+                  className="rounded-full border size-10 object-cover border-slate-200"
                 />
                 <div>
-                  <h2 className="text-gray-800 font-semibold text-base">
+                  <h2 className="text-slate-900 font-semibold text-base">
                     {selectedChat.user?.name}
                   </h2>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-slate-500">
                     {selectedChat.user?.isOnline ? 'Online' : 'Offline'}
                   </p>
                 </div>
@@ -253,27 +252,24 @@ const Inbox = () => {
                 {messages?.map((msg: any, index: number) => (
                   <div
                     key={index}
-                    className={`flex flex-col max-w-[80%] ${
-                      msg.senderType === 'seller'
-                        ? 'items-end ml-auto'
-                        : 'items-start'
-                    }`}
+                    className={`flex flex-col max-w-[80%] ${msg.senderType === 'seller'
+                      ? 'items-end ml-auto'
+                      : 'items-start'
+                      }`}
                   >
                     <div
-                      className={`px-4 py-2 rounded-lg shadow-sm w-fit ${
-                        msg.senderType === 'seller'
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-white text-gray-800'
-                      }`}
+                      className={`px-4 py-2 rounded-lg shadow-sm w-fit ${msg.senderType === 'seller'
+                        ? 'bg-brand-primary-600 text-white'
+                        : 'bg-white text-slate-800 border border-slate-100'
+                        }`}
                     >
                       {msg.text || msg.content}
                     </div>
                     <div
-                      className={`text-[11px] text-gray-400 mt-1 flex items-center gap-1 ${
-                        msg.senderType === 'seller'
-                          ? 'mr-1 justify-end'
-                          : 'ml-1'
-                      }`}
+                      className={`text-[11px] text-slate-400 mt-1 flex items-center gap-1 ${msg.senderType === 'seller'
+                        ? 'mr-1 justify-end'
+                        : 'ml-1'
+                        }`}
                     >
                       {msg.time ||
                         new Date(msg.createdAt).toLocaleDateString([], {
@@ -291,7 +287,7 @@ const Inbox = () => {
               />
             </>
           ) : (
-            <div className="flex flex-1 items-center justify-center text-gray-400 text-sm">
+            <div className="flex flex-1 items-center justify-center text-slate-400 text-sm">
               Select a conversation to start chatting
             </div>
           )}

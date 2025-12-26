@@ -3,6 +3,7 @@
 import { ReactNode, useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Provider as JotaiProvider } from 'jotai';
+import { Toaster } from 'react-hot-toast';
 import { WebSocketProvider } from '../context/WebSocketContext';
 import useSeller from '../hooks/useSeller';
 
@@ -17,6 +18,7 @@ const Providers = ({ children }: Props) => {
       <QueryClientProvider client={queryClient}>
         <ProvidersWithWebSocket>
           {children}
+          <Toaster position="top-center" reverseOrder={false} />
         </ProvidersWithWebSocket>
       </QueryClientProvider>
     </JotaiProvider>

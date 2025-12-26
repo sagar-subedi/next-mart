@@ -11,10 +11,10 @@ model images {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   fileId    String
   fileUrl   String
-  userId   String    @unique @db.ObjectId
-  user      users     @relation(fields: [userId], references: [id])
-  shopId    String?   @unique @db.ObjectId
-  productId String?   @unique @db.ObjectId
+  userId   String?    @db.ObjectId
+  user      users?   @relation(fields: [userId], references: [id])
+  shopId    String?  @db.ObjectId
+  productId String?  @db.ObjectId
   shop     shops?    @relation(fields: [shopId], references: [id])
   product  products? @relation(fields: [productId], references: [id])
   createdAt DateTime?  @default(now())
@@ -33,7 +33,7 @@ model users {
   updatedAt DateTime      @updatedAt
   orders    orders[]
   followers followers[]
-  avatar    images?
+  avatar    images[]
 }
 
 model addresses {
@@ -67,7 +67,7 @@ model shops {
   name          String
   bio           String?
   category      String
-  avatar        images?
+  avatar        images[]
   coverBanner   String?
   address       String
   openingHours String?
@@ -92,7 +92,6 @@ model sellers {
   country   String
   password  String
   stripeId  String?
-  shopId    String?    @db.ObjectId
   shop      shops?
   products  products[]
   createdAt DateTime   @default(now())
