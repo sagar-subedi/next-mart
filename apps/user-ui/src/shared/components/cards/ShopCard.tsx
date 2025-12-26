@@ -10,7 +10,7 @@ interface Props {
     id: string;
     name: string;
     description?: string;
-    avatar: string;
+    avatar: any; // Changed from string to any to handle relation object
     coverBanner?: string;
     address?: string;
     followers?: any[];
@@ -21,16 +21,16 @@ interface Props {
 
 const ShopCard = ({ shop }: Props) => {
   const [coverSrc, setCoverSrc] = useState(
-    shop?.coverBanner || '/images/shop-cover-placeholder.png'
+    shop?.coverBanner || 'https://placehold.co/1200x400/1e293b/cbd5e1.png?text=Shop+Cover'
   );
   const [avatarSrc, setAvatarSrc] = useState(
-    shop?.avatar || '/images/shop-avatar-placeholder.png'
+    shop?.avatar?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(shop?.name || 'Shop')}&background=random`
   );
 
   // Update state if props change
   useEffect(() => {
-    setCoverSrc(shop?.coverBanner || '/images/shop-cover-placeholder.png');
-    setAvatarSrc(shop?.avatar || '/images/shop-avatar-placeholder.png');
+    setCoverSrc(shop?.coverBanner || 'https://placehold.co/1200x400/1e293b/cbd5e1.png?text=Shop+Cover');
+    setAvatarSrc(shop?.avatar?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(shop?.name || 'Shop')}&background=random`);
   }, [shop]);
 
   return (
@@ -42,7 +42,7 @@ const ShopCard = ({ shop }: Props) => {
           alt="cover"
           fill
           className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
-          onError={() => setCoverSrc('/images/shop-cover-placeholder.png')}
+          onError={() => setCoverSrc('https://placehold.co/1200x400/1e293b/cbd5e1.png?text=Shop+Cover')}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </div>
@@ -56,7 +56,7 @@ const ShopCard = ({ shop }: Props) => {
             width={80}
             height={80}
             className="object-cover w-full h-full"
-            onError={() => setAvatarSrc('/images/shop-avatar-placeholder.png')}
+            onError={() => setAvatarSrc(`https://ui-avatars.com/api/?name=${encodeURIComponent(shop?.name || 'Shop')}&background=random`)}
           />
         </div>
       </div>

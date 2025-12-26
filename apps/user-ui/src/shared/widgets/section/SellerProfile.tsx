@@ -18,7 +18,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { FaTwitter, FaYoutube } from 'react-icons/fa';
+import { FaTwitter, FaYoutube, FaFacebook, FaInstagram } from 'react-icons/fa';
 import ProductCard from '../../components/cards/ProductCard';
 
 interface SellerProfileProps {
@@ -68,7 +68,7 @@ const SellerProfile = ({ shop, followersCount }: SellerProfileProps) => {
     queryKey: ['seller-events'],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/seller/get-seller-events/${shop.id}?page=1&limit=10`
+        `/seller/api/get-seller-events/${shop.id}?page=1&limit=10`
       );
       return res.data.products;
     },
@@ -116,10 +116,11 @@ const SellerProfile = ({ shop, followersCount }: SellerProfileProps) => {
     <div>
       <div className="relative w-full flex justify-center">
         <Image
-          src={shop?.coverBanner || '/images/default-banner.png'}
+          src={shop?.coverBanner || 'https://placehold.co/1200x400/1e293b/cbd5e1.png?text=Shop+Cover'}
           alt="Seller cover"
           width={1200}
           height={300}
+          className="object-cover w-full h-[300px]"
         />
       </div>
       {/* Seller info section */}
@@ -128,7 +129,7 @@ const SellerProfile = ({ shop, followersCount }: SellerProfileProps) => {
           <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
             <div className="relative size-24 rounded-full border-4 border-slate-300 overflow-hidden">
               <Image
-                src={shop?.avatar || '/images/default-shop.png'}
+                src={shop?.avatar?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(shop?.name || 'Shop')}&background=random`}
                 alt="avatar"
                 layout="fill"
                 objectFit="cover"
@@ -162,11 +163,10 @@ const SellerProfile = ({ shop, followersCount }: SellerProfileProps) => {
             <button
               disabled={toggleFollowMutation.isPending}
               onClick={() => toggleFollowMutation.mutate()}
-              className={`px-6 py-2 h-10 rounded-lg font-semibold flex items-center ${
-                isFollowing
-                  ? 'bg-red-500 hover:bg-red-600'
-                  : 'bg-blue-600 hover:bg-blue-700'
-              }`}
+              className={`px-6 py-2 h-10 rounded-lg font-semibold flex items-center ${isFollowing
+                ? 'bg-red-500 hover:bg-red-600'
+                : 'bg-blue-600 hover:bg-blue-700'
+                }`}
             >
               <Heart size={18} />
               <span>{isFollowing ? 'Unfollow' : 'Follow'}</span>
@@ -198,18 +198,23 @@ const SellerProfile = ({ shop, followersCount }: SellerProfileProps) => {
             <div className="mt-3">
               <h3 className="text-lg font-medium text-slate-700">Follow Us:</h3>
               <div className="flex gap-3 mt-2">
-                {shop.socialLinks.map((link: any, index: number) => (
-                  <Link
-                    key={index}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="opacity-[0.9]"
-                  >
-                    {link.type === 'youtube' && <FaYoutube />}
-                    {link.type === 'x' && <FaTwitter />}
-                  </Link>
-                ))}
+                {shop.socialLinks.map((link: any, index: number) => {
+                  if (!link.url) return null;
+                  return (
+                    <Link
+                      key={index}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="opacity-[0.9] text-2xl text-slate-600 hover:text-blue-600 transition-colors"
+                    >
+                      {link.platform === 'Facebook' && <FaFacebook />}
+                      {link.platform === 'Instagram' && <FaInstagram />}
+                      {link.platform === 'Twitter' && <FaTwitter />}
+                      {link.platform === 'YouTube' && <FaYoutube />}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -223,11 +228,10 @@ const SellerProfile = ({ shop, followersCount }: SellerProfileProps) => {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-6 py-3 text-lg font-semibold transition ${
-                activeTab === tab
-                  ? 'text-slate-800 border-b-2 border-b-blue-600'
-                  : 'text-slate-600'
-              }`}
+              className={`px-6 py-3 text-lg font-semibold transition ${activeTab === tab
+                ? 'text-slate-800 border-b-2 border-b-blue-600'
+                : 'text-slate-600'
+                }`}
             >
               {tab}
             </button>

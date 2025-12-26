@@ -22,7 +22,7 @@ const Inbox = () => {
   const conversationId = searchParams.get('conversationId');
   const [hasFetchedOnce, setHasFetchedOnce] = useState(true);
   const scrollAnchorRef = useRef<HTMLDivElement | null>(null);
-  const { user , isLoading: isUserLoading } = useRequireAuth();
+  const { user, isLoading: isUserLoading } = useRequireAuth();
   const messageContainerRef = useRef<HTMLDivElement | null>(null);
   const [selectedChat, setSelectedChat] = useState<any | null>(null);
 
@@ -205,15 +205,14 @@ const Inbox = () => {
                   return (
                     <button
                       key={chat.conversationId}
-                      className={`w-full text-left px-4 py-3 transition hover:bg-blue-50 ${
-                        isActive && 'bg-blue-100'
-                      }`}
+                      className={`w-full text-left px-4 py-3 transition hover:bg-blue-50 ${isActive && 'bg-blue-100'
+                        }`}
                       onClick={() => handleChatSelect(chat)}
                     >
                       <div className="flex items-center gap-3">
                         <Image
                           src={
-                            chat?.seller?.avatar || '/images/placeholder.png'
+                            chat?.seller?.avatar?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(chat?.seller?.name || 'Shop')}&background=random`
                           }
                           alt={chat?.seller?.name}
                           width={36}
@@ -251,7 +250,7 @@ const Inbox = () => {
                 <div className="p-4 border-b bg-white border-b-gray-200 flex items-center gap-3">
                   <Image
                     src={
-                      selectedChat.seller?.avatar || '/images/placeholder.png'
+                      selectedChat.seller?.avatar?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedChat.seller?.name || 'Shop')}&background=random`
                     }
                     alt={selectedChat?.seller.name}
                     width={40}
@@ -282,27 +281,24 @@ const Inbox = () => {
                   {messages?.map((msg: any, index: number) => (
                     <div
                       key={index}
-                      className={`flex flex-col max-w-[80%] ${
-                        msg.senderType === 'user'
-                          ? 'items-end ml-auto'
-                          : 'items-start'
-                      }`}
+                      className={`flex flex-col max-w-[80%] ${msg.senderType === 'user'
+                        ? 'items-end ml-auto'
+                        : 'items-start'
+                        }`}
                     >
                       <div
-                        className={`px-4 py-2 rounded-lg shadow-sm w-fit ${
-                          msg.senderType === 'user'
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-white text-gray-800'
-                        }`}
+                        className={`px-4 py-2 rounded-lg shadow-sm w-fit ${msg.senderType === 'user'
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-white text-gray-800'
+                          }`}
                       >
                         {msg.text || msg.content}
                       </div>
                       <div
-                        className={`text-[11px] text-gray-400 mt-1 flex items-center gap-1 ${
-                          msg.senderType === 'user'
-                            ? 'mr-1 justify-end'
-                            : 'ml-1'
-                        }`}
+                        className={`text-[11px] text-gray-400 mt-1 flex items-center gap-1 ${msg.senderType === 'user'
+                          ? 'mr-1 justify-end'
+                          : 'ml-1'
+                          }`}
                       >
                         {msg.time ||
                           new Date(msg.createdAt).toLocaleDateString([], {
