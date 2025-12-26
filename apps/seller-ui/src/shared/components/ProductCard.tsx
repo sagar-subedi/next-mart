@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Eye, Heart, ShoppingBag } from 'lucide-react';
+import { RiHeartLine, RiHeartFill, RiShoppingBag3Line } from 'react-icons/ri';
 import { useStore } from 'apps/user-ui/src/store';
 import useUser from 'apps/user-ui/src/hooks/useUser';
 import useLocationTracking from 'apps/user-ui/src/hooks/useLocationTracking';
@@ -58,96 +58,106 @@ const ProductCard = ({ product, isEvent = false }: Props) => {
   const isInCart = cart.some((item) => item.id === product.id);
 
   return (
-    <div className="w-full min-h-[350px] h-max bg-white rounded-lg relative">
-      {isEvent && (
-        <div className="absolute top-2 left-2 bg-red-600 text-white text-[10px] font-semibold px-2 py-1 rounded-sm shadow-md">
-          OFFER
-        </div>
-      )}
-      {product?.stock <= 5 && (
-        <div className="absolute top-2 right-2 bg-yellow-400 text-slate-700 text-[10px] font-semibold px-2 py-1 rounded-sm shadow-md">
-          Limited Stock
-        </div>
-      )}
-      <Link href={`/dashboard/products/${product?.slug}`}>
-        <Image
-          src={product?.images[0]?.fileUrl}
-          alt={product?.title}
-          width={300}
-          height={300}
-          className="w-full h-[300px] object-cover mx-auto rounded-t-md cursor-pointer p-4"
-        />
-      </Link>
-      <Link
-        href={`/shops/${product.shop?.id}`}
-        className="block text-blue-500 text-sm font-medium my-2 px-2"
-      >
-        {product.shop?.name}
-      </Link>
-      <Link href={`/dashboard/products/${product?.slug}`}>
-        <h3 className="text-base font-semibold px-2 text-gray-800 line-clamp-1">
-          {product?.title}
-        </h3>
-      </Link>
-      <div className="mt-2 px-2">
-        <Ratings rating={product?.ratings} />
+    <div className="group bg-slate-900 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-slate-800 flex flex-col h-full relative">
+      {/* Badges */}
+      <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
+        {isEvent && (
+          <div className="bg-red-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-lg shadow-red-500/20 uppercase tracking-wider">
+            Offer
+          </div>
+        )}
+        {product?.stock <= 5 && (
+          <div className="bg-amber-400 text-amber-900 text-[10px] font-bold px-2.5 py-1 rounded-full shadow-lg shadow-amber-400/20 uppercase tracking-wider">
+            Low Stock
+          </div>
+        )}
       </div>
-      <div className="mt-3 flex justify-between items-center px-2">
-        <div className="flex items-center gap-2">
-          <span className="text-lg font-bold text-gray-900">
-            ${product.salePrice}
-          </span>
-          <span className="text-sm line-through text-red-500">
-            ${product.regularPrice}
-          </span>
-        </div>
-        <span className="text-green-500 text-sm font-medium">
-          {product.totalSales} sold
-        </span>
-      </div>
-      {isEvent && timeLeft && (
-        <div className="mt-2">
-          <span className="inline-block text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded-md">
-            {timeLeft}
-          </span>
-        </div>
-      )}
 
-      <div className="absolute z-10 flex flex-col gap-3 right-3 top-10">
-        <div className="bg-white rounded-full p-[6px] shadow-md">
-          <Heart
-            className="cursor-pointer hover:scale-110 transition"
-            size={22}
-            fill={isWishlisted ? 'red' : 'transparent'}
-            stroke={isWishlisted ? 'red' : '#4b5563'}
+      {/* Image Container */}
+      <div className="relative aspect-square overflow-hidden bg-slate-950">
+        <Link href={`/dashboard/products/${product?.slug}`}>
+          <Image
+            src={product?.images[0]?.fileUrl}
+            alt={product?.title}
+            fill
+            className="object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out p-4"
+          />
+        </Link>
+
+        {/* Quick Actions */}
+        <div className="absolute top-3 right-3 z-10 flex flex-col gap-2 translate-x-12 group-hover:translate-x-0 transition-transform duration-500 ease-out">
+          <button
             onClick={() => {
               if (isWishlisted) {
                 removeFromWishlist(product.id, user, location, deviceInfo);
               } else {
-                addToWishlist(
-                  { ...product, quantity: 1 },
-                  user,
-                  location,
-                  deviceInfo
-                );
+                addToWishlist({ ...product, quantity: 1 }, user, location, deviceInfo);
               }
             }}
-          />
-        </div>
-        <div className="bg-white rounded-full p-[6px] shadow-md">
-          <ShoppingBag
-            className="cursor-pointer hover:scale-110 transition text-[#4b5563]"
-            size={22}
+            className="w-9 h-9 bg-slate-800/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-slate-700 transition-colors border border-slate-700"
+          >
+            {isWishlisted ? (
+              <RiHeartFill size={18} className="text-red-500 scale-110" />
+            ) : (
+              <RiHeartLine size={18} className="text-slate-400" />
+            )}
+          </button>
+          <button
             onClick={() => {
-              !isInCart &&
-                addToCart(
-                  { ...product, quantity: 1 },
-                  user,
-                  location,
-                  deviceInfo
-                );
+              !isInCart && addToCart({ ...product, quantity: 1 }, user, location, deviceInfo);
             }}
-          />
+            className="w-9 h-9 bg-slate-800/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-slate-700 transition-colors border border-slate-700"
+          >
+            <RiShoppingBag3Line size={18} className="text-slate-400" />
+          </button>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="p-4 flex flex-col flex-1">
+        <Link
+          href={`/shops/${product.shop?.id}`}
+          className="text-brand-primary-500 text-[10px] font-bold uppercase tracking-widest mb-1 hover:text-brand-primary-400 transition-colors"
+        >
+          {product.shop?.name}
+        </Link>
+
+        <Link href={`/dashboard/products/${product?.slug}`} className="mb-2">
+          <h3 className="text-sm font-bold text-slate-200 line-clamp-2 group-hover:text-brand-primary-500 transition-colors leading-tight">
+            {product?.title}
+          </h3>
+        </Link>
+
+        <div className="mt-auto">
+          <div className="flex items-center gap-1 mb-3">
+            <Ratings rating={product?.ratings} />
+            <span className="text-[10px] text-slate-400 font-medium">({product?.ratings || 0})</span>
+          </div>
+
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex flex-col">
+              <span className="text-lg font-black text-white leading-none">
+                ${product.salePrice}
+              </span>
+              <span className="text-[10px] line-through text-slate-400 font-medium">
+                ${product.regularPrice}
+              </span>
+            </div>
+            <div className="text-right">
+              <span className="block text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                {product.totalSales} sold
+              </span>
+            </div>
+          </div>
+
+          {isEvent && timeLeft && (
+            <div className="mt-3 pt-3 border-t border-slate-800">
+              <span className="flex items-center gap-1.5 text-[10px] font-bold text-orange-500 uppercase tracking-tight">
+                <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+                {timeLeft}
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </div>

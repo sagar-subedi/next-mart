@@ -3,70 +3,80 @@
 import styled from 'styled-components';
 
 const SidebarWrapper = styled.div`
-  background-color: var(--background);
-  transition: transform 0.2s ease;
-  height: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 100vh;
   position: fixed;
-  width: 16rem;
+  width: 18rem;
   flex-shrink: 0;
   z-index: 202;
   overflow-y: auto;
-  border-right: 1px solid var(--border);
+  display: flex;
   flex-direction: column;
-  padding-top: var(--space-10);
-  padding-bottom: var(--space-10);
-  padding-left: var(--space-6);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.02);
+  position: relative;
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+`;
+
+const GradientBorder = styled.div`
+  position: fixed;
+  right: calc(100% - 18rem);
+  top: 10%;
+  bottom: 10%;
+  width: 2px;
+  background: linear-gradient(to bottom, #64748b 0%, #94a3b8 50%, #cbd5e1 100%);
+  z-index: 203;
+  pointer-events: none;
+  opacity: 0.4;
 `;
 
 const Overlay = styled.div`
   position: fixed;
-  background-color: rgba(15, 23, 42, 0.3);
+  background-color: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
   inset: 0;
   z-index: 201;
-  transition: opacity 0.2s ease;
-  opacity: 0.8;
+  transition: all 0.3s ease;
+  opacity: 0;
   pointer-events: none;
   visibility: hidden;
 
+  &.active {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+  }
+
   @media (min-width: 768px) {
     display: none;
-    z-index: auto;
-    opacity: 1;
   }
 `;
 
 const Header = styled.header`
+  padding: 2rem 1.5rem;
   display: flex;
-  align-items: center;
-  gap: var(--space-8);
-  justify-content: space-between;
-  padding-left: var(--space-10);
-  padding-right: var(--space-10);
+  flex-direction: column;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), transparent);
 `;
 
 const Body = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: var(--space-10);
-  margin-top: var(--space-13);
-  padding-left: var(--space-4);
-  padding-right: var(--space-4);
+  gap: 0.5rem;
+  padding: 1.5rem 1rem;
 `;
 
 const Footer = styled.footer`
-  display: flex;
-  align-items: center;
-  gap: var(--space-12);
-  justify-content: center;
-  padding-left: var(--space-8);
-  padding-right: var(--space-8);
-  padding-bottom: var(--space-8);
-  padding-top: var(--space-18);
-
-  @media (min-width: 768px) {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
+  padding: 1.5rem;
+  border-top: 1px solid rgba(226, 232, 240, 0.5);
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.5), transparent);
 `;
 
 export const Sidebar = {
@@ -75,4 +85,5 @@ export const Sidebar = {
   Body,
   Footer,
   Overlay,
+  GradientBorder,
 };

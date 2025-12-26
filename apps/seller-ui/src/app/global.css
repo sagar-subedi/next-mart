@@ -2,12 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --brand-primary: #3b82f6;
+    --brand-secondary: #6366f1;
+    --brand-accent: #a855f7;
+    --brand-highlight: #06b6d4;
+    --background: #f8fafc;
+    --foreground: #0f172a;
+    --card: #ffffff;
+    --card-foreground: #0f172a;
+    --border: #e2e8f0;
+    --input: #e2e8f0;
+    --ring: #3b82f6;
+  }
+}
+
 body {
   font-family: 'Poppins', sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
 @layer utilities {
   .text-error {
     @apply text-red-500 text-sm mt-2;
+  }
+
+  .glass {
+    @apply bg-white/70 backdrop-blur-md border border-white/20;
+  }
+
+  .brand-gradient {
+    @apply bg-gradient-to-r from-brand-primary-500 via-brand-secondary-500 to-brand-accent-500;
   }
 }

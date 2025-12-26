@@ -1,7 +1,7 @@
 import { isSeller } from '@packages/error-handler/authorizeRoles';
 import isAuthenticated from '@packages/error-handler/isAuthenticated';
 import { Router } from 'express';
-import { getSellerNotifications, markAsRead } from './seller.controller';
+import { getSellerNotifications, markAsRead, updateShopInfo } from './seller.controller';
 
 const router = Router();
 
@@ -12,5 +12,11 @@ router.get(
   getSellerNotifications
 );
 router.put('/mark-as-read/:notificationId', isAuthenticated, markAsRead);
+router.put(
+  '/update-shop-info',
+  isAuthenticated,
+  isSeller,
+  updateShopInfo
+);
 
 export default router;

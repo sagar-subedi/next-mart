@@ -93,9 +93,9 @@ const DiscountCodes = () => {
   return (
     <div className="w-full min-h-screen p-8">
       <div className="flex justify-between items-center mb-1">
-        <h2 className="text-2xl text-white font-semibold">Discount Codes</h2>
+        <h2 className="text-2xl text-slate-900 font-semibold">Discount Codes</h2>
         <button
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+          className="bg-brand-primary-600 hover:bg-brand-primary-700 text-white px-4 py-2 rounded-lg flex items-center gap-2"
           onClick={() => setOpenModal(true)}
         >
           <Plus size={18} /> Create Discount Code
@@ -103,18 +103,18 @@ const DiscountCodes = () => {
       </div>
       {/* Breadcrumb */}
       <Breadcrumb title="Discount Codes" />
-      <div className="mt-8 bg-gray-900 p-6 rounded-lg shadow-lg">
-        <h3 className="text-lg font-semibold text-white mb-4">
+      <div className="mt-8 bg-white border border-slate-200 p-6 rounded-lg shadow-sm">
+        <h3 className="text-lg font-semibold text-slate-900 mb-4">
           Your Discount codes
         </h3>
         {isLoading ? (
           <div className="flex items-center justify-center">
-            <LoaderCircle size={30} className="animate-spin text-white" />
+            <LoaderCircle size={30} className="animate-spin text-slate-900" />
           </div>
         ) : (
-          <table className="w-full text-white">
+          <table className="w-full text-slate-900">
             <thead>
-              <tr className="border-b border-gray-800">
+              <tr className="border-b border-slate-200">
                 <th className="p-3 text-left">Title</th>
                 <th className="p-3 text-left">Type</th>
                 <th className="p-3 text-left">Value</th>
@@ -126,7 +126,7 @@ const DiscountCodes = () => {
               {discountCodes?.map((code: any) => (
                 <tr
                   key={code.id}
-                  className="border-b border-gray-800 hover:bg-gray-800 transition"
+                  className="border-b border-slate-100 hover:bg-slate-50 transition"
                 >
                   <td className="p-3">{code.publicName}</td>
                   <td className="p-3 capitalize">
@@ -151,9 +151,9 @@ const DiscountCodes = () => {
                 </tr>
               ))}
               {!isLoading && discountCodes?.length === 0 && (
-                <tr className="p-4 text-center text-gray-400">
+                <tr className="p-4 text-center text-slate-500">
                   <td className="py-5">
-                  No discount codes available!
+                    No discount codes available!
                   </td>
                 </tr>
               )}
@@ -162,12 +162,12 @@ const DiscountCodes = () => {
         )}
       </div>
       {openModal && (
-        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-gray-800 p-6 rounded-lg w-[450px] shadow-lg">
-            <div className="flex justify-between items-center border-b border-gray-700 pb-3">
-              <h3 className="text-xl text-white">Create Discount Code</h3>
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg w-[450px] shadow-xl">
+            <div className="flex justify-between items-center border-b border-slate-200 pb-3">
+              <h3 className="text-xl text-slate-900">Create Discount Code</h3>
               <button
-                className="text-gray-400 hover:text-white transition"
+                className="text-slate-400 hover:text-slate-900 transition"
                 onClick={() => setOpenModal(false)}
               >
                 <X size={22} />
@@ -188,7 +188,7 @@ const DiscountCodes = () => {
                   <div className="mt-4">
                     <label
                       htmlFor="discountType"
-                      className="block font-semibold text-gray-300 mb-1"
+                      className="block font-semibold text-slate-700 mb-1"
                     >
                       Discount Type
                     </label>
@@ -198,7 +198,7 @@ const DiscountCodes = () => {
                       render={({ field }) => (
                         <select
                           {...field}
-                          className="w-full p-2 rounded-md border border-gray-700 outline-none bg-gray-800 text-white"
+                          className="w-full p-2 rounded-md border border-slate-200 outline-none bg-white text-slate-900"
                         >
                           <option value="percentage">Percentage (%)</option>
                           <option value="flat">Flat ($)</option>
@@ -242,7 +242,7 @@ const DiscountCodes = () => {
                   <button
                     type="submit"
                     disabled={createDiscountCodeMutation.isPending}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center justify-center mt-4 w-full"
+                    className="bg-brand-primary-600 hover:bg-brand-primary-700 text-white px-4 py-2 rounded-md flex items-center justify-center mt-4 w-full"
                   >
                     {createDiscountCodeMutation.isPending ? (
                       <LoaderCircle size={18} className="animate-spin" />
