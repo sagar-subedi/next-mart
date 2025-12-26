@@ -205,29 +205,6 @@ export const createProduct = async (
       sizes,
     } = req.body;
 
-    console.log({
-      title,
-      description,
-      detailedDescription,
-      warranty,
-      customSpecifications,
-      customProperties,
-      slug,
-      tags,
-      cashOnDelivery,
-      brand,
-      videoUrl,
-      category,
-      subCategory,
-      regularPrice,
-      salePrice,
-      stock,
-      discountCodes,
-      images,
-      colors,
-      sizes,
-    });
-
 
 
     if (
