@@ -205,6 +205,31 @@ export const createProduct = async (
       sizes,
     } = req.body;
 
+    console.log({
+      title,
+      description,
+      detailedDescription,
+      warranty,
+      customSpecifications,
+      customProperties,
+      slug,
+      tags,
+      cashOnDelivery,
+      brand,
+      videoUrl,
+      category,
+      subCategory,
+      regularPrice,
+      salePrice,
+      stock,
+      discountCodes,
+      images,
+      colors,
+      sizes,
+    });
+
+
+
     if (
       !title ||
       !description ||
@@ -266,8 +291,14 @@ export const createProduct = async (
         },
         colors: colors || [],
         sizes: sizes || [],
-        sellerId: req.seller.id,
-        shopId: req.seller.shopId,
+        seller: {
+          connect: { id: req.seller.id }
+        },
+        shop: {
+          connect: { id: req.seller.shop.id }
+        }
+        // sellerId: req.seller.id,
+        // shopId: req.seller.shopId,
       },
       include: {
         images: true,
@@ -481,7 +512,7 @@ export const getAllEvents = async (
       OR: [{ startingDate: { not: null } }, { endingDate: { not: null } }],
     };
 
-    const [events, total,top10Sales] = await Promise.all([
+    const [events, total, top10Sales] = await Promise.all([
       prisma.products.findMany({
         where: baseFilter,
         skip,
@@ -501,7 +532,7 @@ export const getAllEvents = async (
         where: baseFilter,
         take: 10,
         orderBy: {
-          totalSales:'desc'
+          totalSales: 'desc'
         }
       })
     ]);

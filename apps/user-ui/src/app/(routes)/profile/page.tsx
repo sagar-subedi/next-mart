@@ -27,7 +27,10 @@ import {
   ShoppingBag,
   Truck,
   User,
+  Upload,
+  X,
 } from 'lucide-react';
+import { toast } from 'react-hot-toast';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -37,7 +40,10 @@ export interface User {
   name: string;
   points?: number;
   email: string;
-  avatar: string;
+  avatar?: {
+    fileUrl: string;
+    fileId: string;
+  };
   createdAt: string;
 }
 
@@ -51,6 +57,7 @@ const ProfilePage = () => {
   };
   const queryTab = searchParams.get('active') || 'Profile';
   const [activeTab, setActiveTab] = useState(queryTab);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
 
   useEffect(() => {
     if (activeTab !== queryTab) {
@@ -100,6 +107,78 @@ const ProfilePage = () => {
     await axiosInstance.put(`/seller/mark-as-read`, {
       notificationId,
     });
+  };
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image size must be less than 5MB');
+      return;
+    }
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please upload an image file');
+      return;
+    }
+
+    setIsUploadingAvatar(true);
+
+    try {
+      // Convert file to base64
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onload = async () => {
+        try {
+          const base64String = reader.result as string;
+
+          await axiosInstance.post('/api/upload-avatar', {
+            fileName: base64String,
+          });
+
+          queryClient.invalidateQueries({ queryKey: ['user'] });
+          toast.success('Profile photo updated successfully');
+        } catch (error) {
+          console.error('Failed to upload avatar:', error);
+          toast.error('Failed to upload photo');
+        } finally {
+          setIsUploadingAvatar(false);
+          // Reset file input
+          e.target.value = '';
+        }
+      };
+
+      reader.onerror = () => {
+        toast.error('Failed to read file');
+        setIsUploadingAvatar(false);
+        e.target.value = '';
+      };
+    } catch (error) {
+      console.error('Failed to upload avatar:', error);
+      toast.error('Failed to upload photo');
+      setIsUploadingAvatar(false);
+      e.target.value = '';
+    }
+  };
+
+  const handleRemoveAvatar = async () => {
+    if (!confirm('Are you sure you want to remove your profile photo?')) return;
+
+    setIsUploadingAvatar(true);
+    try {
+      await axiosInstance.delete('/api/remove-avatar');
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+      toast.success('Profile photo removed');
+    } catch (error) {
+      console.error('Failed to remove avatar:', error);
+      toast.error('Failed to remove photo');
+    } finally {
+      setIsUploadingAvatar(false);
+    }
   };
 
   return (
@@ -191,17 +270,48 @@ const ProfilePage = () => {
             {activeTab === 'Profile' && !isLoading && user ? (
               <div className="space-y-6">
                 <div className="flex items-center gap-4">
-                  <Image
-                    src={user?.avatar || '/images/default-avatar.png'}
-                    alt="avatar"
-                    width={80}
-                    height={80}
-                    className="size-20 rounded-full border-2 border-brand-primary-200"
-                  />
-                  <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-brand-primary-600 hover:text-brand-primary-700 bg-brand-primary-50 hover:bg-brand-primary-100 rounded-lg transition-colors">
-                    <Pencil className="size-4" />
-                    Change Photo
-                  </button>
+                  <div className="relative group">
+                    <Image
+                      src={user?.avatar?.[0]?.fileUrl || '/images/default-avatar.png'}
+                      alt="avatar"
+                      width={80}
+                      height={80}
+                      className="size-20 rounded-full border-2 border-brand-primary-200 object-cover"
+                    />
+                    {isUploadingAvatar && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full">
+                        <Loader2 className="w-6 h-6 animate-spin text-white" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label
+                      htmlFor="avatar-upload"
+                      className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-brand-primary-600 hover:text-brand-primary-700 bg-brand-primary-50 hover:bg-brand-primary-100 rounded-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                      style={{ pointerEvents: isUploadingAvatar ? 'none' : 'auto' }}
+                    >
+                      <Upload className="size-4" />
+                      {isUploadingAvatar ? 'Uploading...' : 'Change Photo'}
+                    </label>
+                    <input
+                      id="avatar-upload"
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleAvatarUpload}
+                      disabled={isUploadingAvatar}
+                    />
+                    {user?.avatar && (
+                      <button
+                        onClick={handleRemoveAvatar}
+                        disabled={isUploadingAvatar}
+                        className="flex items-center gap-1.5 text-xs text-red-600 hover:text-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      >
+                        <X className="size-3" />
+                        Remove Photo
+                      </button>
+                    )}
+                  </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="p-4 bg-gray-50 rounded-lg">

@@ -21,6 +21,8 @@ import {
   verifySeller,
   verifyUser,
   verifyUserForgotPassword,
+  uploadUserAvatar,
+  removeUserAvatar,
 } from './auth.controller';
 import isAuthenticated from '@packages/error-handler/isAuthenticated';
 import { isSeller } from '@packages/error-handler/authorizeRoles';
@@ -49,5 +51,9 @@ router.get('/logout-seller', isAuthenticated, isSeller, logoutSeller);
 router.post('/add-address', isAuthenticated, addUserAddress);
 router.get('/shipping-addresses', getUserAddresses);
 router.delete('/delete-address/:id', isAuthenticated, deleteUserAddress);
+
+// Avatar routes
+router.post('/upload-avatar', isAuthenticated, uploadUserAvatar);
+router.delete('/remove-avatar', isAuthenticated, removeUserAvatar);
 
 export default router;

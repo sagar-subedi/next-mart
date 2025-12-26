@@ -179,7 +179,7 @@
                 "category": {
                   "example": "any"
                 },
-                "subcategory": {
+                "subCategory": {
                   "example": "any"
                 },
                 "regularPrice": {

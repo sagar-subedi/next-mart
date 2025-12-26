@@ -18,6 +18,7 @@ import {
 } from '@packages/error-handler';
 import { setCookie } from './utils/cookies/setCookie';
 import stripe from '@packages/libs/stripe';
+import imageKit from '@packages/libs/imageKit';
 
 // Register user
 export const userRegistration = async (
@@ -670,9 +671,134 @@ export const getLayoutData = async (req: Request, res: Response, next: NextFunct
     const layout = await prisma.siteConfig.findFirst()
 
     return res.status(200).json({
-      success:true,layout
+      success: true, layout
     })
   } catch (error) {
     return next(error)
   }
 }
+// Upload user avatar
+export const uploadUserAvatar = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return next(new AuthError('Unauthorized'));
+    }
+
+    const { fileName } = req.body;
+
+    if (!fileName) {
+      return next(new ValidationError('No image file provided'));
+    }
+
+    // Check if user already has an avatar
+    const existingAvatar = await req.user.avatar;
+
+    // If avatar exists, delete it from ImageKit first
+    if (existingAvatar && existingAvatar.length > 0) {
+      try {
+        await imageKit.deleteFile(existingAvatar[0].fileId);
+      } catch (error) {
+        console.error('Failed to delete old avatar from ImageKit:', error);
+        // Continue even if deletion fails
+      }
+    }
+
+    // Upload new avatar to ImageKit
+    const response = await imageKit.upload({
+      file: fileName,
+      fileName: `user-avatar-${userId}-${Date.now()}.jpg`,
+      folder: 'user-avatars',
+    });
+
+    // Update or create avatar record in database
+    if (existingAvatar && existingAvatar.length > 0 && existingAvatar[0].id) {
+      await prisma.images.update({
+        where: { id: existingAvatar[0].id },
+        data: {
+          fileId: response.fileId,
+          fileUrl: response.url,
+        },
+      });
+    } else {
+      await prisma.images.create({
+        data: {
+          fileId: response.fileId,
+          fileUrl: response.url,
+          userId,
+        },
+      });
+    }
+
+    // Get updated user with avatar
+    const user = await prisma.users.findUnique({
+      where: { id: userId },
+      include: { avatar: true },
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Avatar uploaded successfully',
+      user,
+    });
+  } catch (error) {
+    console.error('Avatar upload error:', error);
+    return next(error);
+  }
+};
+
+// Remove user avatar
+export const removeUserAvatar = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return next(new AuthError('Unauthorized'));
+    }
+
+    // const avatar = await prisma.images.findUnique({
+    //   where: { id: req.user.avatar.id },
+    // });
+    const avatar = req.user.avatar;
+
+    if (!avatar || avatar.length === 0) {
+      return next(new NotFoundError('No avatar found'));
+    }
+
+    // Delete from ImageKit
+    try {
+      await imageKit.deleteFile(avatar[0].fileId);
+    } catch (error) {
+      console.error('Failed to delete avatar from ImageKit:', error);
+      // Continue to delete from database even if ImageKit deletion fails
+    }
+
+    // Delete from database
+    await prisma.images.delete({
+      where: { id: avatar[0].id },
+    });
+
+    // Get updated user
+    const user = await prisma.users.findUnique({
+      where: { id: userId },
+      include: { avatar: true },
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Avatar removed successfully',
+      user,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
