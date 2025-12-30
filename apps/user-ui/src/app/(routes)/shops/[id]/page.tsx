@@ -5,8 +5,8 @@ import { Metadata } from 'next';
 type Params = Promise<{ id: string }>
 
 
-const fetchSellerDetails = async (id: string) => {
-  const response = await axiosInstance.get(`/api/get-seller/${id}`);
+const fetchShopDetails = async (id: string) => {
+  const response = await axiosInstance.get(`/api/get-shop-details/${id}`);
   return response.data;
 };
 
@@ -19,22 +19,22 @@ export const generateMetadata = async ({
   const { id } = await params;
 
   try {
-    const data = await fetchSellerDetails(id);
+    const data = await fetchShopDetails(id);
 
     return {
-      title: `${data.shop?.name} | Eshop Marketplace`,
+      title: `${data.shop?.bio} | DokoMart Marketplace`,
       description:
-        data.shop?.bio ||
-        'Explore products and services from trusted sellers on Eshop',
+        data.shop?.description ||
+        'Explore products and services from trusted sellers on DokoMart',
       openGraph: {
-        title: `${data.shop?.name} | Eshop Marketplace`,
+        title: `${data.shop?.name} | DokoMart Marketplace`,
         description:
           data.shop?.bio ||
-          'Explore products and services from trusted sellers on Eshop',
+          'Explore products and services from trusted sellers on DokoMart',
         type: 'website',
         images: [
           {
-            url: data.shop?.avatar || '/images/default-shop.png',
+            url: data.shop?.avatar[0].fileUrl || '/images/default-shop.png',
             width: 800,
             height: 600,
             alt: data.shop?.name || 'Shop logo',
@@ -43,16 +43,16 @@ export const generateMetadata = async ({
       },
       twitter: {
         card: 'summary_large_image',
-        title: `${data.shop?.name} | Eshop Marketplace`,
+        title: `${data.shop?.name} | DokoMart Marketplace`,
         description:
           data.shop?.bio ||
-          'Explore products and services from trusted sellers on Eshop',
+          'Explore products and services from trusted sellers on DokoMart',
         images: [data.shop?.avatar || '/images/default-shop.png'],
       },
     };
   } catch (error) {
     return {
-      title: 'Shop Not Found | Eshop Marketplace',
+      title: 'Shop Not Found | DokoMart Marketplace',
       description: 'The requested shop could not be found.',
     };
   }
@@ -63,7 +63,7 @@ const Page = async ({ params }: { params: Params }) => {
   console.log('Fetching data for shop ID:', id);
 
   try {
-    const data = await fetchSellerDetails(id);
+    const data = await fetchShopDetails(id);
     return (
       <SellerProfile shop={data.shop} followersCount={data?.followersCount} />
     );

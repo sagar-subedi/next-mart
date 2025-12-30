@@ -1,7 +1,7 @@
 import { isSeller } from '@packages/error-handler/authorizeRoles';
 import isAuthenticated from '@packages/error-handler/isAuthenticated';
 import { Router } from 'express';
-import { getSellerNotifications, markAsRead, updateShopInfo } from './seller.controller';
+import { followShop, getFollowerCount, getSellerNotifications, isFollowing, markAsRead, unfollowShop, updateShopInfo } from './seller.controller';
 
 const router = Router();
 
@@ -18,5 +18,10 @@ router.put(
   isSeller,
   updateShopInfo
 );
+
+router.post("/follow-shop/:shopId", isAuthenticated, followShop);
+router.delete("/unfollow-shop/:shopId", isAuthenticated, unfollowShop);
+router.get("/followers-count/:shopId", getFollowerCount);
+router.get("/is-following/:shopId", isAuthenticated, isFollowing);
 
 export default router;

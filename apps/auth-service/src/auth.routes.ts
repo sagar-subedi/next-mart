@@ -23,6 +23,7 @@ import {
   verifyUserForgotPassword,
   uploadUserAvatar,
   removeUserAvatar,
+  getShopDetails,
 } from './auth.controller';
 import isAuthenticated from '@packages/error-handler/isAuthenticated';
 import { isSeller } from '@packages/error-handler/authorizeRoles';
@@ -56,4 +57,6 @@ router.delete('/delete-address/:id', isAuthenticated, deleteUserAddress);
 router.post('/upload-avatar', isAuthenticated, uploadUserAvatar);
 router.delete('/remove-avatar', isAuthenticated, removeUserAvatar);
 
-export default router;
+router.get('/get-shop-details/:id', getShopDetails);
+
+export default router;  

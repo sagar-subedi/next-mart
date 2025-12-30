@@ -30,7 +30,7 @@ const TABS = ['Products', 'Offers', 'Reviews'];
 
 const SellerProfile = ({ shop, followersCount }: SellerProfileProps) => {
   const [activeTab, setActiveTab] = useState('Products');
-  const [followers, setFollowers] = useState(followersCount);
+  const [followers, setFollowers] = useState(shop?.followersCount);
   const [isFollowing, setIsFollowing] = useState(false);
 
   const { user } = useUser();
@@ -42,7 +42,7 @@ const SellerProfile = ({ shop, followersCount }: SellerProfileProps) => {
     queryKey: ['seller-products'],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/seller/get-seller-products/${shop.id}?page=1&limit=10`
+        `/products/api/get-shop-products/${shop.id}?page=1&limit=10`
       );
       return res.data.products;
     },
@@ -51,11 +51,11 @@ const SellerProfile = ({ shop, followersCount }: SellerProfileProps) => {
 
   useEffect(() => {
     const fetchFollowStatus = async () => {
-      if (!shop.id) return;
+      if (!shop?.id) return;
 
       try {
-        const res = await axiosInstance.get(`/seller/isfollowing/${shop.id}`);
-        setIsFollowing(res.data.isFollowing !== null);
+        const res = await axiosInstance.get(`/seller/api/is-following/${shop.id}`);
+        setIsFollowing(res.data.isFollowing || false);
       } catch (error) {
         console.error(`Failed to fetch follow status: ${error}`);
       }
@@ -68,7 +68,7 @@ const SellerProfile = ({ shop, followersCount }: SellerProfileProps) => {
     queryKey: ['seller-events'],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/seller/api/get-seller-events/${shop.id}?page=1&limit=10`
+        `/products/api/get-filtered-events?shopIds=${shop.id}&page=1&limit=10`
       );
       return res.data.products;
     },
@@ -78,9 +78,9 @@ const SellerProfile = ({ shop, followersCount }: SellerProfileProps) => {
   const toggleFollowMutation = useMutation({
     mutationFn: async () => {
       if (isFollowing) {
-        await axiosInstance.put('/seller/unfollow-shop', { shopId: shop?.id });
+        await axiosInstance.delete(`/seller/api/unfollow-shop/${shop?.id}`);
       } else {
-        await axiosInstance.put('/seller/follow-shop', { shopId: shop?.id });
+        await axiosInstance.post(`/seller/api/follow-shop/${shop?.id}`);
       }
     },
     onSuccess: () => {
@@ -129,7 +129,7 @@ const SellerProfile = ({ shop, followersCount }: SellerProfileProps) => {
           <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
             <div className="relative size-24 rounded-full border-4 border-slate-300 overflow-hidden">
               <Image
-                src={shop?.avatar?.[0]?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(shop?.name || 'Shop')}&background=random`}
+                src={shop?.avatar?.[0]?.fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(shop?.name || 'Shop')}&background=random`} // ${encodeURIComponent(shop?.name || 'Shop')}
                 alt="avatar"
                 layout="fill"
                 objectFit="cover"
@@ -140,12 +140,12 @@ const SellerProfile = ({ shop, followersCount }: SellerProfileProps) => {
                 {shop?.name}
               </h1>
               <p className="text-slate-800 text-sm mt-1">
-                {shop.bio || 'No bio available'}
+                {shop?.bio || 'No bio available'}
               </p>
               <div className="flex items-center gap-4 mt-2">
                 <div className="flex items-center text-blue-400 gap-1">
                   <Star size={18} fill="#60a5fa" />
-                  <span>{shop.ratings || 'N/A'}</span>
+                  <span>{shop?.ratings || 'N/A'}</span>
                 </div>
                 <div className="flex items-center gap-1 text-slate-700">
                   <Users size={18} /> <span>{followers} followers</span>
@@ -153,11 +153,11 @@ const SellerProfile = ({ shop, followersCount }: SellerProfileProps) => {
               </div>
               <div className="flex items-center gap-3 mt-3 text-slate-700">
                 <Clock size={18} />
-                <span>{shop.openingHours}</span>
+                <span>{shop?.openingHours}</span>
               </div>
               <div className="flex items-center gap-2 mt-3 text-slate-700">
                 <MapPin size={18} />
-                <span>{shop.address || 'No address provided'}</span>
+                <span>{shop?.address || 'No address provided'}</span>
               </div>
             </div>
             <button
@@ -180,10 +180,10 @@ const SellerProfile = ({ shop, followersCount }: SellerProfileProps) => {
           <div className="flex items-center gap-3 mt-3 text-slate-700">
             <Calendar size={18} />
             <span>
-              Joined at: {new Date(shop.createdAt).toLocaleDateString()}
+              Joined at: {new Date(shop?.createdAt).toLocaleDateString()}
             </span>
           </div>
-          {shop.website && (
+          {shop?.website && (
             <div className="flex items-center gap-3 mt-3 text-slate-700">
               <Globe size={18} />
               <Link
@@ -194,11 +194,11 @@ const SellerProfile = ({ shop, followersCount }: SellerProfileProps) => {
               </Link>
             </div>
           )}
-          {shop.socialLinks && shop.socialLinks.length > 0 && (
+          {shop?.socialLinks && shop.socialLinks.length > 0 && (
             <div className="mt-3">
               <h3 className="text-lg font-medium text-slate-700">Follow Us:</h3>
               <div className="flex gap-3 mt-2">
-                {shop.socialLinks.map((link: any, index: number) => {
+                {shop?.socialLinks.map((link: any, index: number) => {
                   if (!link.url) return null;
                   return (
                     <Link
@@ -248,7 +248,7 @@ const SellerProfile = ({ shop, followersCount }: SellerProfileProps) => {
                     className="bg-gray-300 h-[250px] animate-pulse rounded-xl"
                   />
                 ))
-              ) : products.length > 0 ? (
+              ) : products?.length > 0 ? (
                 products.map((product: any) => (
                   <ProductCard key={product.id} product={product} />
                 ))
@@ -268,7 +268,7 @@ const SellerProfile = ({ shop, followersCount }: SellerProfileProps) => {
                     className="bg-gray-300 h-[250px] animate-pulse rounded-xl"
                   />
                 ))
-              ) : events.length > 0 ? (
+              ) : events?.length > 0 ? (
                 events.map((product: any) => (
                   <ProductCard key={product.id} product={product} isEvent />
                 ))

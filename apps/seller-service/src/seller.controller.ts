@@ -1,4 +1,5 @@
 import { ValidationError } from '@packages/error-handler';
+import imageKit from '@packages/libs/imageKit';
 import prisma from '@packages/libs/prisma';
 import { NextFunction, Response, Request } from 'express';
 
@@ -54,7 +55,7 @@ export const updateShopInfo = async (
   next: NextFunction
 ) => {
   try {
-    const { name, description, address, phoneNumber, zipCode, avatar, cover, socialLinks } =
+    const { name, description, address, phoneNumber, avatar: newAvatar, cover, socialLinks } =
       req.body;
     const sellerId = req.seller.id;
 
@@ -68,28 +69,35 @@ export const updateShopInfo = async (
       return next(new ValidationError('Shop not found'));
     }
 
-    if (avatar) {
-      const isAvatarExist = await prisma.images.findFirst({
+    if (newAvatar) {
+
+      const response = await imageKit.upload({
+        file: newAvatar,
+        fileName: `shop-avatar-${Date.now()}.jpg`,
+        folder: 'shop-avatars',
+      });
+
+      const currentAvatar = await prisma.images.findFirst({
         where: {
           shopId: shop.id,
         },
       });
 
-      if (isAvatarExist) {
+      if (currentAvatar) {
         await prisma.images.update({
           where: {
-            id: isAvatarExist.id,
+            id: currentAvatar.id,
           },
           data: {
-            fileUrl: avatar,
+            fileUrl: response.url
           },
         });
+        imageKit.deleteFile(currentAvatar.fileId);
       } else {
         await prisma.images.create({
           data: {
-            fileUrl: avatar,
-            fileId: '123', // Mock fileId as we are using external URLs
-            userId: sellerId,
+            fileUrl: response.url,
+            fileId: response.fileId,
             shopId: shop.id,
           },
         });
@@ -128,3 +136,74 @@ export const updateShopInfo = async (
     return next(error);
   }
 };
+
+export const followShop = async (req, res) => {
+  const userId = req.user.id;
+  const { shopId } = req.params;
+
+  try {
+    await prisma.$transaction([
+      prisma.followers.create({
+        data: { userId, shopId },
+      }),
+      prisma.shops.update({
+        where: { id: shopId },
+        data: { followersCount: { increment: 1 } },
+      }),
+    ]);
+
+    res.status(201).json({ message: "Shop followed" });
+  } catch (err) {
+    if (err.code === "P2002") {
+      return res.status(409).json({ message: "Already following" });
+    }
+    res.status(500).json({ error: "Failed to follow shop" });
+  }
+};
+
+
+export const unfollowShop = async (req, res) => {
+  const userId = req.user.id;
+  const { shopId } = req.params;
+
+  await prisma.$transaction([
+    prisma.followers.deleteMany({
+      where: { userId, shopId },
+    }),
+    prisma.shops.update({
+      where: { id: shopId },
+      data: { followersCount: { decrement: 1 } },
+    }),
+  ]);
+
+  res.json({ message: "Unfollowed successfully" });
+};
+
+
+export const getFollowerCount = async (req, res) => {
+  const { shopId } = req.params;
+
+  const shop = await prisma.shops.findUnique({
+    where: { id: shopId },
+    select: { followersCount: true },
+  });
+
+  res.json({ followersCount: shop?.followersCount ?? 0 });
+};
+
+
+
+export const isFollowing = async (req, res) => {
+  const userId = req.user.id;
+  const { shopId } = req.params;
+
+  const follow = await prisma.followers.findUnique({
+    where: {
+      userId_shopId: { userId, shopId },
+    },
+  });
+
+  res.json({ isFollowing: !!follow });
+};
+
+

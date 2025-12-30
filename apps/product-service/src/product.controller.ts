@@ -300,8 +300,8 @@ export const getShopProducts = async (
   next: NextFunction
 ) => {
   try {
-    const products = await prisma.products.findMany({
-      where: { shopId: req.seller?.shop?.id },
+ const products = await prisma.products.findMany({
+      where: { shopId: req.params.shopId },
       include: { images: true },
     });
 
@@ -622,6 +622,7 @@ export const getFilteredEvents = async (
       sizes = [],
       page = 1,
       limit = 12,
+      shopIds = []
     } = req.query;
 
     const parsedPriceRange =
@@ -651,6 +652,16 @@ export const getFilteredEvents = async (
           : String(categories).split(','),
       };
     }
+
+
+    if (shopIds && (shopIds as string[]).length > 0) {
+      filters.shopIds = {
+        in: Array.isArray(shopIds)
+          ? shopIds
+          : String(shopIds).split(','),
+      };
+    }
+
 
     if (colors && (colors as string[]).length > 0) {
       filters.colors = {
@@ -729,7 +740,7 @@ export const getFilteredShops = async (
         include: {
           seller: true,
           products: true,
-        },
+          avatar: true},
       }),
       prisma.shops.count({ where: filters }),
     ]);
@@ -824,6 +835,7 @@ export const topShops = async (
         address: true,
         ratings: true,
         category: true,
+        followersCount: true
       },
     });
 

@@ -64,7 +64,7 @@ export const getRecommendedProducts = async (
 
     return res
       .status(200)
-      .json({ success: true, recommendations: recommendProducts });
+      .json({ success: true, recommendations: recommendedProducts });
   } catch (error) {
     return next(error);
   }

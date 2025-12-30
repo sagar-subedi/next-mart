@@ -81,7 +81,8 @@ model shops {
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   orders        orders[]
-  followers     followers?
+  followersCount Int           @default(0)
+  followers     followers[]
 }
 
 model sellers {
@@ -219,12 +220,13 @@ enum AddressType {
 
 model followers {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String   @unique @db.ObjectId
-  shopId    String   @unique @db.ObjectId
+  userId    String   @db.ObjectId
+  shopId    String   @db.ObjectId
   user      users    @relation(fields: [userId], references: [id])
-  shop      shops?   @relation(fields: [shopId], references: [id])
+  shop      shops    @relation(fields: [shopId], references: [id])
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+
+  @@unique([userId, shopId]) // one follow per user-shop pair
 }
 
 model productAnalytics {
