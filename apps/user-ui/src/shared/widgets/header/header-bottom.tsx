@@ -170,9 +170,19 @@ const HeaderBottom = () => {
                 href="/profile"
                 className="hidden md:flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/60 transition-all duration-300"
               >
-                <div className="w-9 h-9 flex items-center justify-center rounded-full bg-gradient-to-br from-brand-primary-500 to-brand-highlight-500 border-2 border-white shadow-sm">
-                  <User className="w-4 h-4 text-white" />
-                </div>
+                {user?.avatar?.[0]?.fileUrl ? (
+                  <Image
+                    src={user.avatar?.[0]?.fileUrl}
+                    alt={user.name}
+                    width={44}
+                    height={44}
+                    className="w-11 h-11 rounded-full border-2 border-white shadow-md group-hover:shadow-lg transition-all duration-300 object-cover"
+                  />
+                ) : (
+                  <div className="w-11 h-11 flex items-center justify-center rounded-full bg-gradient-to-br from-brand-primary-500 to-brand-highlight-500 border-2 border-white shadow-md group-hover:shadow-lg transition-all duration-300">
+                    <User className="w-5 h-5 text-white" />
+                  </div>
+                )}
                 <div className="hidden xl:block">
                   <span className="block text-xs text-gray-600">Hello,</span>
                   <span className="font-semibold text-sm text-gray-900">
