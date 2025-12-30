@@ -7,6 +7,7 @@ import {
   getFilteredRowModel,
   flexRender,
 } from '@tanstack/react-table';
+import useSeller from 'apps/seller-ui/src/hooks/useSeller';
 import DeleteConfirmationModal from 'apps/seller-ui/src/shared/components/DeleteConfirmationModal';
 import axiosInstance from 'apps/seller-ui/src/utils/axiosInstance';
 import { AxiosError } from 'axios';
@@ -33,9 +34,10 @@ const AllProducts = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
   const queryClient = useQueryClient();
+  const { seller } = useSeller();
 
   const fetchProducts = async () => {
-    const response = await axiosInstance.get('/products/api/get-shop-products');
+    const response = await axiosInstance.get(`/products/api/get-shop-products/${seller?.shop.id}`);
     return response.data.products;
   };
 
