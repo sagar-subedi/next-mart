@@ -31,7 +31,10 @@ import { useRouter } from 'next/navigation';
 const TABS = ['Products', 'Offers', 'Reviews'];
 
 const fetchProducts = async () => {
-  const res = await axiosInstance.get('/products/api/get-shop-products');
+  const { seller } = useSeller();
+  if (!seller?.id) return [];
+  const shopId = seller.shop.id;
+  const res = await axiosInstance.get(`/products/api/get-shop-products/${shopId}`);
   const products = res.data.products?.filter((i: any) => !i.startingDate);
   return products;
 };

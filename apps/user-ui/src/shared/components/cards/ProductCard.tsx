@@ -140,7 +140,7 @@ const ProductCard = ({ product, isEvent = false }: Props) => {
         {/* Content */}
         <div className="p-4 flex flex-col flex-grow relative">
           <Link
-            href={`/shops/${product.shop.id}`}
+            href={`/shops/${product.shop?.id}`}
             className="text-xs text-brand-primary-500 font-bold uppercase tracking-wide hover:underline mb-1"
           >
             {product.shop?.name}

@@ -16,6 +16,7 @@ interface Props {
     followers?: any[];
     rating?: number;
     category?: string;
+    followersCount?: number
   };
 }
 
@@ -65,7 +66,7 @@ const ShopCard = ({ shop }: Props) => {
       <div className="px-4 pb-5 pt-2 text-center flex flex-col flex-grow">
         <h3 className="text-lg font-bold text-gray-900 mb-1">{shop.name}</h3>
         <p className="text-sm text-gray-500 mb-3">
-          {shop.followers?.length ?? 0} Followers
+          {shop.followersCount ?? 0} Followers
         </p>
 
         {/* Address & rating */}

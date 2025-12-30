@@ -67,8 +67,7 @@ const Settings = () => {
       setValue('description', seller.shop.bio || '');
       setValue('address', seller.shop.address);
       setValue('phoneNumber', seller.phone || '');
-      setAvatar(seller.shop.avatar?.[0].fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(seller.shop.name)}&background=random`);
-      setCover(seller.shop.coverBanner?.fileUrl || 'https://placehold.co/1200x400/1e293b/cbd5e1.png?text=Shop+Cover');
+      setCover(seller.shop.coverBanner || 'https://placehold.co/1200x400/1e293b/cbd5e1.png?text=Shop+Cover');
 
       // Populate social links
       if (seller.shop.socialLinks && seller.shop.socialLinks.length > 0) {
@@ -322,18 +321,12 @@ const Settings = () => {
                     </label>
                     <div className="flex items-center gap-4">
                       <div className="relative w-24 h-24 rounded-full overflow-hidden bg-slate-100 border-2 border-slate-200">
-                        {avatar ? (
                           <Image
-                            src={avatar}
+                            src={avatar || seller.shop.avatar?.[0].fileUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(seller.shop.name)}&background=random`}
                             alt="Avatar"
                             fill
                             className="object-cover"
                           />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-slate-400">
-                            <RiStore2Line size={32} />
-                          </div>
-                        )}
                       </div>
                       <div className="flex-1">
                         <input

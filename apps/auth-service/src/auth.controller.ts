@@ -677,6 +677,21 @@ export const getLayoutData = async (req: Request, res: Response, next: NextFunct
     return next(error)
   }
 }
+
+export const getShopDetails = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const shop = await prisma.shops.findUnique({ where: { id: req.params.id },
+      include: {avatar: true} 
+    })
+
+    return res.status(200).json({
+      success: true, shop
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
 // Upload user avatar
 export const uploadUserAvatar = async (
   req: any,
