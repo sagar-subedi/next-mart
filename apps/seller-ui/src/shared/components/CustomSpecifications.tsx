@@ -12,7 +12,7 @@ const CustomSpecifications = ({ control, errors }: any) => {
     <div>
       <label
         htmlFor="customSpecifications"
-        className="block font-semibold text-gray-300 mb-1"
+        className="block font-semibold text-slate-800 mb-1"
       >
         Custom Specifications
       </label>

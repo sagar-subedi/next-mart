@@ -12,6 +12,7 @@ import axiosInstance from 'apps/seller-ui/src/utils/axiosInstance';
 import { Eye, Search } from 'lucide-react';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
+import PageLoader from 'apps/seller-ui/src/shared/components/PageLoader';
 
 const Orders = () => {
   const [globalFilter, setGlobalFilter] = useState('');
@@ -116,7 +117,7 @@ const Orders = () => {
       {/* Table */}
       <div className="overflow-x-auto bg-white border border-slate-200 rounded-lg p-4">
         {isLoading ? (
-          <p className="text-center text-slate-900">Loading orders...</p>
+          <PageLoader />
         ) : orders.length === 0 ? (
           <p className="text-center py-3 text-slate-500">No orders found!</p>
         ) : (

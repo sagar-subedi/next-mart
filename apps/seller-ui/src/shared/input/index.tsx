@@ -7,7 +7,7 @@ import {
 
 interface BaseProps {
   label?: string;
-  type?: 'text' | 'number' | 'password' | 'email' | 'textarea';
+  type?: 'text' | 'number' | 'password' | 'email' | 'textarea' | 'date';
   className?: string;
 }
 
@@ -22,14 +22,14 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, Props>(
     return (
       <div className="w-full">
         {label && (
-          <label className="block font-semibold text-gray-300 mb-1">
+          <label className="block font-semibold text-slate-800 mb-1">
             {label}
           </label>
         )}
         {type === 'textarea' ? (
           <textarea
             ref={ref as Ref<HTMLTextAreaElement>}
-            className={`w-full border outline-none border-gray-700 bg-transparent p-2 rounded-md text-white ${className}`}
+            className={`w-full border outline-none border-slate-300 bg-transparent p-2 rounded-md text-slate-900 placeholder:text-slate-400 ${className}`}
             {...(props as TextareaProps)}
           />
         ) : (
@@ -37,7 +37,7 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, Props>(
             type={type}
             ref={ref as Ref<HTMLInputElement>}
             {...(props as InputProps)}
-            className={`w-full border outline-none border-gray-700 bg-transparent p-2 rounded-md text-white ${className}`}
+            className={`w-full border outline-none border-slate-300 bg-transparent p-2 rounded-md text-slate-900 placeholder:text-slate-400 ${className}`}
           />
         )}
       </div>

@@ -57,24 +57,24 @@ const RichTextEditor = ({ value, onChange }: Props) => {
           ],
         }}
         placeholder="Write a detailed product description here..."
-        className="bg-transparent border border-gray-700 text-white rounded-md"
+        className="bg-transparent border border-slate-300 text-slate-900 rounded-md"
         style={{ minHeight: '250px' }}
       />
       <style>
         {`
         .ql-toolbar{
         background:transparent;
-        border-color:#444;
+        border-color:#cbd5e1;
         }
 
         .ql-container{
         background:transparent !important;
-        border-color:#444;
-        color:#fff;
+        border-color:#cbd5e1;
+        color:#0f172a;
         }
 
         .ql-picker{
-        color:#fff !important;
+        color:#0f172a !important;
         }
 
         .ql-editor{
@@ -82,32 +82,33 @@ const RichTextEditor = ({ value, onChange }: Props) => {
         }
 
         .ql-snow{
-        border-color:#444 !important;
+        border-color:#cbd5e1 !important;
         }
 
         .ql-editor.ql-blank::before{
-        color:#aaa !important;
+        color:#94a3b8 !important;
         }
 
         .ql-picker-options{
-        background: #333 !important;
-        color:#fff !important;
+        background: #fff !important;
+        color:#0f172a !important;
+        border: 1px solid #cbd5e1 !important;
         }
 
         .ql-picker-item{
-        color:#fff !important;
+        color:#0f172a !important;
         }
 
         .ql-picker-label{
-        color:#fff !important;
+        color:#0f172a !important;
         }
 
         .ql-stroke{
-        stroke:#fff !important;
+        stroke:#0f172a !important;
         }
 
         .ql-fill{
-        fill:#fff !important;
+        fill:#0f172a !important;
         }
         `}
       </style>

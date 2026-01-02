@@ -45,8 +45,8 @@ const serviceHosts = {
   order: process.env.NODE_ENV=='local'? 'localhost': 'order-service',
   admin: process.env.NODE_ENV=='local'? 'localhost': 'admin-service',
   chat: process.env.NODE_ENV=='local'? 'localhost': 'chat-service',
-  logger: process.env.NODE_ENV=='local'? 'localhost': 'logger',
-  recommendation: process.env.NODE_ENV=='local'? 'localhost': 'recommendation',
+  logger: process.env.NODE_ENV=='local'? 'localhost': 'logger-service',
+  recommendation: process.env.NODE_ENV=='local'? 'localhost': 'recommendation-service',
   seller: process.env.NODE_ENV=='local'? 'localhost': 'seller-service',
   kafka: process.env.NODE_ENV=='local'? 'localhost': 'kafka-service',
   apigateway: process.env.NODE_ENV=='local'? 'localhost': 'api-gateway'

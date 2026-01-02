@@ -7,6 +7,7 @@ import {
   getFilteredRowModel,
   flexRender,
 } from '@tanstack/react-table';
+import useSeller from 'apps/seller-ui/src/hooks/useSeller';
 import DeleteConfirmationModal from 'apps/seller-ui/src/shared/components/DeleteConfirmationModal';
 import axiosInstance from 'apps/seller-ui/src/utils/axiosInstance';
 import { AxiosError } from 'axios';
@@ -25,6 +26,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import PageLoader from 'apps/seller-ui/src/shared/components/PageLoader';
 
 const AllProducts = () => {
   const [globalFilter, setGlobalFilter] = useState('');
@@ -33,9 +35,10 @@ const AllProducts = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
   const queryClient = useQueryClient();
+  const { seller } = useSeller();
 
   const fetchProducts = async () => {
-    const response = await axiosInstance.get('/products/api/get-shop-products');
+    const response = await axiosInstance.get(`/products/api/get-shop-products/${seller?.shop.id}`);
     return response.data.products;
   };
 
@@ -225,9 +228,7 @@ const AllProducts = () => {
       </div>
       <div className="overflow-x-auto bg-white border border-slate-200 rounded-lg p-4">
         {isLoading ? (
-          <div className="flex items-center justify-center">
-            <Loader2 size={24} className="animate-spin text-slate-900" />
-          </div>
+          <PageLoader />
         ) : (
           <table className="w-full text-slate-900">
             <thead>

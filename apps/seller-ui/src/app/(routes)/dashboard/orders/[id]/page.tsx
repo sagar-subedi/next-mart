@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
+import PageLoader from 'apps/seller-ui/src/shared/components/PageLoader';
 
 const statuses = [
   'Ordered',
@@ -63,11 +64,7 @@ const OrderDetails = () => {
   }, [orderId]);
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <Loader2 className="w-12 h-12 animate-spin text-brand-primary-500" />
-      </div>
-    );
+    return <PageLoader />;
   }
 
   if (!order) {
@@ -131,18 +128,18 @@ const OrderDetails = () => {
               <div className="flex gap-2">
                 <span
                   className={`inline-flex px-3 py-1 rounded-lg text-xs font-semibold ${order.status === 'Paid'
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-yellow-100 text-yellow-700'
+                    ? 'bg-green-100 text-green-700'
+                    : 'bg-yellow-100 text-yellow-700'
                     }`}
                 >
                   {order.status}
                 </span>
                 <span
                   className={`inline-flex px-3 py-1 rounded-lg text-xs font-semibold ${order.deliveryStatus === 'Delivered'
-                      ? 'bg-green-100 text-green-700'
-                      : order.deliveryStatus === 'Cancelled'
-                        ? 'bg-red-100 text-red-700'
-                        : 'bg-blue-100 text-blue-700'
+                    ? 'bg-green-100 text-green-700'
+                    : order.deliveryStatus === 'Cancelled'
+                      ? 'bg-red-100 text-red-700'
+                      : 'bg-blue-100 text-blue-700'
                     }`}
                 >
                   {order.deliveryStatus || 'Processing'}
@@ -208,8 +205,8 @@ const OrderDetails = () => {
                   <div key={step} className="flex flex-col items-center" style={{ flex: 1 }}>
                     <div
                       className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold text-xs transition-all ${isCompleted
-                          ? 'bg-brand-primary-500 text-white shadow-md'
-                          : 'bg-gray-200 text-gray-400'
+                        ? 'bg-brand-primary-500 text-white shadow-md'
+                        : 'bg-gray-200 text-gray-400'
                         } ${isCurrent ? 'ring-4 ring-brand-primary-200' : ''}`}
                     >
                       {index + 1}

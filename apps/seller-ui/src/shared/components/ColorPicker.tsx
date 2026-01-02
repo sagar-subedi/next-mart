@@ -12,7 +12,7 @@ const ColorPicker = ({ control, errors }: any) => {
     <div className="mt-2">
       <label
         htmlFor="colors"
-        className="block font-semibold text-gray-300 mb-1"
+        className="block font-semibold text-slate-800 mb-1"
       >
         Colors
       </label>
@@ -36,11 +36,9 @@ const ColorPicker = ({ control, errors }: any) => {
                         : [...(field.value || []), color]
                     )
                   }
-                  className={`w-7 h-7 rounded-md my-1 flex items-center justify-center border-2 transition ${
-                    isSelected ? 'scale-110 border-white' : 'border-transparent'
-                  } ${isLightColor && 'border-gray-600'} ${
-                    color === '#000000' && !isSelected && 'border-gray-100/40'
-                  }`}
+                  className={`w-7 h-7 rounded-md my-1 flex items-center justify-center border-2 transition ${isSelected ? 'scale-110 border-slate-900' : 'border-transparent'
+                    } ${isLightColor && 'border-slate-300'} ${color === '#000000' && !isSelected && 'border-slate-200'
+                    }`}
                   style={{ backgroundColor: color }}
                 />
               );
@@ -48,9 +46,9 @@ const ColorPicker = ({ control, errors }: any) => {
             <button
               type="button"
               onClick={() => setShowColorPicker(!showColorPicker)}
-              className="w-8 h-8 flex rounded-full items-center justify-center border-2 border-gray-500 transition bg-gray-800 hover:bg-gray-700"
+              className="w-8 h-8 flex rounded-full items-center justify-center border-2 border-slate-300 transition bg-slate-100 hover:bg-slate-200"
             >
-              <Plus size={16} color="#ffffff" />
+              <Plus size={16} className="text-slate-600" />
             </button>
             {/* Color picker */}
           </div>
@@ -70,7 +68,7 @@ const ColorPicker = ({ control, errors }: any) => {
               setCustomColors([...customColors, newColor]);
               setShowColorPicker(false);
             }}
-            className="px-3 py-1 bg-gray-700 text-white rounded-md text-sm"
+            className="px-3 py-1 bg-brand-primary-600 text-white rounded-md text-sm"
           >
             Add
           </button>

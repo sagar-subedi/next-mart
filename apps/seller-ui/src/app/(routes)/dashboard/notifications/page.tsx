@@ -5,6 +5,7 @@ import Breadcrumb from 'apps/seller-ui/src/shared/components/Breadcrumb';
 import axiosInstance from 'apps/seller-ui/src/utils/axiosInstance';
 import Link from 'next/link';
 import { useState } from 'react';
+import PageLoader from 'apps/seller-ui/src/shared/components/PageLoader';
 
 const Page = () => {
   const [notifications, setNotifications] = useState<any[]>([]);
@@ -18,44 +19,43 @@ const Page = () => {
   });
 
   const markAsRead = async (notificationId: string) => {
-    await axiosInstance.put(`/seller/api/mark-as-read`, {
-      notificationId,
-    });
+    await axiosInstance.put(`/seller/api/mark-as-read/${notificationId}`);
   };
 
   return (
     <div className="w-full min-h-screen p-8">
-      <h2 className="text-2xl text-white font-semibold mb-2">Notifications</h2>
+      <h2 className="text-2xl text-slate-900 font-semibold mb-2">Notifications</h2>
       <Breadcrumb title="Notifications" />
       {isLoading ? (
-        <p className="text-center pt-24 text-white text-sm font-poppins">
-          Loading...
-        </p>
+        <PageLoader />
       ) : data?.length > 0 ? (
-        <div className="md:w-[80%] my-6 rounded-lg divide-y divide-gray-800 bg-black/40 shadow-sm backdrop-blur-sm">
+        <div className="md:w-[80%] my-6 rounded-lg divide-y divide-slate-100 bg-white shadow-sm border border-slate-200">
           {data.map((notification: any) => (
             <Link
               href={notification.redirectLink ?? '#'}
               key={notification.id}
-              className={`block px-5 py-4 transition ${notification.status !== 'Unread'
-                ? 'hover:bg-gray-800/40'
-                : 'bg-gray-800/50 hover:bg-gray-800/70'
+              className={`block px-6 py-5 transition ${notification.status !== 'Unread'
+                ? 'bg-white hover:bg-slate-50'
+                : 'bg-blue-50/50 hover:bg-blue-50'
                 }`}
               onClick={() => markAsRead(notification.id)}
             >
-              <div className="flex items-start gap-3">
-                <div className="flex flex-col">
-                  <span className="text-white font-medium">
-                    {notification.title}
-                  </span>
-                  <span className="text-gray-300 text-sm">
+              <div className="flex items-start gap-4">
+                <div className={`w-2 h-2 mt-2 rounded-full flex-shrink-0 ${notification.status === 'Unread' ? 'bg-brand-primary-500' : 'bg-transparent'}`} />
+                <div className="flex flex-col flex-1">
+                  <div className="flex justify-between items-start">
+                    <span className={`font-medium text-base ${notification.status === 'Unread' ? 'text-slate-900' : 'text-slate-700'}`}>
+                      {notification.title}
+                    </span>
+                    <span className="text-slate-400 text-xs whitespace-nowrap ml-4">
+                      {new Date(notification.createdAt).toLocaleString(
+                        'en-UK',
+                        { dateStyle: 'medium', timeStyle: 'short' }
+                      )}
+                    </span>
+                  </div>
+                  <span className="text-slate-500 text-sm mt-1 leading-relaxed">
                     {notification.message}
-                  </span>
-                  <span className="text-gray-500 text-xs mt-1">
-                    {new Date(notification.createdAt).toLocaleString(
-                      'en-UK',
-                      { dateStyle: 'medium', timeStyle: 'short' }
-                    )}
                   </span>
                 </div>
               </div>
@@ -63,7 +63,7 @@ const Page = () => {
           ))}
         </div>
       ) : (
-        <p className="text-center pt-24 text-white text-sm font-poppins">
+        <p className="text-center pt-24 text-slate-500 text-sm font-poppins">
           No notifications available yet!
         </p>
       )}
