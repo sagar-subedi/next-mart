@@ -15,6 +15,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import PageLoader from 'apps/seller-ui/src/shared/components/PageLoader';
 
 const EditEventPage = () => {
     const { id } = useParams();
@@ -165,11 +166,7 @@ const EditEventPage = () => {
     };
 
     if (isLoading) {
-        return (
-            <div className="w-full min-h-screen flex items-center justify-center">
-                <p className="text-slate-900">Loading...</p>
-            </div>
-        );
+        return <PageLoader />;
     }
 
     return (

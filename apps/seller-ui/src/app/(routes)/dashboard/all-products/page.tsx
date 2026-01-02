@@ -26,6 +26,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import PageLoader from 'apps/seller-ui/src/shared/components/PageLoader';
 
 const AllProducts = () => {
   const [globalFilter, setGlobalFilter] = useState('');
@@ -227,9 +228,7 @@ const AllProducts = () => {
       </div>
       <div className="overflow-x-auto bg-white border border-slate-200 rounded-lg p-4">
         {isLoading ? (
-          <div className="flex items-center justify-center">
-            <Loader2 size={24} className="animate-spin text-slate-900" />
-          </div>
+          <PageLoader />
         ) : (
           <table className="w-full text-slate-900">
             <thead>

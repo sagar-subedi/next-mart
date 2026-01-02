@@ -5,6 +5,7 @@ import Breadcrumb from 'apps/seller-ui/src/shared/components/Breadcrumb';
 import axiosInstance from 'apps/seller-ui/src/utils/axiosInstance';
 import Link from 'next/link';
 import { useState } from 'react';
+import PageLoader from 'apps/seller-ui/src/shared/components/PageLoader';
 
 const Page = () => {
   const [notifications, setNotifications] = useState<any[]>([]);
@@ -26,9 +27,7 @@ const Page = () => {
       <h2 className="text-2xl text-slate-900 font-semibold mb-2">Notifications</h2>
       <Breadcrumb title="Notifications" />
       {isLoading ? (
-        <p className="text-center pt-24 text-slate-500 text-sm font-poppins">
-          Loading...
-        </p>
+        <PageLoader />
       ) : data?.length > 0 ? (
         <div className="md:w-[80%] my-6 rounded-lg divide-y divide-slate-100 bg-white shadow-sm border border-slate-200">
           {data.map((notification: any) => (

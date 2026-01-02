@@ -8,6 +8,7 @@ import axiosInstance from 'apps/seller-ui/src/utils/axiosInstance';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useRef, useEffect, FormEvent } from 'react';
+import PageLoader from 'apps/seller-ui/src/shared/components/PageLoader';
 
 const Inbox = () => {
   const router = useRouter();
@@ -176,7 +177,7 @@ const Inbox = () => {
           </h2>
           <div className="divide-y divide-slate-100">
             {isLoading ? (
-              <p className="text-center py-5 text-sm text-slate-500">Loading...</p>
+              <PageLoader />
             ) : chats.length > 0 ? (
               chats.map((chat) => {
                 const isActive =

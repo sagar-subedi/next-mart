@@ -9,6 +9,7 @@ import { AxiosError } from 'axios';
 import { ChevronRight, LoaderCircle, Plus, Trash, X } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import PageLoader from 'apps/seller-ui/src/shared/components/PageLoader';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
@@ -108,9 +109,7 @@ const DiscountCodes = () => {
           Your Discount codes
         </h3>
         {isLoading ? (
-          <div className="flex items-center justify-center">
-            <LoaderCircle size={30} className="animate-spin text-slate-900" />
-          </div>
+          <PageLoader />
         ) : (
           <table className="w-full text-slate-900">
             <thead>

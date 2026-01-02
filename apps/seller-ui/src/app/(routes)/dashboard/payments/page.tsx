@@ -12,6 +12,7 @@ import axiosInstance from 'apps/seller-ui/src/utils/axiosInstance';
 import { Eye, Search } from 'lucide-react';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
+import PageLoader from 'apps/seller-ui/src/shared/components/PageLoader';
 
 const Payments = () => {
   const [globalFilter, setGlobalFilter] = useState('');
@@ -135,7 +136,7 @@ const Payments = () => {
       {/* Table */}
       <div className="overflow-x-auto bg-white border border-slate-200 rounded-lg p-4">
         {isLoading ? (
-          <p className="text-center text-slate-900">Loading payments...</p>
+          <PageLoader />
         ) : (
           <table className="w-full text-slate-900">
             <thead>
