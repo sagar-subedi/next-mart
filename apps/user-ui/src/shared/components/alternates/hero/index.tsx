@@ -50,7 +50,7 @@ const Hero = () => {
     const handleBecomeSeller = () => {
         // 检查用户是否已登录
         if (user) {
-            router.push('/become-a-seller')
+            router.push('/become-seller')
         } else {
             router.push('/login')
         }
