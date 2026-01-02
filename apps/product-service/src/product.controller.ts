@@ -300,7 +300,7 @@ export const getShopProducts = async (
   next: NextFunction
 ) => {
   try {
- const products = await prisma.products.findMany({
+    const products = await prisma.products.findMany({
       where: { shopId: req.params.shopId },
       include: { images: true },
     });
@@ -740,7 +740,8 @@ export const getFilteredShops = async (
         include: {
           seller: true,
           products: true,
-          avatar: true},
+          avatar: true
+        },
       }),
       prisma.shops.count({ where: filters }),
     ]);
@@ -854,6 +855,153 @@ export const topShops = async (
       .slice(0, 10);
 
     return res.status(200).json({ shops: top10Shops });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+// Get product by ID
+export const getProductById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    const product = await prisma.products.findUnique({
+      where: { id },
+      include: {
+        images: true,
+        shop: true,
+      },
+    });
+
+    if (!product) {
+      return next(new NotFoundError('Product not found'));
+    }
+
+    return res.status(200).json({
+      success: true,
+      product,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+// Edit product
+export const editProduct = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    const {
+      title,
+      description,
+      detailedDescription,
+      warranty,
+      customSpecifications,
+      customProperties,
+      slug,
+      tags,
+      cashOnDelivery,
+      brand,
+      videoUrl,
+      category,
+      subCategory,
+      regularPrice,
+      salePrice,
+      stock,
+      discountCodes,
+      images,
+      colors,
+      sizes,
+      startDate,
+      endDate,
+    } = req.body;
+
+    const product = await prisma.products.findUnique({
+      where: { id },
+      include: { shop: true },
+    });
+
+    if (!product) {
+      return next(new NotFoundError('Product not found'));
+    }
+
+    if (product.shop.id !== req.seller.shop.id) {
+      return next(new ValidationError('Unauthorized'));
+    }
+
+    // Check slug uniqueness if changed
+    if (slug && slug !== product.slug) {
+      const slugChecking = await prisma.products.findUnique({ where: { slug } });
+      if (slugChecking) {
+        return next(
+          new ValidationError(`Slug already exists! Please use a different slug`)
+        );
+      }
+    }
+
+    // Handle images update
+    // We need to delete existing images that are not in the new list?
+    // Or just replace the relation?
+    // Prisma's `set` or `deleteMany` then `create` might be easier, or just `deleteMany` and `create`.
+    // But `images` table has `fileId` which we might want to keep if not changed.
+    // The frontend sends the full list of images.
+    // Let's use a transaction to update images.
+
+    // Actually, for simplicity and since we have `fileId`, we can delete all images for this product and recreate them.
+    // BUT, we don't want to delete the actual files from ImageKit if they are still used.
+    // The `images` array from frontend contains objects with `fileId` and `fileUrl`.
+
+    const updatedProduct = await prisma.products.update({
+      where: { id },
+      data: {
+        title,
+        description,
+        detailedDescription,
+        warranty,
+        customSpecifications,
+        customProperties,
+        slug,
+        tags: Array.isArray(tags) ? tags : tags?.split(','),
+        cashOnDelivery,
+        brand,
+        videoUrl,
+        category,
+        subCategory,
+        regularPrice: parseFloat(regularPrice),
+        salePrice: parseFloat(salePrice),
+        stock: parseInt(stock),
+        discountCodes: discountCodes?.map((code: string) => code),
+        colors: colors || [],
+        sizes: sizes || [],
+        startingDate: startDate || null,
+        endingDate: endDate || null,
+        // Update images: delete all existing and create new ones
+        images: {
+          deleteMany: {},
+          create: images
+            .filter((image: any) => image && image.fileId && image.fileUrl)
+            .map((image: any) => ({
+              fileId: image.fileId,
+              fileUrl: image.fileUrl,
+              shopId: product.shopId, // Ensure shopId is linked
+            })),
+        },
+      },
+      include: {
+        images: true,
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      product: updatedProduct,
+    });
   } catch (error) {
     return next(error);
   }

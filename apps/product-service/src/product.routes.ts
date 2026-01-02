@@ -20,6 +20,8 @@ import {
   searchProducts,
   topShops,
   uploadProductImage,
+  getProductById,
+  editProduct,
 } from './product.controller';
 
 const router = Router();
@@ -61,6 +63,8 @@ router.delete('/delete-product/:id', isAuthenticated, isSeller, deleteProduct);
 router.put('/restore-product/:id', isAuthenticated, isSeller, restoreProduct);
 router.get('/get-all-products', getAllProducts);
 router.get('/get-product/:slug', getProductDetails);
+router.get('/get-products-by-id/:id', isAuthenticated, getProductById);
+router.put('/edit-product/:id', isAuthenticated, isSeller, editProduct);
 router.get('/get-filtered-products', getFilteredProducts);
 router.get('/get-filtered-events', getFilteredEvents);
 router.get('/get-filtered-shops', getFilteredShops);

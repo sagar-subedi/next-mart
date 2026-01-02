@@ -165,7 +165,7 @@ const AllEvents = () => {
               <Eye size={18} />
             </Link>
             <Link
-              href={`/dashboard/products/edit/${row.original.id}`}
+              href={`/dashboard/events/edit/${row.original.id}`}
               className="text-yellow-600 hover:text-yellow-700 transition"
             >
               <Pencil size={18} />

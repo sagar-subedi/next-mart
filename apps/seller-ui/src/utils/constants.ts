@@ -140,3 +140,22 @@ export const aiEnhancements = [
   { label: 'Remove Blur', effect: 'e-removeblur' },
   { label: 'Remove Watermark', effect: 'e-removewatermark' },
 ];
+
+export const defaultCategories = [
+  {
+    title: 'Events',
+    subCategories: ['Concert', 'Festival', 'Workshop', 'Other'],
+  },
+  {
+    title: 'Electronics',
+    subCategories: ['Phones', 'Laptops', 'Accessories'],
+  },
+  {
+    title: 'Fashion',
+    subCategories: ['Men', 'Women', 'Kids'],
+  },
+  {
+    title: 'Home & Garden',
+    subCategories: ['Furniture', 'Decor', 'Garden'],
+  },
+];
