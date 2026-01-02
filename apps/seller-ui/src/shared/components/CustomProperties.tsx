@@ -41,7 +41,7 @@ const CustomProperties = ({ control, errors }: any) => {
 
             return (
               <div className="mt-2">
-                <label className="block font-semibold text-gray-300 mb-1">
+                <label className="block font-semibold text-slate-800 mb-1">
                   Custom Properties
                 </label>
                 <div className="flex flex-col gap-3">
@@ -49,10 +49,10 @@ const CustomProperties = ({ control, errors }: any) => {
                   {properties.map((property, index) => (
                     <div
                       key={index}
-                      className="border border-gray-700 p-3 rounded-lg bg-gray-900"
+                      className="border border-slate-200 p-3 rounded-lg bg-slate-50"
                     >
                       <div className="flex items-center justify-between">
-                        <span className="text-white font-medium">
+                        <span className="text-slate-900 font-medium">
                           {property.label}
                         </span>
                         <button
@@ -69,7 +69,7 @@ const CustomProperties = ({ control, errors }: any) => {
                           placeholder="Enter value..."
                           value={newValue}
                           onChange={(e) => setNewValue(e.target.value)}
-                          className="border outline-none border-gray-700 bg-gray-800 p-2 rounded-md text-white w-full"
+                          className="border outline-none border-slate-300 bg-white p-2 rounded-md text-slate-900 w-full"
                         />
                         <button
                           type="button"
@@ -84,7 +84,7 @@ const CustomProperties = ({ control, errors }: any) => {
                         {property.values.map((value, index) => (
                           <span
                             key={index}
-                            className="bg-gray-700 px-4 py-2 rounded-md text-white"
+                            className="bg-slate-200 px-4 py-2 rounded-md text-slate-900"
                           >
                             {value}
                           </span>

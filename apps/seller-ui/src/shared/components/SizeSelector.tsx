@@ -6,7 +6,7 @@ const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
 const SizeSelector = ({ control, errors }: any) => {
   return (
     <div className="mt-2">
-      <label className="block font-semibold text-gray-300 mb-1">Sizes</label>
+      <label className="block font-semibold text-slate-800 mb-1">Sizes</label>
       <Controller
         name="sizes"
         control={control}
@@ -26,11 +26,10 @@ const SizeSelector = ({ control, errors }: any) => {
                         : [...(field.value || []), size]
                     )
                   }
-                  className={`px-3 py-1 rounded-lg font-Poppins transition-colors ${
-                    isSelected
-                      ? 'bg-gray-700 text-white border border-[#ffffff6b]'
-                      : 'bg-gray-800 text-gray-300'
-                  }`}
+                  className={`px-3 py-1 rounded-lg font-Poppins transition-colors ${isSelected
+                      ? 'bg-brand-primary-600 text-white border border-brand-primary-600'
+                      : 'bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200'
+                    }`}
                 >
                   {size}
                 </button>
