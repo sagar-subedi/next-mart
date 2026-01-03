@@ -1,5 +1,9 @@
 # Multi-stage build
-FROM node:20-slim AS base
+FROM node:20-bookworm-slim AS base
+
+RUN apt-get update -y \
+    && apt-get install -y openssl \
+    && rm -rf /var/lib/apt/lists/*
 
 # Build stage
 FROM base AS builder
@@ -13,11 +17,6 @@ COPY tsconfig.base.json ./
 # Copy the current service's configuration
 COPY apps/recommendation-service/ ./apps/recommendation-service/
 COPY packages/ ./packages/
-
-# Install openssl for prisma
-RUN apt-get update -y && apt-get install -y openssl \
-  && rm -rf /var/lib/apt/lists/*
-
 
 # Install dependencies
 RUN npm install --legacy-peer-deps
