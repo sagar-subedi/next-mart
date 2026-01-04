@@ -89,7 +89,7 @@ export const recommendProducts = async (
   const userVector = tf.layers
     .flatten()
     .apply(userEmbedding) as tf.SymbolicTensor;
-  const productVector = tf.layers.flatten.apply(
+  const productVector = tf.layers.flatten().apply(
     productEmbedding
   ) as tf.SymbolicTensor;
 
