@@ -3,8 +3,8 @@ import Providers from './providers';
 import './global.css';
 
 export const metadata = {
-  title: 'Eshop Seller',
-  description: 'Eshop Seller Dashboard',
+  title: 'DokoMart Seller',
+  description: 'DokoMart Seller Dashboard',
 };
 
 const poppins = Poppins({

@@ -18,10 +18,10 @@ export async function generateMetadata({
   const product = await fetchProductDetails(slug);
 
   return {
-    title: `${product.title} | Eshop Marketplace`,
+    title: `${product.title} | DokoMart Marketplace`,
     description:
       product.description ||
-      `Discover high quality products on Eshop Marketplace`,
+      `Discover high quality products on DokoMart Marketplace`,
     openGraph: {
       title: product?.title,
       description: product?.description,

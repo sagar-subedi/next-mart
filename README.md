@@ -1,4 +1,4 @@
-# E-Shop: Modern E-commerce Platform
+# DokoMart: Modern E-commerce Platform
 
 <div align="center">
   <h3>A Full-Stack E-commerce Solution with Microservices Architecture</h3>
@@ -70,8 +70,8 @@ packages/
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/your-username/eshop.git
-   cd eshop
+   git clone https://github.com/your-username/dokomart.git
+   cd dokomart
    ```
 
 2. **Install dependencies**

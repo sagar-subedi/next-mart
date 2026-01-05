@@ -338,7 +338,7 @@ export const createOrder = async (
         //   Send email
         await sendEmail(
           email,
-          '🛍️ Your Eshop Order Confirmation',
+          '🛍️ Your DokoMart Order Confirmation',
           'order-confirmation',
           {
             name,
