@@ -178,7 +178,39 @@ services:
       kafka-service:
         condition: service_started
     networks:
-      - next-mart-network # Recommendation Service
+      - next-mart-network
+
+  # Logger Service (Go) - New implementation for comparison
+  logger-service-go:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: ./apps/logger-service-go/Dockerfile
+    container_name: next-mart-logger-service-go-dev
+    restart: unless-stopped
+    ports:
+      - "6016:6006" # Different external port for parallel testing
+    environment:
+      PORT: 6006
+      KAFKA_BROKER_URL: ${KAFKA_BROKER_URL}
+      KAFKA_API_KEY: ${KAFKA_API_KEY}
+      KAFKA_API_SECRET: ${KAFKA_API_SECRET}
+      KAFKA_TOPIC: logs
+      KAFKA_GROUP_ID: log-events-group-go
+      OTLP_ENDPOINT: otel-collector:4317
+      FRONTEND_URL: ${FRONTEND_URL}
+      FRONTEND_SELLER_URL: ${FRONTEND_SELLER_URL}
+      FRONTEND_ADMIN_URL: ${FRONTEND_ADMIN_URL}
+    depends_on:
+      kafka-service:
+        condition: service_started
+      otel-collector:
+        condition: service_started
+    networks:
+      - next-mart-network
+
+  # Seller Service
   seller-service:
     env_file:
       - .env
