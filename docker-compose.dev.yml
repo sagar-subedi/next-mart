@@ -20,6 +20,30 @@ services:
     networks:
       - next-mart-network
 
+  # API Gateway (Go) - New implementation for comparison
+  api-gateway-go:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: ./apps/api-gateway-go/Dockerfile
+    container_name: next-mart-api-gateway-go-dev
+    restart: unless-stopped
+    ports:
+      - "8081:8081" # Parallel port
+    environment:
+      PORT: 8081
+      # NODE_ENV not set to 'local' so it uses service names
+    depends_on:
+      auth-service:
+        condition: service_started
+      product-service:
+        condition: service_started
+      order-service:
+        condition: service_started
+    networks:
+      - next-mart-network
+
   # Auth Service
   auth-service:
     env_file:

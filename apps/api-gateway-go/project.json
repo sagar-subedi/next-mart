@@ -1,0 +1,49 @@
+{
+    "name": "api-gateway-go",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "apps/api-gateway-go",
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "go build -o dist/api-gateway-go ./cmd/main.go",
+                "cwd": "apps/api-gateway-go"
+            }
+        },
+        "serve": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "go run cmd/main.go",
+                "cwd": "apps/api-gateway-go"
+            },
+            "configurations": {
+                "development": {
+                    "env": {
+                        "PORT": "8081",
+                        "NODE_ENV": "local"
+                    }
+                }
+            },
+            "defaultConfiguration": "development"
+        },
+        "lint": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "golangci-lint run",
+                "cwd": "apps/api-gateway-go"
+            }
+        },
+        "test": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "go test ./...",
+                "cwd": "apps/api-gateway-go"
+            }
+        }
+    },
+    "tags": [
+        "go",
+        "gateway"
+    ]
+}
