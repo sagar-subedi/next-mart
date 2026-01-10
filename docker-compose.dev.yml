@@ -66,6 +66,29 @@ services:
     networks:
       - next-mart-network
 
+  # Recommendation Service (Python) - New implementation for comparison
+  recommendation-service-python:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: ./apps/recommendation-service-python/Dockerfile
+    container_name: next-mart-recommendation-service-python-dev
+    restart: unless-stopped
+    ports:
+      - "6017:6007" # Different external port for parallel testing
+    environment:
+      PORT: 6007
+      DATABASE_URL: ${DATABASE_URL}
+      FRONTEND_URL: ${FRONTEND_URL}
+      FRONTEND_SELLER_URL: ${FRONTEND_SELLER_URL}
+      FRONTEND_ADMIN_URL: ${FRONTEND_ADMIN_URL}
+    depends_on:
+      mongodb:
+        condition: service_started
+    networks:
+      - next-mart-network
+
   # Auth Service
   auth-service:
     env_file:
