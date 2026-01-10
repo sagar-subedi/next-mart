@@ -44,6 +44,28 @@ services:
     networks:
       - next-mart-network
 
+  # Kafka Service (Go) - New implementation for comparison
+  kafka-service-go:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: ./apps/kafka-service-go/Dockerfile
+    container_name: next-mart-kafka-service-go-dev
+    restart: unless-stopped
+    environment:
+      KAFKA_BROKER_URL: ${KAFKA_BROKER_URL}
+      KAFKA_API_KEY: ${KAFKA_API_KEY}
+      KAFKA_API_SECRET: ${KAFKA_API_SECRET}
+      KAFKA_TOPIC: users-events
+      KAFKA_GROUP_ID: user-events-group-go
+      DATABASE_URL: ${DATABASE_URL}
+    depends_on:
+      kafka-service:
+        condition: service_started
+    networks:
+      - next-mart-network
+
   # Auth Service
   auth-service:
     env_file:
