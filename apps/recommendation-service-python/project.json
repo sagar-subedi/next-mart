@@ -14,14 +14,14 @@
         "serve": {
             "executor": "nx:run-commands",
             "options": {
-                "command": "uvicorn app.main:app --reload --port 6007",
+                "command": "./venv/bin/uvicorn app.main:app --reload --port 6007",
                 "cwd": "apps/recommendation-service-python"
             }
         },
         "test": {
             "executor": "nx:run-commands",
             "options": {
-                "command": "pytest",
+                "command": "./venv/bin/pytest",
                 "cwd": "apps/recommendation-service-python"
             }
         }

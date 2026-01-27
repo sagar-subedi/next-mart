@@ -43,16 +43,44 @@ async def get_recommendation_products(user: dict = Depends(get_current_user)):
     try:
         user_id = user["id"]
         
-        # Fetch all products (needed for recommendation scope)
-        # We only need ID, images, shop.
-        cursor = db.db.products.find({})
+        # Fetch all products with images using aggregation
+        pipeline = [
+            {
+                "$lookup": {
+                    "from": "images",
+                    "localField": "_id",
+                    "foreignField": "productId",
+                    "as": "images"
+                }
+            }
+        ]
+        cursor = db.db.products.aggregate(pipeline)
         products = await cursor.to_list(length=None)
         
-        # Convert ObjectId to string for easier handling
+        def serialize_mongo_doc(doc):
+            if isinstance(doc, list):
+                return [serialize_mongo_doc(item) for item in doc]
+            if isinstance(doc, dict):
+                return {k: serialize_mongo_doc(v) for k, v in doc.items()}
+            if isinstance(doc, ObjectId):
+                return str(doc)
+            return doc
+
+        # Serialize all products to handle nested ObjectIds
+        products = serialize_mongo_doc(products)
+        
+        # Ensure 'id' field is present (frontend might expect it)
         for p in products:
-            p["id"] = str(p["_id"])
-            del p["_id"]
-            # Handle dates if needed, but we just pass them through or filter
+            if "id" not in p and "_id" in p:
+                p["id"] = p["_id"]
+            # If _id was converted to string, it's still _id.
+            # The previous code did: p["id"] = str(p["_id"]); del p["_id"]
+            # My serializer converts _id value to string.
+            # So p["_id"] is now a string.
+            # I should map _id to id and remove _id to match previous logic.
+            if "_id" in p:
+                p["id"] = p["_id"]
+                del p["_id"]
             
         # Fetch user analytics
         user_analytics = await db.db.userAnalytics.find_one({"userId": user_id})
