@@ -39,6 +39,15 @@ func NewReverseProxy(target string, stripPrefix string) gin.HandlerFunc {
 		// log.Printf("Proxying request: %s %s -> %s%s", req.Method, req.RequestURI, url.String(), req.URL.Path)
 	}
 
+	// Modify response to strip downstream CORS headers
+	proxy.ModifyResponse = func(resp *http.Response) error {
+		resp.Header.Del("Access-Control-Allow-Origin")
+		resp.Header.Del("Access-Control-Allow-Credentials")
+		resp.Header.Del("Access-Control-Allow-Methods")
+		resp.Header.Del("Access-Control-Allow-Headers")
+		return nil
+	}
+
 	return func(c *gin.Context) {
 		proxy.ServeHTTP(c.Writer, c.Request)
 	}
