@@ -57,6 +57,10 @@ jobs:
           - admin-service
           - logger-service
           - api-gateway
+          - api-gateway-go
+          - kafka-service-go
+          - logger-service-go
+          - recommendation-service-python
     
     steps:
       - uses: actions/checkout@v4
