@@ -1,0 +1,283 @@
+services:
+
+  # API Gateway (Go) - New implementation for comparison
+  api-gateway-go:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: ./apps/api-gateway-go/Dockerfile
+    container_name: next-mart-api-gateway-go-dev
+    restart: unless-stopped
+    ports:
+      - "8080:8080" # Parallel port
+    environment:
+      PORT: 8080
+      NODE_ENV: development
+      RECOMMENDATION_SERVICE_URL: http://recommendation-service-python:6007
+      KAFKA_SERVICE_URL: http://kafka-service-go:6009
+      LOGGER_SERVICE_URL: http://logger-service-go:6006
+    depends_on:
+      auth-service:
+        condition: service_started
+      product-service:
+        condition: service_started
+      order-service:
+        condition: service_started
+    networks:
+      - next-mart-network
+
+  # Kafka Service (Go) - New implementation for comparison
+  kafka-service-go:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: ./apps/kafka-service-go/Dockerfile
+    container_name: next-mart-kafka-service-go-dev
+    restart: unless-stopped
+    ports:
+      - "6009:6009"
+    environment:
+      KAFKA_BROKER_URL: ${KAFKA_BROKER_URL}
+      KAFKA_API_KEY: ${KAFKA_API_KEY}
+      KAFKA_API_SECRET: ${KAFKA_API_SECRET}
+      KAFKA_TOPIC: users-events
+      KAFKA_GROUP_ID: user-events-group-go
+      DATABASE_URL: ${DATABASE_URL}
+      PORT: 6009
+    # depends_on:
+    #   kafka-service-go:
+    #     condition: service_started
+    networks:
+      - next-mart-network
+
+  # Recommendation Service (Python) - New implementation for comparison
+  recommendation-service-python:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: ./apps/recommendation-service-python/Dockerfile
+    container_name: next-mart-recommendation-service-python-dev
+    restart: unless-stopped
+    ports:
+      - "6007:6007" # Different external port for parallel testing
+    environment:
+      PORT: 6007
+      DATABASE_URL: ${DATABASE_URL}
+      FRONTEND_URL: ${FRONTEND_URL}
+      FRONTEND_SELLER_URL: ${FRONTEND_SELLER_URL}
+      FRONTEND_ADMIN_URL: ${FRONTEND_ADMIN_URL}
+    networks:
+      - next-mart-network
+
+  # Auth Service
+  auth-service:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: ./apps/auth-service/Dockerfile
+      args:
+        DATABASE_URL: ${DATABASE_URL}
+    container_name: next-mart-auth-service-dev
+    restart: unless-stopped
+    ports:
+      - "6001:6001"
+    environment:
+      NODE_ENV: development
+      PORT: 6001
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_DATABASE_URI: ${REDIS_DATABASE_URI}
+    networks:
+      - next-mart-network
+
+  # Product Service
+  product-service:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: ./apps/product-service/Dockerfile
+      args:
+        DATABASE_URL: ${DATABASE_URL}
+    container_name: next-mart-product-service-dev
+    restart: unless-stopped
+    ports:
+      - "6002:6002"
+    environment:
+      NODE_ENV: development
+      PORT: 6002
+      DATABASE_URL: ${DATABASE_URL}
+    networks:
+      - next-mart-network
+
+  # Order Service
+  order-service:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: ./apps/order-service/Dockerfile
+    container_name: next-mart-order-service-dev
+    restart: unless-stopped
+    ports:
+      - "6003:6003"
+    environment:
+      NODE_ENV: development
+      PORT: 6003
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_DATABASE_URI: ${REDIS_DATABASE_URI}
+    networks:
+      - next-mart-network
+
+  # Admin Service
+  admin-service:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: ./apps/admin-service/Dockerfile
+      args:
+        DATABASE_URL: ${DATABASE_URL}
+    container_name: next-mart-admin-service-dev
+    restart: unless-stopped
+    ports:
+      - "6004:6004"
+    environment:
+      NODE_ENV: development
+      PORT: 6004
+      DATABASE_URL: ${DATABASE_URL}
+      KAFKA_API_KEY: ${KAFKA_API_KEY}
+      KAFKA_API_SECRET: ${KAFKA_API_SECRET}
+    depends_on:
+      kafka-service-go:
+        condition: service_started
+    networks:
+      - next-mart-network
+
+  # Chat Service
+  chat-service:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: ./apps/chatting-service/Dockerfile
+      args:
+        DATABASE_URL: ${DATABASE_URL}
+    container_name: next-mart-chat-service-dev
+    restart: unless-stopped
+    ports:
+      - "6005:6005"
+    environment:
+      NODE_ENV: development
+      PORT: 6005
+      DATABASE_URL: ${DATABASE_URL}
+      KAFKA_API_KEY: ${KAFKA_API_KEY}
+      KAFKA_API_SECRET: ${KAFKA_API_SECRET}
+    depends_on:
+      kafka-service-go:
+        condition: service_started
+    networks:
+      - next-mart-network
+
+  # Logger Service (Go) - New implementation for comparison
+  logger-service-go:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: ./apps/logger-service-go/Dockerfile
+    container_name: next-mart-logger-service-go-dev
+    restart: unless-stopped
+    ports:
+      - "6006:6006" # Different external port for parallel testing
+    environment:
+      PORT: 6006
+      KAFKA_BROKER_URL: ${KAFKA_BROKER_URL}
+      KAFKA_API_KEY: ${KAFKA_API_KEY}
+      KAFKA_API_SECRET: ${KAFKA_API_SECRET}
+      KAFKA_TOPIC: logs
+      KAFKA_GROUP_ID: log-events-group-go
+      OTLP_ENDPOINT: otel-collector:4317
+      FRONTEND_URL: ${FRONTEND_URL}
+      FRONTEND_SELLER_URL: ${FRONTEND_SELLER_URL}
+      FRONTEND_ADMIN_URL: ${FRONTEND_ADMIN_URL}
+    depends_on:
+      kafka-service-go:
+        condition: service_started
+      # otel-collector:
+      #   condition: service_started
+    networks:
+      - next-mart-network
+
+  # Seller Service
+  seller-service:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: ./apps/seller-service/Dockerfile
+      args:
+        DATABASE_URL: ${DATABASE_URL}
+    container_name: next-mart-seller-service-dev
+    restart: unless-stopped
+    ports:
+      - "6008:6008"
+    environment:
+      NODE_ENV: development
+      PORT: 6008
+      DATABASE_URL: ${DATABASE_URL}
+      KAFKA_API_KEY: ${KAFKA_API_KEY}
+      KAFKA_API_SECRET: ${KAFKA_API_SECRET}
+    depends_on:
+      kafka-service-go:
+        condition: service_started
+    networks:
+      - next-mart-network
+  # User UI
+  # user-ui:
+  #   env_file:
+  #     - .env
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/user-ui/Dockerfile
+  #   container_name: next-mart-user-ui-dev
+  #   restart: unless-stopped
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     NODE_ENV: development
+  #     NEXT_PUBLIC_API_URL: http://api-gateway:8080
+  #     DEBUG: "true"
+  #   depends_on:
+  #     api-gateway:
+  #       condition: service_started
+  #   networks:
+  #     - next-mart-network
+
+  # # Seller UI
+  # seller-ui:
+  #   env_file:
+  #     - .env
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/seller-ui/Dockerfile
+  #   container_name: next-mart-seller-ui-dev
+  #   restart: unless-stopped
+  #   ports:
+  #     - "3001:3000"
+  #   environment:
+  #     NODE_ENV: development
+  #     NEXT_PUBLIC_API_URL: http://api-gateway:8080
+  #     DEBUG: "true"
+  #   depends_on:
+  #     api-gateway:
+  #       condition: service_started
+  #   networks:
+  #     - next-mart-network
+
+networks:
+  next-mart-network:
+    driver: bridge
