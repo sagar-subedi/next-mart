@@ -18,7 +18,7 @@ RUN go mod download
 COPY apps/logger-service-go/ ./
 
 # Build the application
-RUN CGO_ENABLED=1 GOOS=linux go build -a -installsuffix cgo -o logger-service ./cmd/main.go
+RUN CGO_ENABLED=1 GOOS=linux go build -tags musl -a -installsuffix cgo -o logger-service ./cmd/main.go
 
 # Runtime stage
 FROM alpine:latest
