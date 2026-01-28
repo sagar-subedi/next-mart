@@ -7,14 +7,14 @@
         "build": {
             "executor": "nx:run-commands",
             "options": {
-                "command": "go build -tags musl -o dist/kafka-service-go ./cmd/main.go",
+                "command": "go build -o dist/kafka-service-go ./cmd/main.go",
                 "cwd": "apps/kafka-service-go"
             }
         },
         "serve": {
             "executor": "nx:run-commands",
             "options": {
-                "command": "go run -tags musl cmd/main.go",
+                "command": "go run cmd/main.go",
                 "cwd": "apps/kafka-service-go"
             },
             "configurations": {
@@ -36,7 +36,7 @@
         "test": {
             "executor": "nx:run-commands",
             "options": {
-                "command": "go test -tags musl ./...",
+                "command": "go test ./...",
                 "cwd": "apps/kafka-service-go"
             }
         }
