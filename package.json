@@ -65,6 +65,14 @@
     "apps/*"
   ],
   "dependencies": {
+    "@opentelemetry/api-logs": "^0.208.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.67.3",
+    "@opentelemetry/exporter-logs-otlp-grpc": "^0.208.0",
+    "@opentelemetry/exporter-trace-otlp-grpc": "^0.208.0",
+    "@opentelemetry/resources": "^2.2.0",
+    "@opentelemetry/sdk-logs": "^0.208.0",
+    "@opentelemetry/sdk-node": "^0.208.0",
+    "@opentelemetry/semantic-conventions": "^1.38.0",
     "@prisma/client": "^6.8.2",
     "@stripe/react-stripe-js": "^3.9.0",
     "@stripe/stripe-js": "^7.8.0",

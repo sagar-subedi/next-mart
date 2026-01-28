@@ -19,6 +19,7 @@ import {
 import { setCookie } from './utils/cookies/setCookie';
 import stripe from '@packages/libs/stripe';
 import imageKit from '@packages/libs/imageKit';
+import { sendLog } from '@packages/utils/logs/sendLogs';
 
 // Register user
 export const userRegistration = async (
@@ -262,6 +263,11 @@ export const userResetPassword = async (
 export const getUser = async (req: any, res: Response, next: NextFunction) => {
   try {
     const user = req.user;
+    // await sendLog({
+    //   type: 'info',
+    //   message: `User ${user.email} fetched their profile`,
+    //   source: 'auth-service',
+    // });
     return res.status(200).json({ success: true, user });
   } catch (error) {
     return next(error);

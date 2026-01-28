@@ -44,6 +44,7 @@ Thumbs.db
 .github/instructions/nx.instructions.md
 
 /generated/prisma
+/data/
 
 # Next.js
 .next

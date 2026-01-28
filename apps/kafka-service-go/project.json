@@ -1,0 +1,48 @@
+{
+    "name": "kafka-service-go",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "apps/kafka-service-go",
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "go build -o dist/kafka-service-go ./cmd/main.go",
+                "cwd": "apps/kafka-service-go"
+            }
+        },
+        "serve": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "go run cmd/main.go",
+                "cwd": "apps/kafka-service-go"
+            },
+            "configurations": {
+                "development": {
+                    "env": {
+                        "NODE_ENV": "local"
+                    }
+                }
+            },
+            "defaultConfiguration": "development"
+        },
+        "lint": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "golangci-lint run",
+                "cwd": "apps/kafka-service-go"
+            }
+        },
+        "test": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "go test ./...",
+                "cwd": "apps/kafka-service-go"
+            }
+        }
+    },
+    "tags": [
+        "go",
+        "kafka"
+    ]
+}
